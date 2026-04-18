@@ -9131,6 +9131,8 @@ const DB = {
   }
 };
 
+let currentProvince = null, currentCity = null, currentSpot = null, currentGuide = null, navStack = [];
+
 // ─── RENDER: PROVINCES CITIES ───
 function goProvince(pid) {
   const p = DB.provinces[pid];
@@ -9525,6 +9527,18 @@ function switchGuide(duration) {
   const c = p.cities[currentCity];
   const s = c.spots[currentSpot];
   renderGuide(s);
+}
+
+function getEffectiveImg(pid, cid, sid) {
+  const spot = DB.provinces[pid]?.cities[cid]?.spots[sid];
+  const key = `${pid}_${cid}_${sid}`;
+  return localStorage.getItem('customImg_' + key) || spot?.image || '';
+}
+function getSpotImgKey() {
+  return `${currentProvince}_${currentCity}_${currentSpot}`;
+}
+function getCustomImg(key) {
+  return localStorage.getItem('customImg_' + key) || '';
 }
 
 function init() {
