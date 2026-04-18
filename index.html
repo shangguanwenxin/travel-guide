@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#faf8f5;--ink:#1c1814;--ink-light:#7a7068;--accent:#c84b2f;--accent-soft:#f4a582;--accent-light:#fdf0ec;--paper:#fff;--border:#ede8e0;--border-light:#f5f1eb;--shadow:rgba(28,24,20,0.08);--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--radius:10px;--radius-lg:16px}
+    :root{--bg:#faf8f5;--ink:#1c1814;--ink-light:#7a7068;--accent:#c84b2f;--accent-soft:#f4a582;--accent-light:#fdf0ec;--paper:#fff;--border:#ede8e0;--border-light:#f5f1eb;--shadow:rgba(28,24,20,0.08);--shadow-deep:rgba(28,24,20,0.18);--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--radius:10px;--radius-lg:16px}
     body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
     h1,h2,h3,h4{font-family:'Noto Serif SC',serif}
     .header{background:var(--paper);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
@@ -58,10 +58,13 @@
     .city-card-tags{display:flex;gap:6px;flex-wrap:wrap}
     .tag{background:var(--accent-light);color:var(--accent);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;display:inline-block}
     .tag-gray{background:var(--border-light);color:var(--ink-light)}
+    .tag-blue{background:#e8f4fd;color:#2980b9}
     .spot-list{display:flex;flex-direction:column;gap:12px}
     .spot-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .2s ease;display:flex;gap:16px;align-items:flex-start}
     .spot-card:hover{border-color:var(--accent);box-shadow:0 4px 16px var(--shadow)}
-    .spot-card-img{width:120px;height:90px;border-radius:8px;object-fit:cover;flex-shrink:0}
+    .spot-card-img{width:120px;height:90px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#ede8e0}
+    .spot-card-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;display:block}
+    .spot-card-img .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-light);font-size:12px}
     .spot-card-info{flex:1;min-width:0}
     .spot-card-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
     .spot-card-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600}
@@ -70,12 +73,62 @@
     .spot-card-meta{display:flex;gap:16px;font-size:12px;color:var(--ink-light);flex-wrap:wrap}
     .spot-card-arrow{color:var(--border);font-size:20px;align-self:center;flex-shrink:0}
     .spot-detail{padding-bottom:80px}
-    .spot-hero{height:300px;background-size:cover;background-position:center;border-radius:var(--radius-lg);position:relative;margin-bottom:24px}
+    .spot-hero{height:300px;background-size:cover;background-position:center;border-radius:var(--radius-lg);position:relative;margin-bottom:24px;overflow:hidden}
     .spot-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,.7));border-radius:0 0 var(--radius-lg) var(--radius-lg);color:#fff}
     .spot-hero-name{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;margin-bottom:6px}
     .spot-hero-sub{font-size:14px;opacity:.85}
     .spot-hero-back{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s}
     .spot-hero-back:hover{background:#fff}
+    /* Image actions overlay */
+    .spot-hero-actions{position:absolute;top:16px;right:16px;display:flex;gap:8px}
+    .spot-hero-actions button{background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:none;border-radius:24px;padding:8px 16px;font-size:13px;cursor:pointer;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s}
+    .spot-hero-actions button:hover{background:#fff;box-shadow:0 2px 8px var(--shadow-deep)}
+    .spot-hero-actions button.primary{background:var(--accent);color:#fff}
+    .spot-hero-actions button.primary:hover{background:#b33f25}
+    /* Image preview in hero */
+    .spot-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:var(--radius-lg)}
+    .spot-hero.has-custom-img .spot-hero-overlay{background:linear-gradient(transparent 50%,rgba(0,0,0,.7))}
+    /* Image upload overlay */
+    .img-upload-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:24px}
+    .img-upload-overlay.show{display:flex}
+    .img-upload-modal{background:#fff;border-radius:var(--radius-lg);max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:28px}
+    .img-upload-modal h3{font-family:'Noto Serif SC',serif;font-size:20px;margin-bottom:4px}
+    .img-upload-modal p{color:var(--ink-light);font-size:13px;margin-bottom:20px}
+    .img-upload-tabs{display:flex;gap:4px;background:var(--border-light);padding:4px;border-radius:10px;margin-bottom:20px}
+    .img-upload-tab{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink-light);transition:all .2s;flex:1;text-align:center}
+    .img-upload-tab.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px var(--shadow)}
+    .img-upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+    .img-upload-area:hover{border-color:var(--accent);background:var(--accent-light)}
+    .img-upload-area input{display:none}
+    .img-upload-area-icon{font-size:32px;margin-bottom:8px}
+    .img-upload-area-text{font-size:14px;color:var(--ink-light)}
+    .img-upload-area-text strong{color:var(--accent)}
+    .img-preview{width:100%;max-height:200px;object-fit:cover;border-radius:var(--radius);margin-bottom:12px;display:none}
+    .img-preview.show{display:block}
+    .img-url-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;margin-bottom:12px;font-family:inherit}
+    .img-url-input:focus{outline:none;border-color:var(--accent)}
+    .img-url-btns{display:flex;gap:8px;margin-bottom:16px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:#b33f25}
+    .btn-secondary{background:var(--border-light);color:var(--ink)}
+    .btn-secondary:hover{background:var(--border)}
+    .btn-ghost{background:transparent;color:var(--ink-light);border:1px solid var(--border)}
+    .btn-ghost:hover{border-color:var(--ink-light)}
+    .btn-block{width:100%;justify-content:center}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-danger:hover:#a93226}
+    .img-unsplash-link{display:flex;align-items:center;gap:8px;padding:12px;background:var(--border-light);border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--ink-light);text-decoration:none;transition:background .2s}
+    .img-unsplash-link:hover{background:var(--border)}
+    .img-unsplash-link .icon{font-size:18px}
+    .img-saved-notice{background:var(--success);color:#fff;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+    .img-saved-notice.show{display:flex}
+    .img-history{margin-top:16px}
+    .img-history-title{font-size:12px;color:var(--ink-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+    .img-history-list{display:flex;gap:8px;flex-wrap:wrap}
+    .img-history-item{width:56px;height:56px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:all .2s}
+    .img-history-item:hover{border-color:var(--accent)}
+    .img-history-item.current{border-color:var(--accent)}
     .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
     .info-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
     .info-card-icon{font-size:24px;margin-bottom:8px}
@@ -118,12 +171,14 @@
     .tip-icon{flex-shrink:0;width:20px;height:20px;background:var(--warning);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:2px}
     .tip-item.warning .tip-icon{background:var(--danger)}
     .tip-item.good .tip-icon{background:var(--success)}
+    .rec-badge{background:var(--success);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    .no-rec-badge{background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    .custom-img-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;display:none}
+    .spot-card.has-custom .custom-img-badge{display:block}
     .view{display:none}
     .view.active{display:block;animation:fadeIn .3s ease}
     @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     .more-soon{text-align:center;padding:48px;color:var(--ink-light);font-size:14px}
-    .rec-badge{background:var(--success);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
-    .no-rec-badge{background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
     @media(max-width:768px){
       .hero h1{font-size:28px}
       .hero-stats{gap:24px}
@@ -131,7 +186,7 @@
       .province-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
       .city-card-img{height:140px}
       .spot-card{flex-direction:column}
-      .spot-card-img{width:100%;height:160px}
+      .spot-card-img{width:100%;height:120px}
       .spot-hero{height:220px}
       .info-cards{grid-template-columns:repeat(2,1fr)}
       .transport-grid{grid-template-columns:1fr}
@@ -139,6 +194,8 @@
       .spot-hero-name{font-size:22px}
       .guide-tabs{width:100%}
       .guide-tab{flex:1;text-align:center;padding:8px 10px;font-size:12px}
+      .spot-hero-actions{flex-direction:column;gap:4px}
+      .spot-hero-actions button{padding:6px 12px;font-size:12px}
     }
   </style>
 </head>
@@ -217,6 +274,9 @@
     <div class="spot-detail">
       <div class="spot-hero" id="spotHero">
         <button class="spot-hero-back" onclick="goBack()">←</button>
+        <div class="spot-hero-actions">
+          <button onclick="openImgUpload()">📷 更换图片</button>
+        </div>
         <div class="spot-hero-overlay">
           <div class="spot-hero-name" id="spotHeroName"></div>
           <div class="spot-hero-sub" id="spotHeroSub"></div>
@@ -240,32 +300,120 @@
   </div>
 </div>
 
-<script>
-// ═══════════════════════════════════════════════════════════
-// TRAVEL DATA — Province → City → Scenic Spot
-// ═══════════════════════════════════════════════════════════
-const DB = {"meta": {"name": "漫游中国", "subtitle": "省市区景区三级旅游攻略", "stats": {"provinces": 23, "cities": 200, "spots": 500, "days": "3-30"}}, "provinces": {"beijing": {"name": "北京市", "short": "北京", "region": "north", "desc": "首都 · 千年古都", "cities": {"beijing_city": {"name": "北京市区", "desc": "明清皇城 · 现代首都", "spots": {"gugong": {"name": "故宫博物院", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=80", "desc": "世界最大宫殿建筑群，明清两代皇宫。建议预留一整天！", "address": "北京市东城区景山前街4号", "phone": "010-85007938", "opening": {"peak": "08:30-17:00（4月-10月）", "offpeak": "08:30-16:30（11月-3月）", "closed": "周一闭馆（法定节假日除外）", "tip": "建议早8:30一开门就进，人最少"}, "ticket": {"adult": "60元", "student": "20元", "senior": "免费（60岁以上）", "extra": "珍宝馆10元，钟表馆10元", "booking": "必须提前预约！", "bookingTip": "提前7-10天故宫官网或公众号抢号，旺季秒没！"}, "transport": {"recommended": "地铁", "reason": "故宫位于市中心，停车困难，地铁直达最方便", "metro": {"lines": ["1号线 天安门东站B口", "1号线 天安门西站B口", "8号线 金鱼胡同站C口"], "walk": "从任意出口步行5-10分钟到午门入口"}, "driving": {"parking": "东华门/西华门停车场，10元/15分钟，位置紧张", "tips": "不建议开车！周边停车难且贵，周末和节假日可能限行", "restrictions": "长安街及故宫周边实行交通管制，无法靠近"}, "bus": [{"name": "1路", "from": "东单路口北", "to": "天安门东", "freq": "3-5分钟", "first": "05:00", "last": "23:00", "tips": "经过长安街，早晚高峰堵车风险高"}, {"name": "5路", "from": "东四十条桥南", "to": "天安门西", "freq": "5-8分钟", "first": "05:15", "last": "22:30", "tips": "西单购物可顺便坐这路"}], "taxi": {"fromCenter": "约20-30元", "tips": "只能到东华门或西华门，需步行入宫", "fromStation": "北京站约25元，北京西站约30元"}, "carRental": {"recommended": false, "reason": "市中心限行+停车极贵+堵车严重，全程公交最优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型200-350元/天"}}, "food": [{"name": "四季民福烤鸭", "desc": "故宫东门店，可边吃烤鸭边看故宫城墙，景观绝佳", "price": "人均150-200元", "tag": "必吃"}, {"name": "全聚德", "desc": "百年老字号，北京烤鸭代名词，前门店最正宗", "price": "人均180-250元", "tag": "老字号"}, {"name": "南锣鼓巷小吃", "desc": "逛完故宫顺路吃，炸酱面、卤煮火烧、爆肚", "price": "人均30-50元", "tag": "顺路"}], "tips": [{"type": "warning", "text": "故宫门票必须提前预约！现场无售票，旺季提前7-10天抢"}, {"type": "good", "text": "建议从午门进、神武门出，不走回头路"}, {"type": "warning", "text": "带身份证！没身份证绝对进不去"}, {"type": "good", "text": "租讲解器（20元）或下载玩转故宫App免费导览"}, {"type": "tip", "text": "珍宝馆和钟表馆需另外买票，各10元，非常值得看"}], "guides": {"3-7": {"title": "北京精华3日游", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫·天安门", "items": [{"time": "05:30", "title": "天安门升旗仪式", "desc": "提前查升旗时间，旺季需凌晨3点到广场排队占位"}, {"time": "08:30", "title": "故宫博物院", "desc": "提前预约！午门进，神武门出，珍宝馆+钟表馆选去"}, {"time": "13:00", "title": "景山公园", "desc": "从神武门出来过马路就是，爬山5分钟，俯瞰故宫全景最佳机位"}, {"time": "16:00", "title": "南锣鼓巷", "desc": "老北京胡同游，逛文艺小店，吃炸酱面"}, {"time": "19:00", "title": "簋街晚餐", "desc": "胡大饭店，小龙虾+麻小，北京夜生活"}]}, {"day": "Day 2", "theme": "长城·奥运", "items": [{"time": "07:00", "title": "早起出发八达岭", "desc": "S2线城铁（北京北站→八达岭，6:30发车，约80分钟）或919路公交"}, {"time": "09:00", "title": "登八达岭长城", "desc": "建议爬北八楼好汉坡，坐缆车或索道上山节省体力"}, {"time": "13:00", "title": "返回市区午餐", "desc": "高铁或919公交回市区"}, {"time": "16:00", "title": "鸟巢·水立方", "desc": "傍晚到，灯光亮起最美，外围免费参观"}]}, {"day": "Day 3", "theme": "皇家园林", "items": [{"time": "08:30", "title": "颐和园", "desc": "北宫门进，先游苏州街，再沿昆明湖到十七孔桥"}, {"time": "12:00", "title": "圆明园", "desc": "西洋楼遗址最震撼，强烈推荐请导游讲解历史"}, {"time": "16:00", "title": "清华/北大", "desc": "需提前在官方公众号预约入校，周末开放名额多"}]}]}, "7-15": {"title": "北京深度7日游", "days": 7, "schedule": [{"day": "Day 1-2", "theme": "故宫深度游（2天）", "items": [{"time": "全天", "title": "Day1 中轴线+珍宝馆", "desc": "从午门到神武门，中轴线三大殿+珍宝馆"}, {"time": "全天", "title": "Day2 西六宫+钟表馆", "desc": "军机处+西六宫+钟表馆，慢慢逛"}]}, {"day": "Day 3", "theme": "长城双日", "items": [{"time": "全天", "title": "八达岭长城", "desc": "登好汉坡，坐缆车上山"}]}, {"day": "Day 4", "theme": "胡同·文艺", "items": [{"time": "09:00", "title": "天坛公园", "desc": "祈年殿、回音壁，体验老北京晨练文化"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→恭王府→南锣鼓巷，骑自行车串胡同"}, {"time": "18:00", "title": "后海酒吧街", "desc": "晚餐+夜生活"}]}, {"day": "Day 5", "theme": "博物馆日", "items": [{"time": "09:00", "title": "国家博物馆", "desc": "提前在国家博物馆公众号预约，绝对震撼"}, {"time": "14:00", "title": "北京博物馆", "desc": "离国博很近，可选去自然博物馆或军事博物馆"}]}, {"day": "Day 6", "theme": "京郊游", "items": [{"time": "全天", "title": "京郊一日选一个", "desc": "香山（红叶季）/ 十三陵 / 周口店 / 永定河"}]}, {"day": "Day 7", "theme": "休闲收尾", "items": [{"time": "09:00", "title": "中山公园/劳动人民文化宫", "desc": "比故宫人少，景色也好"}, {"time": "13:00", "title": "王府井·APM", "desc": "最后采购，伴手礼"}]}]}, "30": {"title": "北京慢游30天深度攻略", "days": 30, "schedule": [{"day": "Week 1", "theme": "核心景区深度游", "items": [{"time": "每天", "title": "故宫分期解锁", "desc": "前三天分别：中轴线、西六宫、东六宫+珍宝馆+钟表馆，每天2-3小时"}, {"time": "每天", "title": "每天一座园林", "desc": "颐和园（两天）、圆明园、北海公园、恭王府、中山公园、劳动人民文化宫"}]}, {"day": "Week 2", "theme": "胡同文化深度", "items": [{"time": "每天", "title": "串胡同", "desc": "南锣鼓巷、什刹海、烟袋斜街、五道营胡同、方家胡同、雍和宫大街"}, {"time": "每天", "title": "老北京生活体验", "desc": "早起天坛晨练、北海公园遛弯、潘家园淘货（周六）、红桥市场"}]}, {"day": "Week 3", "theme": "博物馆与文化", "items": [{"time": "每天", "title": "国家博物馆、中国美术馆、首都博物馆、中国科技馆", "desc": "每天一座馆，慢慢看"}]}, {"day": "Week 4", "theme": "京郊与周边", "items": [{"time": "每天", "title": "周边游", "desc": "八达岭、慕田峪、司马台、十三陵、承德避暑山庄、天津（高铁30分钟）"}]}]}}}, "badaling": {"name": "八达岭长城", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1200&q=80", "desc": "不到长城非好汉！北京必打卡，世界七大奇迹之一", "address": "北京市延庆区八达岭镇", "phone": "010-69121383", "opening": {"peak": "06:30-19:00（夏季）", "offpeak": "07:30-17:00（冬季）", "closed": "无", "tip": "建议早7点前到达，避开9点后的大人流"}, "ticket": {"adult": "40元", "student": "20元", "senior": "免费", "bus": "单程100元，往返140元（选坐）", "booking": "无需预约，现场买票即可"}, "transport": {"recommended": "S2城铁", "reason": "S2线性价比最高，景色好（穿越花海），比大巴快且准时", "metro": {"lines": ["S2线（黄土店站→八达岭站）"], "walk": "黄土店站步行5分钟，S2约80分钟到八达岭"}, "driving": {"parking": "八达岭停车场，20元/次，旺季可能满", "tips": "京藏高速周末堵车严重，建议早起或坐S2", "restrictions": "旺季可能临时交通管制"}, "bus": [{"name": "919路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:00", "last": "18:00", "tips": "走高速约2小时，票价12元"}, {"name": "877路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:30", "last": "12:30", "tips": "返程最晚17:00，注意时间！"}], "taxi": {"notRecommended": true, "reason": "价格贵（单程200+），且返程难打车，不推荐"}, "carRental": {"recommended": false, "reason": "旺季高速堵车严重，停车也紧张，S2城铁更优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型180-300元/天"}}, "food": [{"name": "长城脚下农家乐", "desc": "价格适中，味道家常", "price": "人均50-80元", "tag": "顺路"}, {"name": "自带干粮", "desc": "山上食品贵且选择少，建议自带", "price": "0元", "tag": "省钱"}], "tips": [{"type": "good", "text": "S2线春季穿越花海，景色绝美！注意班次时间"}, {"type": "warning", "text": "877路返程最晚17:00，错过只能打车或等下一班"}, {"type": "good", "text": "带足水！夏天长城上非常晒"}, {"type": "warning", "text": "带老人小孩建议坐缆车，老人孩子都轻松"}, {"type": "tip", "text": "好汉坡在北八楼，从北一楼爬到北八楼约2小时"}], "guides": {"3-7": {"title": "长城+北京精华3日", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫深度", "items": [{"time": "08:30", "title": "故宫", "desc": "提前预约，深度游览"}, {"time": "14:00", "title": "景山公园", "desc": "俯瞰故宫全景"}]}, {"day": "Day 2", "theme": "长城一日", "items": [{"time": "07:00", "title": "S2城铁出发", "desc": "6:30黄土店站"}, {"time": "09:00", "title": "八达岭长城", "desc": "登好汉坡"}, {"time": "15:00", "title": "返回+鸟巢夜景", "desc": "S2或919回程"}]}, {"day": "Day 3", "theme": "胡同游", "items": [{"time": "09:00", "title": "天坛", "desc": "晨练+祈年殿"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→南锣鼓巷"}]}]}, "7-15": {"title": "北京7日游（见故宫攻略）", "days": 7, "schedule": []}, "30": {"title": "北京30日游（见故宫攻略）", "days": 30, "schedule": []}}}, "yiheyuan": {"name": "颐和园", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1599707367072-cd6ad66acc40?w=1200&q=80", "desc": "中国最大皇家园林，昆明湖万寿山，慈禧太后夏宫", "address": "北京市海淀区新建宫门路19号", "phone": "010-62881144", "opening": {"peak": "06:30-19:00（4月-10月）", "offpeak": "07:00-17:30（11月-3月）", "closed": "无", "tip": "建议早上去，光线好且人少"}, "ticket": {"adult": "30元", "student": "15元", "combo": "60元（含苏州街）", "booking": "无需预约，现场买票"}, "transport": {"recommended": "地铁", "reason": "地铁4号线直达西苑站，步行5分钟到北宫门", "metro": {"lines": ["4号线 西苑站A口", "西郊线 颐和园西门站"], "walk": "西苑站A口出，步行约5分钟到北宫门"}, "driving": {"parking": "北宫门/新建宫门停车场，10元/次", "tips": "周末车位紧张，建议早去或坐地铁"}, "bus": [{"name": "303路", "from": "西直门", "to": "颐和园北宫门", "freq": "10-15分钟", "first": "06:00", "last": "21:00", "tips": "经停多站，可从动物园过来"}], "taxi": {"fromCenter": "约30-40元"}, "carRental": {"recommended": false, "reason": "地铁直达，没必要租车"}}, "food": [{"name": "西苑美食街", "desc": "出地铁站就是，各种快餐和小吃", "price": "人均30-50元", "tag": "方便"}], "tips": [{"type": "good", "text": "建议从北宫门进，先爬万寿山，再沿昆明湖逛"}, {"type": "good", "text": "苏州街另买票，值得一看"}, {"type": "tip", "text": "租船游昆明湖是经典体验，脚踏船150-200元/小时"}], "guides": {"3-7": {"title": "颐和园半日游（纳入北京3日游）", "days": 0.5, "schedule": [{"day": "Day 3上午", "theme": "皇家园林", "items": [{"time": "09:00", "title": "北宫门进园", "desc": "苏州街→万寿山→长廊"}, {"time": "11:00", "title": "昆明湖游船", "desc": "脚踏船或电动船"}, {"time": "12:30", "title": "十七孔桥", "desc": "必打卡，秋季金光穿洞"}]}]}, "7-15": {"title": "见北京7日游攻略", "days": 0, "schedule": []}, "30": {"title": "见北京30日游攻略", "days": 0, "schedule": []}}}}}}, "comingSoon": false}, "tianjin": {"name": "天津市", "short": "天津", "region": "north", "desc": "津门故里", "cities": {}, "comingSoon": true}, "hebei": {"name": "河北省", "short": "河北", "region": "north", "desc": "燕赵大地", "cities": {}, "comingSoon": true}, "shanxi": {"name": "山西省", "short": "山西", "region": "north", "desc": "晋善晋美", "cities": {}, "comingSoon": true}, "innermongolia": {"name": "内蒙古", "short": "内蒙古", "region": "north", "desc": "草原风光", "cities": {}, "comingSoon": true}, "liaoning": {"name": "辽宁省", "short": "辽宁", "region": "northeast", "desc": "工业重镇", "cities": {}, "comingSoon": true}, "jilin": {"name": "吉林省", "short": "吉林", "region": "northeast", "desc": "雾凇冰雪", "cities": {}, "comingSoon": true}, "heilongjiang": {"name": "黑龙江省", "short": "黑龙江", "region": "northeast", "desc": "冰雪世界", "cities": {}, "comingSoon": true}, "shanghai": {"name": "上海市", "short": "上海", "region": "east", "desc": "魔都 · 东方巴黎", "cities": {}, "comingSoon": true}, "jiangsu": {"name": "江苏省", "short": "江苏", "region": "east", "desc": "江南水乡", "cities": {}, "comingSoon": true}, "zhejiang": {"name": "浙江省", "short": "浙江", "region": "east", "desc": "鱼米之乡", "cities": {}, "comingSoon": true}, "anhui": {"name": "安徽省", "short": "安徽", "region": "east", "desc": "徽风皖韵", "cities": {}, "comingSoon": true}, "fujian": {"name": "福建省", "short": "福建", "region": "east", "desc": "清新福建", "cities": {}, "comingSoon": true}, "jiangxi": {"name": "江西省", "short": "江西", "region": "east", "desc": "红色摇篮", "cities": {}, "comingSoon": true}, "shandong": {"name": "山东省", "short": "山东", "region": "east", "desc": "齐鲁大地", "cities": {}, "comingSoon": true}, "henan": {"name": "河南省", "short": "河南", "region": "central", "desc": "中原大地", "cities": {}, "comingSoon": true}, "hubei": {"name": "湖北省", "short": "湖北", "region": "central", "desc": "千湖之省", "cities": {}, "comingSoon": true}, "hunan": {"name": "湖南省", "short": "湖南", "region": "central", "desc": "湘楚文化", "cities": {}, "comingSoon": true}, "guangdong": {"name": "广东省", "short": "广东", "region": "south", "desc": "美食之都", "cities": {}, "comingSoon": true}, "guangxi": {"name": "广西", "short": "广西", "region": "south", "desc": "壮美广西", "cities": {}, "comingSoon": true}, "hainan": {"name": "海南省", "short": "海南", "region": "south", "desc": "热带海岛", "cities": {}, "comingSoon": true}, "hongkong": {"name": "香港", "short": "香港", "region": "south", "desc": "购物天堂", "cities": {}, "comingSoon": true}, "macau": {"name": "澳门", "short": "澳门", "region": "south", "desc": "葡韵风情", "cities": {}, "comingSoon": true}, "sichuan": {"name": "四川省", "short": "四川", "region": "southwest", "desc": "天府之国", "cities": {}, "comingSoon": true}, "chongqing": {"name": "重庆市", "short": "重庆", "region": "southwest", "desc": "山城魔幻", "cities": {}, "comingSoon": true}, "guizhou": {"name": "贵州省", "short": "贵州", "region": "southwest", "desc": "多彩贵州", "cities": {}, "comingSoon": true}, "yunnan": {"name": "云南省", "short": "云南", "region": "southwest", "desc": "彩云之南", "cities": {}, "comingSoon": true}, "tibet": {"name": "西藏", "short": "西藏", "region": "southwest", "desc": "世界屋脊", "cities": {}, "comingSoon": true}, "shaanxi": {"name": "陕西省", "short": "陕西", "region": "northwest", "desc": "三秦大地", "cities": {}, "comingSoon": true}, "gansu": {"name": "甘肃省", "short": "甘肃", "region": "northwest", "desc": "丝绸之路", "cities": {}, "comingSoon": true}, "qinghai": {"name": "青海省", "short": "青海", "region": "northwest", "desc": "中华水塔", "cities": {}, "comingSoon": true}, "ningxia": {"name": "宁夏", "short": "宁夏", "region": "northwest", "desc": "塞上江南", "cities": {}, "comingSoon": true}, "xinjiang": {"name": "新疆", "short": "新疆", "region": "northwest", "desc": "瓜果之乡", "cities": {}, "comingSoon": true}}};
+<!-- Image Upload Modal -->
+<div class="img-upload-overlay" id="imgUploadOverlay" onclick="closeImgUpload(event)">
+  <div class="img-upload-modal" onclick="event.stopPropagation()">
+    <h3>📷 更换景区图片</h3>
+    <p id="imgUploadSpotName">为当前景区选择图片</p>
+    
+    <div class="img-upload-tabs">
+      <button class="img-upload-tab active" onclick="switchImgTab('upload',this)">📤 上传图片</button>
+      <button class="img-upload-tab" onclick="switchImgTab('url',this)">🔗 图片链接</button>
+    </div>
 
-// ═══════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════
+    <!-- Upload tab -->
+    <div id="imgTabUpload">
+      <div class="img-upload-area" onclick="document.getElementById('imgFileInput').click()">
+        <input type="file" id="imgFileInput" accept="image/*" onchange="handleFileSelect(event)" />
+        <div class="img-upload-area-icon">🖼️</div>
+        <div class="img-upload-area-text">点击选择本地图片<br/><strong>支持 JPG/PNG/GIF/WebP</strong></div>
+      </div>
+      <img class="img-preview" id="imgPreview" alt="预览" />
+      <div class="img-saved-notice" id="imgSavedNotice">✅ 图片已保存</div>
+      <button class="btn btn-primary btn-block" id="imgSaveBtn" onclick="saveCustomImg()" style="display:none">保存为景区图片</button>
+    </div>
+
+    <!-- URL tab -->
+    <div id="imgTabUrl" style="display:none">
+      <input type="url" class="img-url-input" id="imgUrlInput" placeholder="粘贴图片链接，如 https://..." />
+      <img class="img-preview" id="imgUrlPreview" alt="预览" style="display:none" />
+      <div class="img-url-btns">
+        <button class="btn btn-primary" onclick="applyImgUrl()">应用图片</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('imgUrlPreview').style.display='none'">清除</button>
+      </div>
+      <a class="img-unsplash-link" href="#" id="unsplashSearchLink" target="_blank" rel="noopener">
+        <span class="icon">🔍</span>
+        <span>在 Unsplash 免费图库搜索「<strong id="unsplashQuery"></strong>」</span>
+      </a>
+    </div>
+
+    <!-- History -->
+    <div class="img-history" id="imgHistory">
+      <div class="img-history-title">最近使用</div>
+      <div class="img-history-list" id="imgHistoryList"></div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-secondary" onclick="resetToDefault()" style="flex:1">恢复默认图片</button>
+      <button class="btn btn-ghost" onclick="closeImgUpload()" style="flex:1">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DB = {"meta": {"name": "漫游中国", "subtitle": "省市区景区三级旅游攻略", "stats": {"provinces": 23, "cities": 200, "spots": 500, "days": "3-30"}}, "provinces": {"beijing": {"name": "北京市", "short": "北京", "region": "north", "desc": "首都 · 千年古都", "cities": {"beijing_city": {"name": "北京市区", "desc": "明清皇城 · 现代首都", "spots": {"gugong": {"name": "故宫博物院", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=80", "desc": "世界最大宫殿建筑群，明清两代皇宫。建议预留一整天！", "address": "北京市东城区景山前街4号", "phone": "010-85007938", "opening": {"peak": "08:30-17:00（4月-10月）", "offpeak": "08:30-16:30（11月-3月）", "closed": "周一闭馆（法定节假日除外）", "tip": "建议早8:30一开门就进，人最少"}, "ticket": {"adult": "60元", "student": "20元", "senior": "免费（60岁以上）", "extra": "珍宝馆10元，钟表馆10元", "booking": "必须提前预约！", "bookingTip": "提前7-10天故宫官网或公众号抢号，旺季秒没！"}, "transport": {"recommended": "地铁", "reason": "故宫位于市中心，停车困难，地铁直达最方便", "metro": {"lines": ["1号线 天安门东站B口", "1号线 天安门西站B口", "8号线 金鱼胡同站C口"], "walk": "从任意出口步行5-10分钟到午门入口"}, "driving": {"parking": "东华门/西华门停车场，10元/15分钟，位置紧张", "tips": "不建议开车！周边停车难且贵，周末和节假日可能限行", "restrictions": "长安街及故宫周边实行交通管制，无法靠近"}, "bus": [{"name": "1路", "from": "东单路口北", "to": "天安门东", "freq": "3-5分钟", "first": "05:00", "last": "23:00", "tips": "经过长安街，早晚高峰堵车风险高"}, {"name": "5路", "from": "东四十条桥南", "to": "天安门西", "freq": "5-8分钟", "first": "05:15", "last": "22:30", "tips": "西单购物可顺便坐这路"}], "taxi": {"fromCenter": "约20-30元", "tips": "只能到东华门或西华门，需步行入宫", "fromStation": "北京站约25元，北京西站约30元"}, "carRental": {"recommended": false, "reason": "市中心限行+停车极贵+堵车严重，全程公交最优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型200-350元/天"}}, "food": [{"name": "四季民福烤鸭", "desc": "故宫东门店，可边吃烤鸭边看故宫城墙，景观绝佳", "price": "人均150-200元", "tag": "必吃"}, {"name": "全聚德", "desc": "百年老字号，北京烤鸭代名词，前门店最正宗", "price": "人均180-250元", "tag": "老字号"}, {"name": "南锣鼓巷小吃", "desc": "逛完故宫顺路吃，炸酱面、卤煮火烧、爆肚", "price": "人均30-50元", "tag": "顺路"}], "tips": [{"type": "warning", "text": "故宫门票必须提前预约！现场无售票，旺季提前7-10天抢"}, {"type": "good", "text": "建议从午门进、神武门出，不走回头路"}, {"type": "warning", "text": "带身份证！没身份证绝对进不去"}, {"type": "good", "text": "租讲解器（20元）或下载玩转故宫App免费导览"}, {"type": "tip", "text": "珍宝馆和钟表馆需另外买票，各10元，非常值得看"}], "guides": {"3-7": {"title": "北京精华3日游", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫·天安门", "items": [{"time": "05:30", "title": "天安门升旗仪式", "desc": "提前查升旗时间，旺季需凌晨3点到广场排队占位"}, {"time": "08:30", "title": "故宫博物院", "desc": "提前预约！午门进，神武门出，珍宝馆+钟表馆选去"}, {"time": "13:00", "title": "景山公园", "desc": "从神武门出来过马路就是，爬山5分钟，俯瞰故宫全景最佳机位"}, {"time": "16:00", "title": "南锣鼓巷", "desc": "老北京胡同游，逛文艺小店，吃炸酱面"}, {"time": "19:00", "title": "簋街晚餐", "desc": "胡大饭店，小龙虾+麻小，北京夜生活"}]}, {"day": "Day 2", "theme": "长城·奥运", "items": [{"time": "07:00", "title": "早起出发八达岭", "desc": "S2线城铁（北京北站→八达岭，6:30发车，约80分钟）或919路公交"}, {"time": "09:00", "title": "登八达岭长城", "desc": "建议爬北八楼好汉坡，坐缆车或索道上山节省体力"}, {"time": "13:00", "title": "返回市区午餐", "desc": "高铁或919公交回市区"}, {"time": "16:00", "title": "鸟巢·水立方", "desc": "傍晚到，灯光亮起最美，外围免费参观"}]}, {"day": "Day 3", "theme": "皇家园林", "items": [{"time": "08:30", "title": "颐和园", "desc": "北宫门进，先游苏州街，再沿昆明湖到十七孔桥"}, {"time": "12:00", "title": "圆明园", "desc": "西洋楼遗址最震撼，强烈推荐请导游讲解历史"}, {"time": "16:00", "title": "清华/北大", "desc": "需提前在官方公众号预约入校，周末开放名额多"}]}]}, "7-15": {"title": "北京深度7日游", "days": 7, "schedule": [{"day": "Day 1-2", "theme": "故宫深度游（2天）", "items": [{"time": "全天", "title": "Day1 中轴线+珍宝馆", "desc": "从午门到神武门，中轴线三大殿+珍宝馆"}, {"time": "全天", "title": "Day2 西六宫+钟表馆", "desc": "军机处+西六宫+钟表馆，慢慢逛"}]}, {"day": "Day 3", "theme": "长城双日", "items": [{"time": "全天", "title": "八达岭长城", "desc": "登好汉坡，坐缆车上山"}]}, {"day": "Day 4", "theme": "胡同·文艺", "items": [{"time": "09:00", "title": "天坛公园", "desc": "祈年殿、回音壁，体验老北京晨练文化"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→恭王府→南锣鼓巷，骑自行车串胡同"}, {"time": "18:00", "title": "后海酒吧街", "desc": "晚餐+夜生活"}]}, {"day": "Day 5", "theme": "博物馆日", "items": [{"time": "09:00", "title": "国家博物馆", "desc": "提前在国家博物馆公众号预约，绝对震撼"}, {"time": "14:00", "title": "北京博物馆", "desc": "离国博很近，可选去自然博物馆或军事博物馆"}]}, {"day": "Day 6", "theme": "京郊游", "items": [{"time": "全天", "title": "京郊一日选一个", "desc": "香山（红叶季）/ 十三陵 / 周口店 / 永定河"}]}, {"day": "Day 7", "theme": "休闲收尾", "items": [{"time": "09:00", "title": "中山公园/劳动人民文化宫", "desc": "比故宫人少，景色也好"}, {"time": "13:00", "title": "王府井·APM", "desc": "最后采购，伴手礼"}]}]}, "30": {"title": "北京慢游30天深度攻略", "days": 30, "schedule": [{"day": "Week 1", "theme": "核心景区深度游", "items": [{"time": "每天", "title": "故宫分期解锁", "desc": "前三天分别：中轴线、西六宫、东六宫+珍宝馆+钟表馆，每天2-3小时"}, {"time": "每天", "title": "每天一座园林", "desc": "颐和园（两天）、圆明园、北海公园、恭王府、中山公园、劳动人民文化宫"}]}, {"day": "Week 2", "theme": "胡同文化深度", "items": [{"time": "每天", "title": "串胡同", "desc": "南锣鼓巷、什刹海、烟袋斜街、五道营胡同、方家胡同、雍和宫大街"}, {"time": "每天", "title": "老北京生活体验", "desc": "早起天坛晨练、北海公园遛弯、潘家园淘货（周六）、红桥市场"}]}, {"day": "Week 3", "theme": "博物馆与文化", "items": [{"time": "每天", "title": "国家博物馆、中国美术馆、首都博物馆、中国科技馆", "desc": "每天一座馆，慢慢看"}]}, {"day": "Week 4", "theme": "京郊与周边", "items": [{"time": "每天", "title": "周边游", "desc": "八达岭、慕田峪、司马台、十三陵、承德避暑山庄、天津（高铁30分钟）"}]}]}}, "unsplashId": "gugong"}, "badaling": {"name": "八达岭长城", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1200&q=80", "desc": "不到长城非好汉！北京必打卡，世界七大奇迹之一", "address": "北京市延庆区八达岭镇", "phone": "010-69121383", "opening": {"peak": "06:30-19:00（夏季）", "offpeak": "07:30-17:00（冬季）", "closed": "无", "tip": "建议早7点前到达，避开9点后的大人流"}, "ticket": {"adult": "40元", "student": "20元", "senior": "免费", "bus": "单程100元，往返140元（选坐）", "booking": "无需预约，现场买票即可"}, "transport": {"recommended": "S2城铁", "reason": "S2线性价比最高，景色好（穿越花海），比大巴快且准时", "metro": {"lines": ["S2线（黄土店站→八达岭站）"], "walk": "黄土店站步行5分钟，S2约80分钟到八达岭"}, "driving": {"parking": "八达岭停车场，20元/次，旺季可能满", "tips": "京藏高速周末堵车严重，建议早起或坐S2", "restrictions": "旺季可能临时交通管制"}, "bus": [{"name": "919路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:00", "last": "18:00", "tips": "走高速约2小时，票价12元"}, {"name": "877路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:30", "last": "12:30", "tips": "返程最晚17:00，注意时间！"}], "taxi": {"notRecommended": true, "reason": "价格贵（单程200+），且返程难打车，不推荐"}, "carRental": {"recommended": false, "reason": "旺季高速堵车严重，停车也紧张，S2城铁更优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型180-300元/天"}}, "food": [{"name": "长城脚下农家乐", "desc": "价格适中，味道家常", "price": "人均50-80元", "tag": "顺路"}, {"name": "自带干粮", "desc": "山上食品贵且选择少，建议自带", "price": "0元", "tag": "省钱"}], "tips": [{"type": "good", "text": "S2线春季穿越花海，景色绝美！注意班次时间"}, {"type": "warning", "text": "877路返程最晚17:00，错过只能打车或等下一班"}, {"type": "good", "text": "带足水！夏天长城上非常晒"}, {"type": "warning", "text": "带老人小孩建议坐缆车，老人孩子都轻松"}, {"type": "tip", "text": "好汉坡在北八楼，从北一楼爬到北八楼约2小时"}], "guides": {"3-7": {"title": "长城+北京精华3日", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫深度", "items": [{"time": "08:30", "title": "故宫", "desc": "提前预约，深度游览"}, {"time": "14:00", "title": "景山公园", "desc": "俯瞰故宫全景"}]}, {"day": "Day 2", "theme": "长城一日", "items": [{"time": "07:00", "title": "S2城铁出发", "desc": "6:30黄土店站"}, {"time": "09:00", "title": "八达岭长城", "desc": "登好汉坡"}, {"time": "15:00", "title": "返回+鸟巢夜景", "desc": "S2或919回程"}]}, {"day": "Day 3", "theme": "胡同游", "items": [{"time": "09:00", "title": "天坛", "desc": "晨练+祈年殿"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→南锣鼓巷"}]}]}, "7-15": {"title": "北京7日游（见故宫攻略）", "days": 7, "schedule": []}, "30": {"title": "北京30日游（见故宫攻略）", "days": 30, "schedule": []}}, "unsplashId": "badaling"}, "yiheyuan": {"name": "颐和园", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1599707367072-cd6ad66acc40?w=1200&q=80", "desc": "中国最大皇家园林，昆明湖万寿山，慈禧太后夏宫", "address": "北京市海淀区新建宫门路19号", "phone": "010-62881144", "opening": {"peak": "06:30-19:00（4月-10月）", "offpeak": "07:00-17:30（11月-3月）", "closed": "无", "tip": "建议早上去，光线好且人少"}, "ticket": {"adult": "30元", "student": "15元", "combo": "60元（含苏州街）", "booking": "无需预约，现场买票"}, "transport": {"recommended": "地铁", "reason": "地铁4号线直达西苑站，步行5分钟到北宫门", "metro": {"lines": ["4号线 西苑站A口", "西郊线 颐和园西门站"], "walk": "西苑站A口出，步行约5分钟到北宫门"}, "driving": {"parking": "北宫门/新建宫门停车场，10元/次", "tips": "周末车位紧张，建议早去或坐地铁"}, "bus": [{"name": "303路", "from": "西直门", "to": "颐和园北宫门", "freq": "10-15分钟", "first": "06:00", "last": "21:00", "tips": "经停多站，可从动物园过来"}], "taxi": {"fromCenter": "约30-40元"}, "carRental": {"recommended": false, "reason": "地铁直达，没必要租车"}}, "food": [{"name": "西苑美食街", "desc": "出地铁站就是，各种快餐和小吃", "price": "人均30-50元", "tag": "方便"}], "tips": [{"type": "good", "text": "建议从北宫门进，先爬万寿山，再沿昆明湖逛"}, {"type": "good", "text": "苏州街另买票，值得一看"}, {"type": "tip", "text": "租船游昆明湖是经典体验，脚踏船150-200元/小时"}], "guides": {"3-7": {"title": "颐和园半日游（纳入北京3日游）", "days": 0.5, "schedule": [{"day": "Day 3上午", "theme": "皇家园林", "items": [{"time": "09:00", "title": "北宫门进园", "desc": "苏州街→万寿山→长廊"}, {"time": "11:00", "title": "昆明湖游船", "desc": "脚踏船或电动船"}, {"time": "12:30", "title": "十七孔桥", "desc": "必打卡，秋季金光穿洞"}]}]}, "7-15": {"title": "见北京7日游攻略", "days": 0, "schedule": []}, "30": {"title": "见北京30日游攻略", "days": 0, "schedule": []}}, "unsplashId": "yiheyuan"}}}}, "comingSoon": false}, "tianjin": {"name": "天津市", "short": "天津", "region": "north", "desc": "津门故里", "cities": {}, "comingSoon": true}, "hebei": {"name": "河北省", "short": "河北", "region": "north", "desc": "燕赵大地", "cities": {}, "comingSoon": true}, "shanxi": {"name": "山西省", "short": "山西", "region": "north", "desc": "晋善晋美", "cities": {}, "comingSoon": true}, "innermongolia": {"name": "内蒙古", "short": "内蒙古", "region": "north", "desc": "草原风光", "cities": {}, "comingSoon": true}, "liaoning": {"name": "辽宁省", "short": "辽宁", "region": "northeast", "desc": "工业重镇", "cities": {}, "comingSoon": true}, "jilin": {"name": "吉林省", "short": "吉林", "region": "northeast", "desc": "雾凇冰雪", "cities": {}, "comingSoon": true}, "heilongjiang": {"name": "黑龙江省", "short": "黑龙江", "region": "northeast", "desc": "冰雪世界", "cities": {}, "comingSoon": true}, "shanghai": {"name": "上海市", "short": "上海", "region": "east", "desc": "魔都 · 东方巴黎", "cities": {}, "comingSoon": true}, "jiangsu": {"name": "江苏省", "short": "江苏", "region": "east", "desc": "江南水乡", "cities": {}, "comingSoon": true}, "zhejiang": {"name": "浙江省", "short": "浙江", "region": "east", "desc": "鱼米之乡", "cities": {}, "comingSoon": true}, "anhui": {"name": "安徽省", "short": "安徽", "region": "east", "desc": "徽风皖韵", "cities": {}, "comingSoon": true}, "fujian": {"name": "福建省", "short": "福建", "region": "east", "desc": "清新福建", "cities": {}, "comingSoon": true}, "jiangxi": {"name": "江西省", "short": "江西", "region": "east", "desc": "红色摇篮", "cities": {}, "comingSoon": true}, "shandong": {"name": "山东省", "short": "山东", "region": "east", "desc": "齐鲁大地", "cities": {}, "comingSoon": true}, "henan": {"name": "河南省", "short": "河南", "region": "central", "desc": "中原大地", "cities": {}, "comingSoon": true}, "hubei": {"name": "湖北省", "short": "湖北", "region": "central", "desc": "千湖之省", "cities": {}, "comingSoon": true}, "hunan": {"name": "湖南省", "short": "湖南", "region": "central", "desc": "湘楚文化", "cities": {}, "comingSoon": true}, "guangdong": {"name": "广东省", "short": "广东", "region": "south", "desc": "美食之都", "cities": {}, "comingSoon": true}, "guangxi": {"name": "广西", "short": "广西", "region": "south", "desc": "壮美广西", "cities": {}, "comingSoon": true}, "hainan": {"name": "海南省", "short": "海南", "region": "south", "desc": "热带海岛", "cities": {}, "comingSoon": true}, "hongkong": {"name": "香港", "short": "香港", "region": "south", "desc": "购物天堂", "cities": {}, "comingSoon": true}, "macau": {"name": "澳门", "short": "澳门", "region": "south", "desc": "葡韵风情", "cities": {}, "comingSoon": true}, "sichuan": {"name": "四川省", "short": "四川", "region": "southwest", "desc": "天府之国", "cities": {}, "comingSoon": true}, "chongqing": {"name": "重庆市", "short": "重庆", "region": "southwest", "desc": "山城魔幻", "cities": {}, "comingSoon": true}, "guizhou": {"name": "贵州省", "short": "贵州", "region": "southwest", "desc": "多彩贵州", "cities": {}, "comingSoon": true}, "yunnan": {"name": "云南省", "short": "云南", "region": "southwest", "desc": "彩云之南", "cities": {}, "comingSoon": true}, "tibet": {"name": "西藏", "short": "西藏", "region": "southwest", "desc": "世界屋脊", "cities": {}, "comingSoon": true}, "shaanxi": {"name": "陕西省", "short": "陕西", "region": "northwest", "desc": "三秦大地", "cities": {}, "comingSoon": true}, "gansu": {"name": "甘肃省", "short": "甘肃", "region": "northwest", "desc": "丝绸之路", "cities": {}, "comingSoon": true}, "qinghai": {"name": "青海省", "short": "青海", "region": "northwest", "desc": "中华水塔", "cities": {}, "comingSoon": true}, "ningxia": {"name": "宁夏", "short": "宁夏", "region": "northwest", "desc": "塞上江南", "cities": {}, "comingSoon": true}, "xinjiang": {"name": "新疆", "short": "新疆", "region": "northwest", "desc": "瓜果之乡", "cities": {}, "comingSoon": true}}};
+
+// ─── STATE ───
 let currentView = 'home';
 let currentProvince = null;
 let currentCity = null;
 let currentSpot = null;
 let currentGuide = '3-7';
 let navStack = [];
+let pendingImgData = null;
+const IMG_KEY = 'myTravelImgs';
 
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
+// ─── INIT ───
 function init() {
   renderProvinces();
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER: PROVINCES
-// ═══════════════════════════════════════════════════════════
+// ─── IMAGE HELPERS ───
+function getSpotImgKey() {
+  return `${currentProvince}_${currentCity}_${currentSpot}`;
+}
+
+function getCustomImg(spotKey) {
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    return imgs[spotKey] || null;
+  } catch(e) { return null; }
+}
+
+function setCustomImg(spotKey, imgData) {
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    imgs[spotKey] = imgData;
+    // Keep last 50
+    const keys = Object.keys(imgs);
+    if (keys.length > 50) {
+      const sorted = keys.sort((a,b) => new Date(imgs[b].savedAt) - new Date(imgs[a].savedAt));
+      const toDelete = sorted.slice(50);
+      toDelete.forEach(k => delete imgs[k]);
+    }
+    localStorage.setItem(IMG_KEY, JSON.stringify(imgs));
+  } catch(e) {}
+}
+
+function getEffectiveImg(spot) {
+  const spotKey = getSpotImgKey();
+  const custom = getCustomImg(spotKey);
+  return custom ? custom.url : (spot.image || '');
+}
+
+function getImageHistory(spotKey) {
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    const spotPrefix = spotKey.replace(/_[^_]+$/, '');
+    return Object.entries(imgs)
+      .filter(([k]) => k.startsWith(spotPrefix))
+      .sort((a,b) => new Date(b[1].savedAt) - new Date(a[1].savedAt))
+      .slice(0, 8)
+      .map(([k,v]) => v);
+  } catch(e) { return []; }
+}
+
+// ─── RENDER: PROVINCES ───
 function renderProvinces() {
   const regions = ['north','northeast','east','central','south','southwest','northwest'];
   regions.forEach(region => {
@@ -274,7 +422,6 @@ function renderProvinces() {
     const provinces = Object.entries(DB.provinces)
       .filter(([k,v]) => v.region === region)
       .sort((a,b) => a[1].name.localeCompare(b[1].name));
-    
     container.innerHTML = provinces.map(([k,v]) => {
       if (v.comingSoon) {
         return `<div class="province-card coming-soon">
@@ -293,27 +440,27 @@ function renderProvinces() {
   });
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER: PROVINCES CITIES
-// ═══════════════════════════════════════════════════════════
+// ─── RENDER: PROVINCES CITIES ───
 function goProvince(pid) {
   const p = DB.provinces[pid];
   if (p.comingSoon) return;
   currentProvince = pid;
   navStack = [{view:'province',pid}];
-  
   document.getElementById('provinceTitle').textContent = p.name;
   document.getElementById('provinceDesc').textContent = p.desc + ' · 点击城市开始探索';
-  
   const grid = document.getElementById('cityGrid');
   grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
-    const spotCount = Object.keys(c.spots || {}).length;
-    const tags = Object.values(c.spots || {}).slice(0,3).map(s => 
+    const firstSpot = c.spots ? Object.values(c.spots)[0] : null;
+    const img = firstSpot ? getEffectiveImg(firstSpot) : '';
+    const hasCustom = firstSpot ? !!getCustomImg(`${pid}_${cid}_${Object.keys(c.spots)[0]}`) : false;
+    const tags = firstSpot ? Object.values(c.spots || {}).slice(0,3).map(s => 
       `<span class="tag">${s.name}</span>`
-    ).join('');
-    const img = c.spots ? Object.values(c.spots)[0].image : '';
+    ).join('') : '';
     return `<div class="city-card" onclick="goCity('${pid}','${cid}')">
-      <div class="city-card-img"><img src="${img}" alt="${c.name}" loading="lazy"/></div>
+      <div class="city-card-img" style="position:relative">
+        ${img ? `<img src="${img}" alt="${c.name}" loading="lazy"/>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-light);font-size:32px">🏙️</div>`}
+        ${hasCustom ? '<span style="position:absolute;bottom:8px;left:8px;background:var(--accent);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px">📷 我的</span>' : ''}
+      </div>
       <div class="city-card-body">
         <div class="city-card-name">${c.name}</div>
         <div class="city-card-desc">${c.desc}</div>
@@ -321,27 +468,28 @@ function goProvince(pid) {
       </div>
     </div>`;
   }).join('');
-  
   updateBreadcrumb();
   switchView('provinceView');
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER: CITY SPOTS
-// ═══════════════════════════════════════════════════════════
+// ─── RENDER: CITY SPOTS ───
 function goCity(pid, cid) {
   const p = DB.provinces[pid];
   const c = p.cities[cid];
   currentCity = cid;
   navStack.push({view:'city',cid});
-  
   document.getElementById('cityTitle').textContent = c.name;
   document.getElementById('cityDesc').textContent = c.desc + ' · 点击景区查看详情';
-  
   const list = document.getElementById('spotList');
-  list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => `
-    <div class="spot-card" onclick="goSpot('${pid}','${cid}','${sid}')">
-      <img class="spot-card-img" src="${s.image}" alt="${s.name}" loading="lazy"/>
+  list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => {
+    const effImg = getEffectiveImg(s);
+    const spotKey = `${pid}_${cid}_${sid}`;
+    const hasCustom = !!getCustomImg(spotKey);
+    return `<div class="spot-card ${hasCustom ? 'has-custom' : ''}" onclick="goSpot('${pid}','${cid}','${sid}')">
+      <div class="spot-card-img" style="position:relative">
+        ${effImg ? `<img src="${effImg}" alt="${s.name}" loading="lazy"/>` : `<div class="img-placeholder">🏞️</div>`}
+        ${hasCustom ? '<span class="custom-img-badge">📷</span>' : ''}
+      </div>
       <div class="spot-card-info">
         <div class="spot-card-top">
           <div class="spot-card-name">${s.name}</div>
@@ -351,19 +499,17 @@ function goCity(pid, cid) {
         <div class="spot-card-meta">
           <span>🕐 ${s.opening?.peak || s.opening?.offpeak || '全天'}</span>
           <span>📍 ${s.category || '景区'}</span>
+          ${hasCustom ? '<span style="color:var(--accent)">📷 已自定义</span>' : ''}
         </div>
       </div>
       <div class="spot-card-arrow">›</div>
-    </div>
-  `).join('');
-  
+    </div>`;
+  }).join('');
   updateBreadcrumb();
   switchView('cityView');
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDER: SPOT DETAIL
-// ═══════════════════════════════════════════════════════════
+// ─── RENDER: SPOT DETAIL ───
 function goSpot(pid, cid, sid) {
   const p = DB.provinces[pid];
   const c = p.cities[cid];
@@ -371,48 +517,165 @@ function goSpot(pid, cid, sid) {
   currentSpot = sid;
   navStack.push({view:'spot',sid});
   
-  // Hero
-  document.getElementById('spotHero').style.backgroundImage = `url('${s.image}')`;
+  const effImg = getEffectiveImg(s);
+  const spotKey = getSpotImgKey();
+  const hasCustom = !!getCustomImg(spotKey);
+  
+  // Hero with custom image support
+  const hero = document.getElementById('spotHero');
+  hero.className = 'spot-hero' + (hasCustom ? ' has-custom-img' : '');
+  hero.style.backgroundImage = effImg ? `url('${effImg}')` : '';
+  
   document.getElementById('spotHeroName').textContent = s.name + (s.level ? ' ' + s.level : '');
   document.getElementById('spotHeroSub').textContent = s.desc;
   
   // Info cards
-  const infoCards = document.getElementById('infoCards');
-  infoCards.innerHTML = `
+  document.getElementById('infoCards').innerHTML = `
     <div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-label">开放时间</div><div class="info-card-value">${s.opening?.peak || '全天'}</div></div>
     <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket?.adult || '免费'}</div></div>
     <div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-label">地址</div><div class="info-card-value">${s.address || '—'}</div></div>
     <div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-label">电话</div><div class="info-card-value">${s.phone || '—'}</div></div>
   `;
   
-  // Guide
   renderGuide(s);
-  
-  // Transport
   renderTransport(s);
-  
-  // Food
   renderFood(s);
-  
-  // Tips
   renderTips(s);
-  
   updateBreadcrumb();
   switchView('spotView');
   window.scrollTo(0,0);
 }
 
+// ─── IMAGE UPLOAD ───
+function openImgUpload() {
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  document.getElementById('imgUploadSpotName').textContent = '当前景区：' + s.name;
+  document.getElementById('unsplashQuery').textContent = s.name;
+  document.getElementById('unsplashSearchLink').href = 
+    'https://unsplash.com/s/photos/' + encodeURIComponent(s.name + ' China');
+  
+  // Load history
+  const spotKey = getSpotImgKey();
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  // Reset state
+  pendingImgData = null;
+  document.getElementById('imgPreview').classList.remove('show');
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgSaveBtn').style.display = 'none';
+  document.getElementById('imgSavedNotice').classList.remove('show');
+  document.getElementById('imgUrlInput').value = '';
+  document.getElementById('imgUrlPreview').style.display = 'none';
+  
+  // Switch to upload tab
+  switchImgTab('upload', document.querySelector('.img-upload-tab'));
+  
+  document.getElementById('imgUploadOverlay').classList.add('show');
+}
+
+function closeImgUpload(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('imgUploadOverlay').classList.remove('show');
+}
+
+function switchImgTab(tab, btn) {
+  document.querySelectorAll('.img-upload-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('imgTabUpload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('imgTabUrl').style.display = tab === 'url' ? '' : 'none';
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10*1024*1024) {
+    alert('图片不能超过10MB，请选择更小的图片');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    pendingImgData = { url: ev.target.result, savedAt: new Date().toISOString() };
+    const preview = document.getElementById('imgPreview');
+    preview.src = ev.target.result;
+    preview.classList.add('show');
+    document.getElementById('imgSaveBtn').style.display = '';
+    document.getElementById('imgSavedNotice').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyImgUrl() {
+  const url = document.getElementById('imgUrlInput').value.trim();
+  if (!url) return;
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgUrlPreview');
+  preview.src = url;
+  preview.style.display = '';
+  preview.onerror = function() {
+    preview.style.display = 'none';
+    alert('图片链接无效，请检查后重试');
+  };
+  document.getElementById('imgSavedNotice').classList.remove('show');
+}
+
+function saveCustomImg() {
+  if (!pendingImgData) return;
+  const spotKey = getSpotImgKey();
+  setCustomImg(spotKey, pendingImgData);
+  
+  // Refresh current spot view
+  goSpot(currentProvince, currentCity, currentSpot);
+  
+  // Update history
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  document.getElementById('imgSavedNotice').classList.add('show');
+  setTimeout(() => document.getElementById('imgSavedNotice').classList.remove('show'), 2000);
+}
+
+function applyHistoryImg(el, url) {
+  document.querySelectorAll('.img-history-item').forEach(i => i.classList.remove('current'));
+  el.classList.add('current');
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgPreview');
+  preview.src = url;
+  preview.classList.add('show');
+  document.getElementById('imgSaveBtn').style.display = '';
+}
+
+function resetToDefault() {
+  const spotKey = getSpotImgKey();
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    delete imgs[spotKey];
+    localStorage.setItem(IMG_KEY, JSON.stringify(imgs));
+  } catch(e) {}
+  goSpot(currentProvince, currentCity, currentSpot);
+  closeImgUpload();
+}
+
+// ─── GUIDE / TRANSPORT / FOOD / TIPS ───
 function renderGuide(s) {
   const g = s.guides?.[currentGuide] || s.guides?.['3-7'] || {};
   document.getElementById('guideTitle').textContent = g.title || '行程攻略';
   document.getElementById('guideSub').textContent = g.days ? `建议游玩 ${g.days} 天` : '';
-  
   const list = document.getElementById('scheduleList');
   if (!g.schedule || g.schedule.length === 0) {
     list.innerHTML = '<div class="more-soon">该时长攻略正在完善中，请参考其他时长选项</div>';
     return;
   }
-  
   list.innerHTML = g.schedule.map(d => `
     <div class="schedule-day">
       <div class="schedule-day-header">
@@ -437,21 +700,14 @@ function renderGuide(s) {
 function renderTransport(s) {
   const t = s.transport || {};
   const content = document.getElementById('transportContent');
-  
-  if (!t.recommended) {
-    content.innerHTML = '<div class="more-soon">交通信息正在完善中</div>';
-    return;
-  }
-  
+  if (!t.recommended) { content.innerHTML = '<div class="more-soon">交通信息正在完善中</div>'; return; }
   let html = `<div class="transport-reason"><strong>推荐出行方式：${t.recommended}</strong><br>${t.reason || ''}</div><div class="transport-grid">`;
-  
   if (t.metro) {
     html += `<div class="transport-card"><div class="transport-card-title">🚇 地铁</div>
       ${t.metro.lines.map(l => `<div class="transport-row"><span class="val">${l}</span></div>`).join('')}
       ${t.metro.walk ? `<div class="transport-row"><span class="key">步行</span><span>${t.metro.walk}</span></div>` : ''}
     </div>`;
   }
-  
   if (t.driving && !t.driving.notRecommended) {
     html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾</div>
       ${t.driving.parking ? `<div class="transport-row"><span class="key">停车</span><span>${t.driving.parking}</span></div>` : ''}
@@ -459,34 +715,25 @@ function renderTransport(s) {
       ${t.driving.restrictions ? `<div class="transport-row"><span class="key">限行</span><span>${t.driving.restrictions}</span></div>` : ''}
     </div>`;
   } else if (t.driving?.notRecommended) {
-    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾 <span class="no-rec-badge">不推荐</span></div>
-      <div class="transport-row"><span>${t.driving.reason || '不推荐自驾'}</span></div>
-    </div>`;
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.driving.reason || '不推荐自驾'}</span></div></div>`;
   }
-  
   if (t.bus && t.bus.length > 0) {
     html += `<div class="transport-card"><div class="transport-card-title">🚌 公交</div>
-      ${t.bus.map(b => `
-        <div style="margin-bottom:8px">
-          <div class="transport-row"><span class="val">${b.name}</span><span>${b.from} → ${b.to}</span></div>
-          <div class="transport-row"><span class="key">班次</span><span>${b.freq} | 首 ${b.first} | 末 ${b.last}</span></div>
-          ${b.tips ? `<div class="transport-row"><span class="key">提示</span><span>${b.tips}</span></div>` : ''}
-        </div>
-      `).join('')}
+      ${t.bus.map(b => `<div style="margin-bottom:8px">
+        <div class="transport-row"><span class="val">${b.name}</span><span>${b.from} → ${b.to}</span></div>
+        <div class="transport-row"><span class="key">班次</span><span>${b.freq} | 首 ${b.first} | 末 ${b.last}</span></div>
+        ${b.tips ? `<div class="transport-row"><span class="key">提示</span><span>${b.tips}</span></div>` : ''}
+      </div>`).join('')}
     </div>`;
   }
-  
   if (t.taxi && !t.taxi.notRecommended) {
     html += `<div class="transport-card"><div class="transport-card-title">🚕 打车</div>
       ${t.taxi.fromCenter ? `<div class="transport-row"><span class="key">从市中心</span><span>${t.taxi.fromCenter}</span></div>` : ''}
       ${t.taxi.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.taxi.tips}</span></div>` : ''}
     </div>`;
   } else if (t.taxi?.notRecommended) {
-    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车 <span class="no-rec-badge">不推荐</span></div>
-      <div class="transport-row"><span>${t.taxi.reason || '不推荐打车'}</span></div>
-    </div>`;
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.taxi.reason || '不推荐打车'}</span></div></div>`;
   }
-  
   if (t.carRental && !t.carRental.recommended) {
     html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="no-rec-badge">不推荐</span></div>
       ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
@@ -495,10 +742,8 @@ function renderTransport(s) {
     html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="rec-badge">推荐</span></div>
       ${t.carRental.platforms ? `<div class="transport-row"><span class="key">平台</span><span>${t.carRental.platforms.join(', ')}</span></div>` : ''}
       ${t.carRental.priceRange ? `<div class="transport-row"><span class="key">价格</span><span>${t.carRental.priceRange}</span></div>` : ''}
-      ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
     </div>`;
   }
-  
   html += '</div>';
   content.innerHTML = html;
 }
@@ -506,10 +751,7 @@ function renderTransport(s) {
 function renderFood(s) {
   const food = s.food || [];
   const content = document.getElementById('foodContent');
-  if (food.length === 0) {
-    content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>';
-    return;
-  }
+  if (food.length === 0) { content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>'; return; }
   content.innerHTML = food.map(f => `
     <div class="food-item">
       <div>
@@ -524,10 +766,7 @@ function renderFood(s) {
 function renderTips(s) {
   const tips = s.tips || [];
   const content = document.getElementById('tipsContent');
-  if (tips.length === 0) {
-    content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>';
-    return;
-  }
+  if (tips.length === 0) { content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>'; return; }
   content.innerHTML = tips.map(t => `
     <div class="tip-item ${t.type || ''}">
       <div class="tip-icon">${t.type === 'warning' ? '!' : t.type === 'good' ? '✓' : 'i'}</div>
@@ -536,9 +775,7 @@ function renderTips(s) {
   `).join('');
 }
 
-// ═══════════════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════════════
+// ─── NAVIGATION ───
 function switchView(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(viewId).classList.add('active');
@@ -546,36 +783,30 @@ function switchView(viewId) {
 }
 
 function updateBreadcrumb() {
-  const bc = document.getElementById('spotBreadcrumb') || document.getElementById('cityBreadcrumb') || document.getElementById('provinceBreadcrumb');
-  if (!bc) return;
-  
+  const bcId = ['spotBreadcrumb','cityBreadcrumb','provinceBreadcrumb'].find(id => document.getElementById(id)?.closest('.view.active'));
+  if (!bcId) return;
+  const bc = document.getElementById(bcId);
   let html = `<a onclick="goHome()">首页</a><span class="sep">›</span>`;
-  
   if (currentProvince) {
     const p = DB.provinces[currentProvince];
     html += `<a onclick="goProvince('${currentProvince}')">${p.name}</a><span class="sep">›</span>`;
   }
-  
   if (currentCity) {
     const p = DB.provinces[currentProvince];
     const c = p.cities[currentCity];
     html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
   }
-  
   if (currentSpot) {
     const p = DB.provinces[currentProvince];
     const c = p.cities[currentCity];
     const s = c.spots[currentSpot];
     html += `<span class="current">${s.name}</span>`;
   }
-  
   bc.innerHTML = html;
 }
 
 function goHome() {
-  currentProvince = null;
-  currentCity = null;
-  currentSpot = null;
+  currentProvince = currentCity = currentSpot = null;
   navStack = [];
   switchView('homeView');
   window.scrollTo(0,0);
@@ -586,23 +817,19 @@ function goBack() {
     navStack.pop();
     const prev = navStack[navStack.length - 1];
     if (prev.view === 'province') {
-      currentCity = null;
-      currentSpot = null;
+      currentCity = currentSpot = null;
       goProvince(prev.pid);
     } else if (prev.view === 'city') {
       currentSpot = null;
       goCity(currentProvince, prev.cid);
     }
-  } else {
-    goHome();
-  }
+  } else { goHome(); }
 }
 
 function switchGuide(duration) {
   currentGuide = duration;
   document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
-  
   const p = DB.provinces[currentProvince];
   const c = p.cities[currentCity];
   const s = c.spots[currentSpot];
@@ -612,17 +839,11 @@ function switchGuide(duration) {
 function showRegion(region) {
   document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
-  
   document.querySelectorAll('.region-group').forEach(g => {
-    if (region === 'all') {
-      g.style.display = '';
-    } else {
-      g.style.display = g.dataset.region === region ? '' : 'none';
-    }
+    g.style.display = (region === 'all' || g.dataset.region === region) ? '' : 'none';
   });
 }
 
-// Init
 init();
 </script>
 </body>
