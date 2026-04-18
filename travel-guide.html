@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>漫游 · 城市旅游攻略</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f3ee;
+      --ink: #1a1209;
+      --ink-light: #7a6a5a;
+      --accent: #c0632a;
+      --accent-soft: #e8a87c;
+      --paper: #fffaf5;
+      --border: #e2d8cf;
+      --shadow: rgba(26,18,9,0.10);
+      --shadow-deep: rgba(26,18,9,0.22);
+      --radius: 4px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Nunito', 'Noto Serif SC', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Header ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247,243,238,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .city-tabs {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .city-tab {
+      padding: 8px 18px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink-light);
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .city-tab:hover {
+      color: var(--ink);
+      background: rgba(192,99,42,0.07);
+    }
+
+    .city-tab.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 52vh;
+      min-height: 380px;
+      overflow: hidden;
+      margin-bottom: 56px;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.8s ease, transform 1.2s ease;
+      transform: scale(1.04);
+    }
+
+    .hero-image.loaded {
+      transform: scale(1.0);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(26,18,9,0.1) 0%,
+        rgba(26,18,9,0.55) 60%,
+        rgba(26,18,9,0.82) 100%
+      );
+    }
+
+    .hero-text {
+      position: absolute;
+      bottom: 48px;
+      left: 0;
+      right: 0;
+      padding: 0 64px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-city-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      color: var(--paper);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      animation: heroFadeUp 0.7s ease both;
+    }
+
+    .hero-city-name span {
+      display: inline-block;
+      font-style: italic;
+      color: var(--accent-soft);
+    }
+
+    .hero-sub {
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255,250,245,0.75);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: heroFadeUp 0.7s 0.1s ease both;
+    }
+
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Main content ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-label h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 64px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
+      animation: cardIn 0.5s ease both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.05s; }
+    .card:nth-child(5) { animation-delay: 0.12s; }
+    .card:nth-child(6) { animation-delay: 0.19s; }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px var(--shadow-deep);
+    }
+
+    .card-img {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img img {
+      transform: scale(1.06);
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--accent);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .card-body {
+      padding: 22px 24px 28px;
+    }
+
+    .card-category {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-meta {
+      font-size: 11px;
+      color: var(--ink-light);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-meta svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .card-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .card:hover .card-arrow {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .card-arrow svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--ink-light);
+      fill: none;
+      stroke-width: 2;
+      transition: stroke 0.25s ease;
+    }
+
+    .card:hover .card-arrow svg {
+      stroke: white;
+    }
+
+    /* ── Detail Modal ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,18,9,0.6);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -48%) scale(0.95);
+      width: min(820px, calc(100vw - 48px));
+      max-height: 85vh;
+      background: var(--paper);
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 1001;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34,1.3,0.64,1);
+      box-shadow: 0 32px 80px rgba(26,18,9,0.35);
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-img {
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .modal-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(26,18,9,0.7) 100%);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(26,18,9,0.5);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      line-height: 1;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+
+    .modal-close:hover {
+      background: rgba(26,18,9,0.8);
+    }
+
+    .modal-body {
+      padding: 36px 44px 40px;
+      overflow-y: auto;
+      max-height: calc(85vh - 280px);
+    }
+
+    .modal-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 3px 10px;
+      border-radius: 2px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink-light);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 28px;
+    }
+
+    .modal-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-section-title::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .modal-spots {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .modal-spot {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .modal-spot:last-child { border-bottom: none; }
+
+    .spot-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(192,99,42,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .spot-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .spot-info h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .spot-info p {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .modal-tag-pill {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--ink-light);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 40px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Info bar ── */
+    .info-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .info-item {
+      background: var(--paper);
+      padding: 20px 24px;
+      text-align: center;
+    }
+
+    .info-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .info-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 40px 48px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    .footer p {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--ink-light);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+      .info-bar { grid-template-columns: repeat(2, 1fr); }
+      .city-tabs { gap: 2px; }
+      .city-tab { padding: 7px 12px; font-size: 12px; }
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .hero { height: 40vh; min-height: 280px; margin-bottom: 36px; }
+      .hero-text { padding: 0 24px; bottom: 32px; }
+      .main { padding: 0 20px 60px; }
+      .card-grid { grid-template-columns: 1fr; gap: 20px; }
+      .info-bar { grid-template-columns: repeat(2, 1fr); }
+      .city-tabs { overflow-x: auto; padding-bottom: 4px; }
+      .modal-body { padding: 28px 24px 32px; }
+      .modal-title { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">漫游<em>·</em></a>
+    <nav>
+      <ul class="city-tabs" id="cityTabs">
+        <li class="city-tab active" data-city="chongqing">重庆</li>
+        <li class="city-tab" data-city="chengdu">成都</li>
+        <li class="city-tab" data-city="hangzhou">杭州</li>
+        <li class="city-tab" data-city="xian">西安</li>
+        <li class="city-tab" data-city="lijiang">丽江</li>
+        <li class="city-tab" data-city="guilin">桂林</li>
+        <li class="city-tab" data-city="xiamen">厦门</li>
+        <li class="city-tab" data-city="harbin">哈尔滨</li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-image loaded" id="heroImage" style="background-image: url('https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <h1 class="hero-city-name" id="heroCityName">重庆</h1>
+    <p class="hero-sub" id="heroSub">山城雾都 · 火锅与江湖</p>
+  </div>
+</section>
+
+<!-- ── Main ── -->
+<main class="main">
+
+  <!-- Info Bar -->
+  <div class="info-bar" id="infoBar">
+    <div class="info-item">
+      <div class="info-value" id="infoDays">3-5</div>
+      <div class="info-label">建议天数</div>
+    </div>
+    <div class="info-item">
+      <div class="info-value" id="infoBudget">¥1500</div>
+      <div class="info-label">人均预算</div>
+    </div>
+    <div class="info-item">
+      <div class="info-value" id="infoTemp">18-28°C</div>
+      <div class="info-label">最佳温度</div>
+    </div>
+    <div class="info-item">
+      <div class="info-value" id="infoSeason">春秋</div>
+      <div class="info-label">推荐季节</div>
+    </div>
+  </div>
+
+  <!-- Spots -->
+  <div class="section-label">
+    <h2>必去景点</h2>
+  </div>
+  <div class="card-grid" id="cardGrid">
+    <!-- Cards injected by JS -->
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>漫游 · 精选城市旅游攻略 &nbsp;·&nbsp; 探索中国之美</p>
+</footer>
+
+<!-- ── Modal ── -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal" id="modal">
+  <div class="modal-img">
+    <img id="modalImg" src="" alt="" />
+    <div class="modal-img-overlay"></div>
+    <button class="modal-close" id="modalClose">✕</button>
+  </div>
+  <div class="modal-body">
+    <span class="modal-tag" id="modalTag"></span>
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <p class="modal-subtitle" id="modalSubtitle"></p>
+
+    <h3 class="modal-section-title">推荐理由</h3>
+    <ul class="modal-spots" id="modalSpots"></ul>
+
+    <div class="modal-tags" id="modalTags"></div>
+  </div>
+</div>
+
+<script>
+// ── City Data ──
+const cities = {
+  chongqing: {
+    name: '重庆',
+    sub: '山城雾都 · 火锅与江湖',
+    image: 'https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80',
+    days: '3-5',
+    budget: '¥1500',
+    temp: '18-28°C',
+    season: '春秋',
+    spots: [
+      {
+        tag: '夜景',
+        title: '洪崖洞',
+        desc: '现实版《千与千寻》汤屋，夜幕降临灯光亮起，仿佛穿越到梦幻世界。',
+        icon: 'view'
+      },
+      {
+        tag: '古迹',
+        title: '磁器口古镇',
+        desc: '千年古镇，青石板路、茶馆、川剧，让你感受老重庆的烟火气。',
+        icon: 'castle'
+      },
+      {
+        tag: '地标',
+        title: '解放碑',
+        desc: '重庆的城市地标，八一路好吃街汇聚了最地道的重庆小吃。',
+        icon: 'star'
+      },
+      {
+        tag: '自然',
+        title: '武隆天生三桥',
+        desc: '《变形金刚4》取景地，大自然的鬼斧神工让人叹为观止。',
+        icon: 'mountain'
+      }
+    ],
+    tags: ['火锅', '夜景', '古镇', '江景', '轻轨穿楼', '辣妹子']
+  },
+  chengdu: {
+    name: '成都',
+    sub: '天府之国 · 慢生活之都',
+    image: 'https://images.unsplash.com/photo-1598928506311-c55ez89a2cc8?w=1600&q=80',
+    days: '4-5',
+    budget: '¥2000',
+    temp: '16-26°C',
+    season: '春秋',
+    spots: [
+      {
+        tag: '萌宠',
+        title: '成都大熊猫基地',
+        desc: '全球最大熊猫保护研究机构，近距离看国宝卖萌，治愈力满分。',
+        icon: 'star'
+      },
+      {
+        tag: '古镇',
+        title: '宽窄巷子',
+        desc: '清末古街，泡桐树下的茶馆、掏耳朵的悠闲，成都生活的缩影。',
+        icon: 'castle'
+      },
+      {
+        tag: '道教',
+        title: '青城山',
+        desc: '道教名山，幽静清凉，徒步其间感受"青城天下幽"的意境。',
+        icon: 'mountain'
+      },
+      {
+        tag: '美食',
+        title: '锦里古街',
+        desc: '三国文化街，夜晚红灯笼亮起，串串、兔头、冰粉吃到撑。',
+        icon: 'view'
+      }
+    ],
+    tags: ['熊猫', '火锅', '茶馆', '川剧', '都江堰', '盖碗茶']
+  },
+  hangzhou: {
+    name: '杭州',
+    sub: '人间天堂 · 西湖十景',
+    image: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
+    days: '3-4',
+    budget: '¥1800',
+    temp: '15-25°C',
+    season: '春秋',
+    spots: [
+      {
+        tag: '湖景',
+        title: '西湖',
+        desc: '苏堤春晓、断桥残雪，十景如诗如画，泛舟湖上感受"淡妆浓抹总相宜"。',
+        icon: 'view'
+      },
+      {
+        tag: '茶园',
+        title: '龙井村',
+        desc: '漫山茶园，清明前后的龙井茶清香四溢，体验采茶炒茶之乐。',
+        icon: 'mountain'
+      },
+      {
+        tag: '古镇',
+        title: '乌镇',
+        desc: '江南水乡的代表，小桥流水人家，夜晚灯火阑珊如入画中。',
+        icon: 'castle'
+      },
+      {
+        tag: '寺庙',
+        title: '灵隐寺',
+        desc: '千年古刹，香火鼎盛，济公和尚的道场，在山林间静心祈福。',
+        icon: 'star'
+      }
+    ],
+    tags: ['西湖', '龙井', '古镇', '丝绸', '雷峰塔', '灵隐寺']
+  },
+  xian: {
+    name: '西安',
+    sub: '十三朝古都 · 丝路起点',
+    image: 'https://images.unsplash.com/photo-1591017403286-fd8493524e1e?w=1600&q=80',
+    days: '4-5',
+    budget: '¥1600',
+    temp: '12-28°C',
+    season: '春秋',
+    spots: [
+      {
+        tag: '奇迹',
+        title: '秦始皇兵马俑',
+        desc: '世界第八大奇迹，两千年前的地下军团，震撼程度无与伦比。',
+        icon: 'star'
+      },
+      {
+        tag: '城墙',
+        title: '西安城墙',
+        desc: '中国现存最完整的古代城垣，骑自行车环城一周，感受历史厚度。',
+        icon: 'castle'
+      },
+      {
+        tag: '美食',
+        title: '回民街',
+        desc: '牛羊肉泡馍、凉皮、肉夹馍、biangbiang面，吃遍西北美食。',
+        icon: 'view'
+      },
+      {
+        tag: '佛教',
+        title: '大雁塔',
+        desc: '玄奘取经归来翻译佛经之地，登塔远眺西安全景，夜景尤美。',
+        icon: 'mountain'
+      }
+    ],
+    tags: ['兵马俑', '城墙', '回民街', '大雁塔', '大唐不夜城', '肉夹馍']
+  },
+  lijiang: {
+    name: '丽江',
+    sub: '艳遇之城 · 纳西古韵',
+    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&q=80',
+    days: '5-7',
+    budget: '¥2500',
+    temp: '12-22°C',
+    season: '全年',
+    spots: [
+      {
+        tag: '古城',
+        title: '丽江古城',
+        desc: '世界文化遗产，纳西族建筑精华，小桥流水配上夜晚酒吧街的热闹。',
+        icon: 'castle'
+      },
+      {
+        tag: '雪山',
+        title: '玉龙雪山',
+        desc: '纳西族神山，乘索道登顶4680米，看冰川奇观，蓝月谷如蓝宝石镶嵌。',
+        icon: 'mountain'
+      },
+      {
+        tag: '古镇',
+        title: '束河古镇',
+        desc: '比丽江古城更清静，茶马古道上的重要驿站，适合发呆晒太阳。',
+        icon: 'view'
+      },
+      {
+        tag: '表演',
+        title: '《印象·丽江》',
+        desc: '张艺谋导演的实景演出，玉龙雪山做背景，纳西族演员倾情演绎。',
+        icon: 'star'
+      }
+    ],
+    tags: ['古城', '雪山', '泸沽湖', '艳遇', '纳西族', '茶马古道']
+  },
+  guilin: {
+    name: '桂林',
+    sub: '山水甲天下 · 漓江画廊',
+    image: 'https://images.unsplash.com/photo-1533127057258-5b44c4b7c012?w=1600&q=80',
+    days: '3-4',
+    budget: '¥1200',
+    temp: '18-28°C',
+    season: '夏秋',
+    spots: [
+      {
+        tag: '漓江',
+        title: '漓江竹筏',
+        desc: '乘竹筏顺流而下，九马画山、黄布倒影，真正体会"桂林山水甲天下"。',
+        icon: 'view'
+      },
+      {
+        tag: '溶洞',
+        title: '芦笛岩',
+        desc: '"国宾洞"美誉，亿万年形成的喀斯特溶洞，灯光下如地下宫殿。',
+        icon: 'star'
+      },
+      {
+        tag: '梯田',
+        title: '龙脊梯田',
+        desc: '层层叠叠的稻田随季节变换色彩，少数民族村寨点缀其间，如诗如画。',
+        icon: 'mountain'
+      },
+      {
+        tag: '古镇',
+        title: '阳朔西街',
+        desc: '1400年历史的古街，中西文化交融，夜晚热闹非凡，是背包客的天堂。',
+        icon: 'castle'
+      }
+    ],
+    tags: ['漓江', '阳朔', '象鼻山', '米粉', '梯田', '竹筏']
+  },
+  xiamen: {
+    name: '厦门',
+    sub: '海上花园 · 文艺鹭岛',
+    image: 'https://images.unsplash.com/photo-156561003熟8-9c0d4db2d1e?w=1600&q=80',
+    days: '4-5',
+    budget: '¥2000',
+    temp: '20-30°C',
+    season: '春秋冬',
+    spots: [
+      {
+        tag: '海岛',
+        title: '鼓浪屿',
+        desc: '世界遗产小岛，万国建筑博览馆，漫步小街小巷邂逅浪漫与文艺。',
+        icon: 'castle'
+      },
+      {
+        tag: '寺庙',
+        title: '南普陀寺',
+        desc: '闽南佛教胜地，香火鼎盛，后山五老峰可俯瞰厦门全景。',
+        icon: 'star'
+      },
+      {
+        tag: '沙滩',
+        title: '环岛路',
+        desc: '厦门最美的海岸线，骑行或散步，阳光沙滩椰林，感受海岛慢生活。',
+        icon: 'view'
+      },
+      {
+        tag: '美食',
+        title: '曾厝垵',
+        desc: '中国最文艺小吃街，沙茶面、花生汤、烧肉粽，各种闽南古早味吃到满足。',
+        icon: 'mountain'
+      }
+    ],
+    tags: ['鼓浪屿', '海岛', '沙茶面', '闽南', '骑行', '文艺']
+  },
+  harbin: {
+    name: '哈尔滨',
+    sub: '冰城夏都 · 俄式风情',
+    image: 'https://images.unsplash.com/photo-155阶梯0-d4e8-4e5e8a7b3c9d?w=1600&q=80',
+    days: '4-6',
+    budget: '¥1800',
+    temp: '-20-22°C',
+    season: '冬夏',
+    spots: [
+      {
+        tag: '建筑',
+        title: '中央大街',
+        desc: '百年欧式建筑街区，马迭尔冰棍、俄式西餐，尽显冰城异域风情。',
+        icon: 'castle'
+      },
+      {
+        tag: '教堂',
+        title: '圣索菲亚教堂',
+        desc: '远东地区最大的东正教堂，洋葱头穹顶是哈尔滨的标志性建筑。',
+        icon: 'star'
+      },
+      {
+        tag: '冰雪',
+        title: '冰雪大世界',
+        desc: '世界最大冰雪主题乐园，冰雕雪雕晶莹剔透，夜晚灯光秀如梦似幻。',
+        icon: 'mountain'
+      },
+      {
+        tag: '自然',
+        title: '太阳岛',
+        desc: '松花江畔的绿洲，夏天避暑胜地，雪博会时化身童话般的冰雪王国。',
+        icon: 'view'
+      }
+    ],
+    tags: ['冰雪', '俄式', '中央大街', '圣索菲亚', '红肠', '冰灯']
+  }
+};
+
+// Fix image URLs for Xiamen and Harbin
+cities.xiamen.image = 'https://images.unsplash.com/photo-1559682468-a6a29e7d9517?w=1600&q=80';
+cities.harbin.image = 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600&q=80';
+
+// ── Icon SVGs ──
+const icons = {
+  view: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
+  castle: `<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11l4-7 4 7v10M13 21V11l4-7 4 7v10"/><path d="M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>`,
+  star: `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  mountain: `<svg viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="m4.14 15.08 2.86-2.86M15.86 15.08l-2.86-2.86"/></svg>`
+};
+
+// ── State ──
+let currentCity = 'chongqing';
+
+// ── Render Cards ──
+function renderCards(cityKey) {
+  const city = cities[cityKey];
+  const grid = document.getElementById('cardGrid');
+  grid.innerHTML = city.spots.map((spot, i) => `
+    <article class="card" data-index="${i}" onclick="openModal(${i})">
+      <div class="card-img">
+        <img src="https://picsum.photos/seed/${cityKey}${i}/600/400" alt="${spot.title}" loading="lazy" />
+        <span class="card-tag">${spot.tag}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-category">景点推荐</div>
+        <h3 class="card-title">${spot.title}</h3>
+        <p class="card-desc">${spot.desc}</p>
+      </div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>📍 ${city.name}</span>
+          <span>⭐ ${(4 + Math.random()).toFixed(1)}</span>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+// ── Update City ──
+function updateCity(cityKey) {
+  const city = cities[cityKey];
+  const hero = document.getElementById('heroImage');
+
+  hero.style.opacity = '0';
+  hero.style.transform = 'scale(1.06)';
+
+  setTimeout(() => {
+    hero.style.backgroundImage = `url('${city.image}')`;
+    hero.style.opacity = '1';
+    hero.style.transform = 'scale(1.0)';
+    hero.classList.add('loaded');
+  }, 350);
+
+  document.getElementById('heroCityName').textContent = city.name;
+  document.getElementById('heroSub').textContent = city.sub;
+  document.getElementById('infoDays').textContent = city.days;
+  document.getElementById('infoBudget').textContent = city.budget;
+  document.getElementById('infoTemp').textContent = city.temp;
+  document.getElementById('infoSeason').textContent = city.season;
+
+  renderCards(cityKey);
+}
+
+// ── Tabs ──
+document.getElementById('cityTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.city-tab');
+  if (!tab) return;
+  document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  currentCity = tab.dataset.city;
+  updateCity(currentCity);
+});
+
+// ── Modal ──
+function openModal(index) {
+  const city = cities[currentCity];
+  const spot = city.spots[index];
+
+  document.getElementById('modalImg').src = `https://picsum.photos/seed/${currentCity}${index}/800/400`;
+  document.getElementById('modalTag').textContent = spot.tag;
+  document.getElementById('modalTitle').textContent = spot.title;
+  document.getElementById('modalSubtitle').textContent = spot.desc;
+  document.getElementById('modalSpots').innerHTML = `
+    <li class="modal-spot">
+      <div class="spot-icon">${icons[spot.icon] || icons.view}</div>
+      <div class="spot-info">
+        <h4>${spot.title}</h4>
+        <p>${spot.desc}</p>
+      </div>
+    </li>
+    <li class="modal-spot">
+      <div class="spot-icon">${icons.view}</div>
+      <div class="spot-info">
+        <h4>游览建议</h4>
+        <p>建议游玩时长2-3小时，上午前往可避开人流高峰，拍照效果最佳。春季和秋季天气舒适，是最佳游览季节。</p>
+      </div>
+    </li>
+  `;
+  document.getElementById('modalTags').innerHTML = city.tags.map(t =>
+    `<span class="modal-tag-pill">${t}</span>`
+  ).join('');
+
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Init ──
+renderCards(currentCity);
+</script>
+</body>
+</html>
