@@ -8458,7 +8458,7 @@ function init() {
 
 function showRegion(region) {
   document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  (this === window ? event.currentTarget : this).classList.add('active');
   document.querySelectorAll('.region-group').forEach(g => {
     g.style.display = (region === 'all' || g.dataset.region === region) ? '' : 'none';
   });
