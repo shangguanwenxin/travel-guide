@@ -8022,6 +8022,11 @@ const DB = {
 }; // provinces end
 
 // ─── RENDER: PROVINCES CITIES ───
+// ─── GLOBAL STATE ───
+var currentProvince = null, currentCity = null, currentSpot = null;
+var currentGuide = '3-7', currentView = 'homeView';
+var navStack = [];
+
 function goProvince(pid) {
   const p = DB.provinces[pid];
   if (p.comingSoon) return;
