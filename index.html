@@ -9131,8 +9131,430 @@ const DB = {
   }
 };
 
-init();
+// ─── RENDER: PROVINCES CITIES ───
+function goProvince(pid) {
+  const p = DB.provinces[pid];
+  if (p.comingSoon) return;
+  currentProvince = pid;
+  navStack = [{view:'province',pid}];
+  document.getElementById('provinceTitle').textContent = p.name;
+  document.getElementById('provinceDesc').textContent = p.desc + ' · 点击城市开始探索';
+  const grid = document.getElementById('cityGrid');
+  grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
+    const firstSpot = c.spots ? Object.values(c.spots)[0] : null;
+    const img = firstSpot ? getEffectiveImg(firstSpot) : '';
+    const hasCustom = firstSpot ? !!getCustomImg(`${pid}_${cid}_${Object.keys(c.spots)[0]}`) : false;
+    const tags = firstSpot ? Object.values(c.spots || {}).slice(0,3).map(s => 
+      `<span class="tag">${s.name}</span>`
+    ).join('') : '';
+    return `<div class="city-card" onclick="goCity('${pid}','${cid}')">
+      <div class="city-card-img" style="position:relative">
+        ${img ? `<img src="${img}" alt="${c.name}" loading="lazy"/>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-light);font-size:32px">🏙️</div>`}
+        ${hasCustom ? '<span style="position:absolute;bottom:8px;left:8px;background:var(--accent);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px">📷 我的</span>' : ''}
+      </div>
+      <div class="city-card-body">
+        <div class="city-card-name">${c.name}</div>
+        <div class="city-card-desc">${c.desc}</div>
+        <div class="city-card-tags">${tags}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateBreadcrumb();
+  switchView('provinceView');
+}
 
+// ─── RENDER: CITY SPOTS ───
+function goCity(pid, cid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  currentCity = cid;
+  navStack.push({view:'city',cid});
+  document.getElementById('cityTitle').textContent = c.name;
+  document.getElementById('cityDesc').textContent = c.desc + ' · 点击景区查看详情';
+  const list = document.getElementById('spotList');
+  list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => {
+    const effImg = getEffectiveImg(s);
+    const spotKey = `${pid}_${cid}_${sid}`;
+    const hasCustom = !!getCustomImg(spotKey);
+    return `<div class="spot-card ${hasCustom ? 'has-custom' : ''}" onclick="goSpot('${pid}','${cid}','${sid}')">
+      <div class="spot-card-img" style="position:relative">
+        ${effImg ? `<img src="${effImg}" alt="${s.name}" loading="lazy"/>` : `<div class="img-placeholder">🏞️</div>`}
+        ${hasCustom ? '<span class="custom-img-badge">📷</span>' : ''}
+      </div>
+      <div class="spot-card-info">
+        <div class="spot-card-top">
+          <div class="spot-card-name">${s.name}</div>
+          ${s.level ? `<span class="spot-card-level">${s.level}</span>` : ''}
+        </div>
+        <div class="spot-card-desc">${s.desc}</div>
+        <div class="spot-card-meta">
+          <span>🕐 ${s.opening?.peak || s.opening?.offpeak || '全天'}</span>
+          <span>📍 ${s.category || '景区'}</span>
+          ${hasCustom ? '<span style="color:var(--accent)">📷 已自定义</span>' : ''}
+        </div>
+      </div>
+      <div class="spot-card-arrow">›</div>
+    </div>`;
+  }).join('');
+  updateBreadcrumb();
+  switchView('cityView');
+}
+
+// ─── RENDER: SPOT DETAIL ───
+function goSpot(pid, cid, sid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  const s = c.spots[sid];
+  currentSpot = sid;
+  navStack.push({view:'spot',sid});
+  
+  const effImg = getEffectiveImg(s);
+  const spotKey = getSpotImgKey();
+  const hasCustom = !!getCustomImg(spotKey);
+  
+  // Hero with custom image support
+  const hero = document.getElementById('spotHero');
+  hero.className = 'spot-hero' + (hasCustom ? ' has-custom-img' : '');
+  hero.style.backgroundImage = effImg ? `url('${effImg}')` : '';
+  
+  document.getElementById('spotHeroName').textContent = s.name + (s.level ? ' ' + s.level : '');
+  document.getElementById('spotHeroSub').textContent = s.desc;
+  
+  // Info cards
+  document.getElementById('infoCards').innerHTML = `
+    <div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-label">开放时间</div><div class="info-card-value">${s.opening?.peak || '全天'}</div></div>
+    <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket?.adult || '免费'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-label">地址</div><div class="info-card-value">${s.address || '—'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-label">电话</div><div class="info-card-value">${s.phone || '—'}</div></div>
+  `;
+  
+  renderGuide(s);
+  renderTransport(s);
+  renderFood(s);
+  renderTips(s);
+  updateBreadcrumb();
+  switchView('spotView');
+  window.scrollTo(0,0);
+}
+
+// ─── IMAGE UPLOAD ───
+function openImgUpload() {
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  document.getElementById('imgUploadSpotName').textContent = '当前景区：' + s.name;
+  document.getElementById('unsplashQuery').textContent = s.name;
+  document.getElementById('unsplashSearchLink').href = 
+    'https://unsplash.com/s/photos/' + encodeURIComponent(s.name + ' China');
+  
+  // Load history
+  const spotKey = getSpotImgKey();
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  // Reset state
+  pendingImgData = null;
+  document.getElementById('imgPreview').classList.remove('show');
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgSaveBtn').style.display = 'none';
+  document.getElementById('imgSavedNotice').classList.remove('show');
+  document.getElementById('imgUrlInput').value = '';
+  document.getElementById('imgUrlPreview').style.display = 'none';
+  
+  // Switch to upload tab
+  switchImgTab('upload', document.querySelector('.img-upload-tab'));
+  
+  document.getElementById('imgUploadOverlay').classList.add('show');
+}
+
+function closeImgUpload(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('imgUploadOverlay').classList.remove('show');
+}
+
+function switchImgTab(tab, btn) {
+  document.querySelectorAll('.img-upload-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('imgTabUpload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('imgTabUrl').style.display = tab === 'url' ? '' : 'none';
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10*1024*1024) {
+    alert('图片不能超过10MB，请选择更小的图片');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    pendingImgData = { url: ev.target.result, savedAt: new Date().toISOString() };
+    const preview = document.getElementById('imgPreview');
+    preview.src = ev.target.result;
+    preview.classList.add('show');
+    document.getElementById('imgSaveBtn').style.display = '';
+    document.getElementById('imgSavedNotice').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyImgUrl() {
+  const url = document.getElementById('imgUrlInput').value.trim();
+  if (!url) return;
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgUrlPreview');
+  preview.src = url;
+  preview.style.display = '';
+  preview.onerror = function() {
+    preview.style.display = 'none';
+    alert('图片链接无效，请检查后重试');
+  };
+  document.getElementById('imgSavedNotice').classList.remove('show');
+}
+
+function saveCustomImg() {
+  if (!pendingImgData) return;
+  const spotKey = getSpotImgKey();
+  setCustomImg(spotKey, pendingImgData);
+  
+  // Refresh current spot view
+  goSpot(currentProvince, currentCity, currentSpot);
+  
+  // Update history
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  document.getElementById('imgSavedNotice').classList.add('show');
+  setTimeout(() => document.getElementById('imgSavedNotice').classList.remove('show'), 2000);
+}
+
+function applyHistoryImg(el, url) {
+  document.querySelectorAll('.img-history-item').forEach(i => i.classList.remove('current'));
+  el.classList.add('current');
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgPreview');
+  preview.src = url;
+  preview.classList.add('show');
+  document.getElementById('imgSaveBtn').style.display = '';
+}
+
+function resetToDefault() {
+  const spotKey = getSpotImgKey();
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    delete imgs[spotKey];
+    localStorage.setItem(IMG_KEY, JSON.stringify(imgs));
+  } catch(e) {}
+  goSpot(currentProvince, currentCity, currentSpot);
+  closeImgUpload();
+}
+
+// ─── GUIDE / TRANSPORT / FOOD / TIPS ───
+function renderGuide(s) {
+  const g = s.guides?.[currentGuide] || s.guides?.['3-7'] || {};
+  document.getElementById('guideTitle').textContent = g.title || '行程攻略';
+  document.getElementById('guideSub').textContent = g.days ? `建议游玩 ${g.days} 天` : '';
+  const list = document.getElementById('scheduleList');
+  if (!g.schedule || g.schedule.length === 0) {
+    list.innerHTML = '<div class="more-soon">该时长攻略正在完善中，请参考其他时长选项</div>';
+    return;
+  }
+  list.innerHTML = g.schedule.map(d => `
+    <div class="schedule-day">
+      <div class="schedule-day-header">
+        <div class="schedule-day-title">${d.day}</div>
+        <div class="schedule-day-theme">${d.theme}</div>
+      </div>
+      <div class="schedule-items">
+        ${d.items.map(i => `
+          <div class="schedule-item">
+            <div class="schedule-item-time">${i.time}</div>
+            <div class="schedule-item-info">
+              <div class="schedule-item-title">${i.title}</div>
+              <div class="schedule-item-desc">${i.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTransport(s) {
+  const t = s.transport || {};
+  const content = document.getElementById('transportContent');
+  if (!t.recommended) { content.innerHTML = '<div class="more-soon">交通信息正在完善中</div>'; return; }
+  let html = `<div class="transport-reason"><strong>推荐出行方式：${t.recommended}</strong><br>${t.reason || ''}</div><div class="transport-grid">`;
+  if (t.metro) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚇 地铁</div>
+      ${t.metro.lines.map(l => `<div class="transport-row"><span class="val">${l}</span></div>`).join('')}
+      ${t.metro.walk ? `<div class="transport-row"><span class="key">步行</span><span>${t.metro.walk}</span></div>` : ''}
+    </div>`;
+  }
+  if (t.driving && !t.driving.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾</div>
+      ${t.driving.parking ? `<div class="transport-row"><span class="key">停车</span><span>${t.driving.parking}</span></div>` : ''}
+      ${t.driving.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.driving.tips}</span></div>` : ''}
+      ${t.driving.restrictions ? `<div class="transport-row"><span class="key">限行</span><span>${t.driving.restrictions}</span></div>` : ''}
+    </div>`;
+  } else if (t.driving?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.driving.reason || '不推荐自驾'}</span></div></div>`;
+  }
+  if (t.bus && t.bus.length > 0) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚌 公交</div>
+      ${t.bus.map(b => `<div style="margin-bottom:8px">
+        <div class="transport-row"><span class="val">${b.name}</span><span>${b.from} → ${b.to}</span></div>
+        <div class="transport-row"><span class="key">班次</span><span>${b.freq} | 首 ${b.first} | 末 ${b.last}</span></div>
+        ${b.tips ? `<div class="transport-row"><span class="key">提示</span><span>${b.tips}</span></div>` : ''}
+      </div>`).join('')}
+    </div>`;
+  }
+  if (t.taxi && !t.taxi.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车</div>
+      ${t.taxi.fromCenter ? `<div class="transport-row"><span class="key">从市中心</span><span>${t.taxi.fromCenter}</span></div>` : ''}
+      ${t.taxi.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.taxi.tips}</span></div>` : ''}
+    </div>`;
+  } else if (t.taxi?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.taxi.reason || '不推荐打车'}</span></div></div>`;
+  }
+  if (t.carRental && !t.carRental.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="no-rec-badge">不推荐</span></div>
+      ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
+    </div>`;
+  } else if (t.carRental?.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="rec-badge">推荐</span></div>
+      ${t.carRental.platforms ? `<div class="transport-row"><span class="key">平台</span><span>${t.carRental.platforms.join(', ')}</span></div>` : ''}
+      ${t.carRental.priceRange ? `<div class="transport-row"><span class="key">价格</span><span>${t.carRental.priceRange}</span></div>` : ''}
+    </div>`;
+  }
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+function renderFood(s) {
+  const food = s.food || [];
+  const content = document.getElementById('foodContent');
+  if (food.length === 0) { content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>'; return; }
+  content.innerHTML = food.map(f => `
+    <div class="food-item">
+      <div>
+        <div class="food-item-name">${f.name} ${f.tag ? `<span class="tag">${f.tag}</span>` : ''}</div>
+        <div class="food-item-desc">${f.desc}</div>
+      </div>
+      <div class="food-item-price">${f.price}</div>
+    </div>
+  `).join('');
+}
+
+function renderTips(s) {
+  const tips = s.tips || [];
+  const content = document.getElementById('tipsContent');
+  if (tips.length === 0) { content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>'; return; }
+  content.innerHTML = tips.map(t => `
+    <div class="tip-item ${t.type || ''}">
+      <div class="tip-icon">${t.type === 'warning' ? '!' : t.type === 'good' ? '✓' : 'i'}</div>
+      <div>${t.text}</div>
+    </div>
+  `).join('');
+}
+
+// ─── NAVIGATION ───
+function switchView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  currentView = viewId;
+}
+
+function updateBreadcrumb() {
+  const bcId = ['spotBreadcrumb','cityBreadcrumb','provinceBreadcrumb'].find(id => document.getElementById(id)?.closest('.view.active'));
+  if (!bcId) return;
+  const bc = document.getElementById(bcId);
+  let html = `<a onclick="goHome()">首页</a><span class="sep">›</span>`;
+  if (currentProvince) {
+    const p = DB.provinces[currentProvince];
+    html += `<a onclick="goProvince('${currentProvince}')">${p.name}</a><span class="sep">›</span>`;
+  }
+  if (currentCity) {
+    const p = DB.provinces[currentProvince];
+    const c = p.cities[currentCity];
+    html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
+  }
+  if (currentSpot) {
+    const p = DB.provinces[currentProvince];
+    const c = p.cities[currentCity];
+    const s = c.spots[currentSpot];
+    html += `<span class="current">${s.name}</span>`;
+  }
+  bc.innerHTML = html;
+}
+
+function goHome() {
+  currentProvince = currentCity = currentSpot = null;
+  navStack = [];
+  switchView('homeView');
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  if (navStack.length > 1) {
+    navStack.pop();
+    const prev = navStack[navStack.length - 1];
+    if (prev.view === 'province') {
+      currentCity = currentSpot = null;
+      goProvince(prev.pid);
+    } else if (prev.view === 'city') {
+      currentSpot = null;
+      goCity(currentProvince, prev.cid);
+    }
+  } else { goHome(); }
+}
+
+function switchGuide(duration) {
+  currentGuide = duration;
+  document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  renderGuide(s);
+}
+
+function init() {
+  // 填充各省卡片到对应区域
+  Object.entries(DB.provinces).forEach(([k, v]) => {
+    const el = document.getElementById(v.region + 'Provinces');
+    if (!el) return;
+    const div = document.createElement('div');
+    if (v.comingSoon) {
+      div.className = 'province-card coming-soon';
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-soon">即将开放</div>';
+    } else {
+      const cityCount = Object.keys(v.cities || {}).length;
+      div.className = 'province-card';
+      div.onclick = () => goProvince(k);
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-badge">' + cityCount + '城</div>';
+    }
+    el.appendChild(div);
+  });
+}
+
+function showRegion(region) {
+  document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
+  (this === window ? event.currentTarget : this).classList.add('active');
+  document.querySelectorAll('.region-group').forEach(g => {
+    g.style.display = (region === 'all' || g.dataset.region === region) ? '' : 'none';
+  });
+}
+
+init();
 </script>
 </body>
 </html>
