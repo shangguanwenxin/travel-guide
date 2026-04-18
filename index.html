@@ -8437,6 +8437,25 @@ function switchGuide(duration) {
   renderGuide(s);
 }
 
+function init() {
+  // 填充各省卡片到对应区域
+  Object.entries(DB.provinces).forEach(([k, v]) => {
+    const el = document.getElementById(v.region + 'Provinces');
+    if (!el) return;
+    const div = document.createElement('div');
+    if (v.comingSoon) {
+      div.className = 'province-card coming-soon';
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-soon">即将开放</div>';
+    } else {
+      const cityCount = Object.keys(v.cities || {}).length;
+      div.className = 'province-card';
+      div.onclick = () => goProvince(k);
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-badge">' + cityCount + '城</div>';
+    }
+    el.appendChild(div);
+  });
+}
+
 function showRegion(region) {
   document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
