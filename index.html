@@ -8032,7 +8032,7 @@ function goProvince(pid) {
   const grid = document.getElementById('cityGrid');
   grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
     const firstSpot = c.spots ? Object.values(c.spots)[0] : null;
-    const img = firstSpot ? getEffectiveImg(firstSpot) : '';
+    const img = firstSpot ? getEffectiveImg(pid, cid, Object.keys(c.spots)[0]) : '';
     const hasCustom = firstSpot ? !!getCustomImg(`${pid}_${cid}_${Object.keys(c.spots)[0]}`) : false;
     const tags = firstSpot ? Object.values(c.spots || {}).slice(0,3).map(s => 
       `<span class="tag">${s.name}</span>`
@@ -8063,7 +8063,7 @@ function goCity(pid, cid) {
   document.getElementById('cityDesc').textContent = c.desc + ' · 点击景区查看详情';
   const list = document.getElementById('spotList');
   list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => {
-    const effImg = getEffectiveImg(s);
+    const effImg = getEffectiveImg(pid, cid, sid);
     const spotKey = `${pid}_${cid}_${sid}`;
     const hasCustom = !!getCustomImg(spotKey);
     return `<div class="spot-card ${hasCustom ? 'has-custom' : ''}" onclick="goSpot('${pid}','${cid}','${sid}')">
@@ -8098,8 +8098,8 @@ function goSpot(pid, cid, sid) {
   currentSpot = sid;
   navStack.push({view:'spot',sid});
   
-  const effImg = getEffectiveImg(s);
-  const spotKey = getSpotImgKey();
+  const effImg = getEffectiveImg(pid, cid, sid);
+  const spotKey = `${pid}_${cid}_${sid}`;
   const hasCustom = !!getCustomImg(spotKey);
   
   // Hero with custom image support
@@ -8415,6 +8415,19 @@ function switchGuide(duration) {
   const c = p.cities[currentCity];
   const s = c.spots[currentSpot];
   renderGuide(s);
+}
+
+// ─── IMAGE HELPERS ───
+function getEffectiveImg(pid, cid, sid) {
+  const spot = DB.provinces[pid]?.cities[cid]?.spots[sid];
+  const key = `${pid}_${cid}_${sid}`;
+  return localStorage.getItem('customImg_' + key) || spot?.image || '';
+}
+function getSpotImgKey() {
+  return `${currentProvince}_${currentCity}_${currentSpot}`;
+}
+function getCustomImg(key) {
+  return localStorage.getItem('customImg_' + key) || '';
 }
 
 function init() {
