@@ -8020,26 +8020,6 @@ const DB = {
     }
   }
 }; // provinces end
-    const provinces = Object.entries(DB.provinces)
-      .filter(([k,v]) => v.region === region)
-      .sort((a,b) => a[1].name.localeCompare(b[1].name));
-    container.innerHTML = provinces.map(([k,v]) => {
-      if (v.comingSoon) {
-        return `<div class="province-card coming-soon">
-          <div class="province-card-name">${v.name}</div>
-          <div class="province-card-meta">${v.desc}</div>
-          <div class="province-card-soon">即将开放</div>
-        </div>`;
-      }
-      const cityCount = Object.keys(v.cities || {}).length;
-      return `<div class="province-card" onclick="goProvince('${k}')">
-        <div class="province-card-name">${v.name}</div>
-        <div class="province-card-meta">${v.desc}</div>
-        <div class="province-card-badge">${cityCount}城</div>
-      </div>`;
-    }).join('');
-  });
-}
 
 // ─── RENDER: PROVINCES CITIES ───
 function goProvince(pid) {
