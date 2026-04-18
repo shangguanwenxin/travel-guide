@@ -1,0 +1,6 @@
+# Only track project files
+*
+!index.html
+!.github/
+!.github/**
+!.gitignore
