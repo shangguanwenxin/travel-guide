@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>漫游 · 城市旅游攻略</title>
+  <title>漫游中国 · 省市旅游攻略</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
@@ -46,25 +46,31 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(247,243,238,0.88);
+      background: rgba(247,243,238,0.95);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
-      padding: 0 48px;
+      padding: 0 24px;
     }
 
     .header-inner {
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 0;
+    }
+
+    .header-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 68px;
     }
 
     .logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 400;
       letter-spacing: 0.12em;
       color: var(--ink);
@@ -75,19 +81,43 @@
       color: var(--accent);
     }
 
-    .city-tabs {
+    .breadcrumb {
       display: flex;
-      gap: 4px;
-      list-style: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--ink-light);
     }
 
-    .city-tab {
-      padding: 8px 18px;
+    .breadcrumb span {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .breadcrumb span:hover {
+      color: var(--accent);
+    }
+    .breadcrumb .sep {
+      color: var(--border);
+    }
+    .breadcrumb .current {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── Province Tabs ── */
+    .province-bar {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 4px 0;
+    }
+
+    .province-tab {
+      padding: 8px 16px;
       border-radius: 40px;
       cursor: pointer;
       font-size: 13px;
       font-weight: 400;
-      letter-spacing: 0.06em;
       color: var(--ink-light);
       transition: all 0.25s ease;
       border: 1px solid transparent;
@@ -95,9 +125,47 @@
       white-space: nowrap;
     }
 
-    .city-tab:hover {
+    .province-tab:hover {
       color: var(--ink);
       background: rgba(192,99,42,0.07);
+    }
+
+    .province-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ── City Bar ── */
+    .city-bar {
+      display: none;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 4px 0 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .city-bar.visible {
+      display: flex;
+    }
+
+    .city-tab {
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink-light);
+      transition: all 0.25s ease;
+      border: 1px solid var(--border);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .city-tab:hover {
+      color: var(--ink);
+      border-color: var(--accent);
     }
 
     .city-tab.active {
@@ -106,490 +174,310 @@
       border-color: var(--ink);
     }
 
-    /* ── Hero ── */
-    .hero {
-      position: relative;
-      height: 52vh;
-      min-height: 380px;
-      overflow: hidden;
-      margin-bottom: 56px;
-    }
-
-    .hero-image {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      transition: opacity 0.8s ease, transform 1.2s ease;
-      transform: scale(1.04);
-    }
-
-    .hero-image.loaded {
-      transform: scale(1.0);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(26,18,9,0.1) 0%,
-        rgba(26,18,9,0.55) 60%,
-        rgba(26,18,9,0.82) 100%
-      );
-    }
-
-    .hero-text {
-      position: absolute;
-      bottom: 48px;
-      left: 0;
-      right: 0;
-      padding: 0 64px;
-      max-width: 1280px;
+    /* ── Province View ── */
+    .province-view {
+      padding: 40px 48px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
-    .hero-city-name {
+    .province-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .province-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(52px, 8vw, 96px);
+      font-size: clamp(36px, 6vw, 56px);
       font-weight: 300;
-      color: var(--paper);
-      line-height: 1;
-      letter-spacing: -0.02em;
-      animation: heroFadeUp 0.7s ease both;
+      color: var(--ink);
+      margin-bottom: 8px;
     }
 
-    .hero-city-name span {
-      display: inline-block;
-      font-style: italic;
-      color: var(--accent-soft);
-    }
-
-    .hero-sub {
-      margin-top: 12px;
-      font-size: 15px;
-      font-weight: 300;
-      color: rgba(255,250,245,0.75);
+    .province-subtitle {
+      font-size: 14px;
+      color: var(--ink-light);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      animation: heroFadeUp 0.7s 0.1s ease both;
     }
 
-    @keyframes heroFadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Main content ── */
-    .main {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 48px 80px;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 36px;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .section-label h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--ink-light);
-    }
-
-    /* ── Card Grid ── */
-    .card-grid {
+    .province-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      margin-bottom: 64px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
     }
 
-    .card {
+    .province-card {
       background: var(--paper);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
-      animation: cardIn 0.5s ease both;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
 
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.12s; }
-    .card:nth-child(3) { animation-delay: 0.19s; }
-    .card:nth-child(4) { animation-delay: 0.05s; }
-    .card:nth-child(5) { animation-delay: 0.12s; }
-    .card:nth-child(6) { animation-delay: 0.19s; }
-
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card:hover {
+    .province-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 20px 48px var(--shadow-deep);
+      box-shadow: 0 16px 40px var(--shadow-deep);
     }
 
-    .card-img {
-      height: 200px;
+    .province-card-img {
+      height: 180px;
       overflow: hidden;
-      position: relative;
     }
 
-    .card-img img {
+    .province-card-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
 
-    .card:hover .card-img img {
-      transform: scale(1.06);
+    .province-card:hover .province-card-img img {
+      transform: scale(1.08);
     }
 
-    .card-tag {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: var(--accent);
-      color: white;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 2px;
+    .province-card-body {
+      padding: 20px;
     }
 
-    .card-body {
-      padding: 22px 24px 28px;
-    }
-
-    .card-category {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .card-title {
+    .province-card-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.3;
-      margin-bottom: 10px;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--ink-light);
-      line-height: 1.7;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    .card-meta {
-      font-size: 11px;
-      color: var(--ink-light);
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .card-meta svg {
-      width: 12px;
-      height: 12px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    .card-arrow {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-    }
-
-    .card:hover .card-arrow {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .card-arrow svg {
-      width: 12px;
-      height: 12px;
-      stroke: var(--ink-light);
-      fill: none;
-      stroke-width: 2;
-      transition: stroke 0.25s ease;
-    }
-
-    .card:hover .card-arrow svg {
-      stroke: white;
-    }
-
-    /* ── Detail Modal ── */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(26,18,9,0.6);
-      backdrop-filter: blur(6px);
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-backdrop.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -48%) scale(0.95);
-      width: min(820px, calc(100vw - 48px));
-      max-height: 85vh;
-      background: var(--paper);
-      border-radius: 12px;
-      overflow: hidden;
-      z-index: 1001;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34,1.3,0.64,1);
-      box-shadow: 0 32px 80px rgba(26,18,9,0.35);
-    }
-
-    .modal.open {
-      opacity: 1;
-      pointer-events: all;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .modal-img {
-      height: 280px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .modal-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .modal-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(26,18,9,0.7) 100%);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(26,18,9,0.5);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-      line-height: 1;
-      transition: background 0.2s;
-      z-index: 2;
-    }
-
-    .modal-close:hover {
-      background: rgba(26,18,9,0.8);
-    }
-
-    .modal-body {
-      padding: 36px 44px 40px;
-      overflow-y: auto;
-      max-height: calc(85vh - 280px);
-    }
-
-    .modal-tag {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 3px 10px;
-      border-radius: 2px;
-      margin-bottom: 12px;
-    }
-
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.2;
-      margin-bottom: 12px;
-    }
-
-    .modal-subtitle {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--ink-light);
-      line-height: 1.7;
-      margin-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 28px;
-    }
-
-    .modal-section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .modal-section-title::before {
-      content: '';
-      width: 16px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .modal-spots {
-      list-style: none;
-      margin-bottom: 32px;
-    }
-
-    .modal-spot {
-      display: flex;
-      gap: 16px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: flex-start;
-    }
-
-    .modal-spot:last-child { border-bottom: none; }
-
-    .spot-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(192,99,42,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .spot-icon svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--accent);
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    .spot-info h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px;
       font-weight: 400;
       color: var(--ink);
       margin-bottom: 4px;
     }
 
-    .spot-info p {
+    .province-card-count {
       font-size: 12px;
+      color: var(--ink-light);
+    }
+
+    /* ── City View ── */
+    .city-view {
+      display: none;
+    }
+
+    .city-view.visible {
+      display: block;
+    }
+
+    .city-hero {
+      position: relative;
+      height: 45vh;
+      min-height: 320px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .city-hero-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 1s ease;
+    }
+
+    .city-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(26,18,9,0.15) 0%,
+        rgba(26,18,9,0.55) 60%,
+        rgba(26,18,9,0.85) 100%
+      );
+    }
+
+    .city-hero-text {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      padding: 0 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .city-hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 7vw, 80px);
       font-weight: 300;
+      color: var(--paper);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .city-hero-sub {
+      font-size: 14px;
+      color: rgba(255,250,245,0.75);
+      letter-spacing: 0.15em;
+    }
+
+    /* ── Route Section ── */
+    .route-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .route-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .route-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .route-title::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .route-badge {
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .route-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .route-card::before {
+      content: attr(data-day);
+      position: absolute;
+      top: -12px;
+      left: 28px;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .route-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .route-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .route-stop {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .route-stop-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 6px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .route-stop:not(:last-child) .route-stop-dot::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 5px;
+      width: 2px;
+      height: calc(100% + 12px);
+      background: var(--border);
+    }
+
+    .route-stop-content h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .route-stop-content p {
+      font-size: 13px;
       color: var(--ink-light);
       line-height: 1.6;
     }
 
-    .modal-tags {
+    .route-stop-time {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .route-stop-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 32px;
+      gap: 6px;
+      margin-top: 8px;
     }
 
-    .modal-tag-pill {
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--ink-light);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 5px 14px;
-      border-radius: 40px;
-      letter-spacing: 0.05em;
+    .route-stop-tag {
+      font-size: 10px;
+      padding: 3px 10px;
+      background: rgba(192,99,42,0.1);
+      color: var(--accent);
+      border-radius: 20px;
     }
 
-    /* ── Info bar ── */
-    .info-bar {
+    /* ── Info Grid ── */
+    .info-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       margin-bottom: 48px;
     }
 
     .info-item {
       background: var(--paper);
-      padding: 20px 24px;
+      padding: 20px;
       text-align: center;
     }
 
     .info-value {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 300;
       color: var(--accent);
       line-height: 1;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .info-label {
@@ -600,12 +488,79 @@
       color: var(--ink-light);
     }
 
+    /* ── Spots Grid ── */
+    .spots-section {
+      margin-bottom: 48px;
+    }
+
+    .spots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .spot-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .spot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .spot-img {
+      height: 160px;
+      overflow: hidden;
+    }
+
+    .spot-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .spot-card:hover .spot-img img {
+      transform: scale(1.05);
+    }
+
+    .spot-body {
+      padding: 16px;
+    }
+
+    .spot-tag {
+      font-size: 10px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .spot-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .spot-desc {
+      font-size: 12px;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+
     /* ── Footer ── */
     .footer {
       text-align: center;
       padding: 40px 48px;
       border-top: 1px solid var(--border);
-      margin-top: 40px;
     }
 
     .footer p {
@@ -617,22 +572,21 @@
 
     /* ── Responsive ── */
     @media (max-width: 1024px) {
-      .card-grid { grid-template-columns: repeat(2, 1fr); }
-      .info-bar { grid-template-columns: repeat(2, 1fr); }
-      .city-tabs { gap: 2px; }
-      .city-tab { padding: 7px 12px; font-size: 12px; }
+      .spots-grid { grid-template-columns: repeat(2, 1fr); }
+      .info-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 768px) {
-      .header { padding: 0 20px; }
-      .hero { height: 40vh; min-height: 280px; margin-bottom: 36px; }
-      .hero-text { padding: 0 24px; bottom: 32px; }
-      .main { padding: 0 20px 60px; }
-      .card-grid { grid-template-columns: 1fr; gap: 20px; }
-      .info-bar { grid-template-columns: repeat(2, 1fr); }
-      .city-tabs { overflow-x: auto; padding-bottom: 4px; }
-      .modal-body { padding: 28px 24px 32px; }
-      .modal-title { font-size: 28px; }
+      .header { padding: 0 16px; }
+      .header-inner { padding: 10px 0; }
+      .province-view { padding: 24px 16px; }
+      .province-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .province-card-img { height: 140px; }
+      .city-hero { height: 35vh; min-height: 260px; }
+      .city-hero-text { padding: 0 20px; bottom: 24px; }
+      .route-section { padding: 0 16px 60px; }
+      .spots-grid { grid-template-columns: 1fr; }
+      .route-header { flex-direction: column; align-items: flex-start; gap: 12px; }
     }
   </style>
 </head>
@@ -641,506 +595,1040 @@
 <!-- ── Header ── -->
 <header class="header">
   <div class="header-inner">
-    <a href="#" class="logo">漫游<em>·</em></a>
-    <nav>
-      <ul class="city-tabs" id="cityTabs">
-        <li class="city-tab active" data-city="chongqing">重庆</li>
-        <li class="city-tab" data-city="chengdu">成都</li>
-        <li class="city-tab" data-city="hangzhou">杭州</li>
-        <li class="city-tab" data-city="xian">西安</li>
-        <li class="city-tab" data-city="lijiang">丽江</li>
-        <li class="city-tab" data-city="guilin">桂林</li>
-        <li class="city-tab" data-city="xiamen">厦门</li>
-        <li class="city-tab" data-city="harbin">哈尔滨</li>
-      </ul>
-    </nav>
+    <div class="header-top">
+      <a href="#" class="logo" onclick="goHome()">漫游中国<em>·</em></a>
+      <div class="breadcrumb" id="breadcrumb">
+        <span onclick="goHome()">中国</span>
+      </div>
+    </div>
+    <nav class="province-bar" id="provinceBar"></nav>
+    <nav class="city-bar" id="cityBar"></nav>
   </div>
 </header>
 
-<!-- ── Hero ── -->
-<section class="hero">
-  <div class="hero-image loaded" id="heroImage" style="background-image: url('https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80')"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-text">
-    <h1 class="hero-city-name" id="heroCityName">重庆</h1>
-    <p class="hero-sub" id="heroSub">山城雾都 · 火锅与江湖</p>
+<!-- ── Province View ── -->
+<section class="province-view" id="provinceView">
+  <div class="province-header">
+    <h1 class="province-title" id="provinceTitle">探索中国</h1>
+    <p class="province-subtitle" id="provinceSubtitle">选择省份 · 发现美景</p>
+  </div>
+  <div class="province-grid" id="provinceGrid"></div>
+</section>
+
+<!-- ── City View ── -->
+<section class="city-view" id="cityView">
+  <div class="city-hero">
+    <div class="city-hero-img" id="cityHeroImg"></div>
+    <div class="city-hero-overlay"></div>
+    <div class="city-hero-text">
+      <h1 class="city-hero-name" id="cityHeroName"></h1>
+      <p class="city-hero-sub" id="cityHeroSub"></p>
+    </div>
+  </div>
+  <div class="route-section">
+    <div class="info-grid" id="infoGrid"></div>
+    <div class="spots-section">
+      <div class="route-header">
+        <h2 class="route-title">推荐路线</h2>
+        <span class="route-badge" id="routeBadge">精选路线</span>
+      </div>
+      <div id="routesContainer"></div>
+    </div>
+    <div class="spots-section">
+      <div class="route-header">
+        <h2 class="route-title">必去景点</h2>
+      </div>
+      <div class="spots-grid" id="spotsGrid"></div>
+    </div>
   </div>
 </section>
 
-<!-- ── Main ── -->
-<main class="main">
-
-  <!-- Info Bar -->
-  <div class="info-bar" id="infoBar">
-    <div class="info-item">
-      <div class="info-value" id="infoDays">3-5</div>
-      <div class="info-label">建议天数</div>
-    </div>
-    <div class="info-item">
-      <div class="info-value" id="infoBudget">¥1500</div>
-      <div class="info-label">人均预算</div>
-    </div>
-    <div class="info-item">
-      <div class="info-value" id="infoTemp">18-28°C</div>
-      <div class="info-label">最佳温度</div>
-    </div>
-    <div class="info-item">
-      <div class="info-value" id="infoSeason">春秋</div>
-      <div class="info-label">推荐季节</div>
-    </div>
-  </div>
-
-  <!-- Spots -->
-  <div class="section-label">
-    <h2>必去景点</h2>
-  </div>
-  <div class="card-grid" id="cardGrid">
-    <!-- Cards injected by JS -->
-  </div>
-
-</main>
-
 <footer class="footer">
-  <p>漫游 · 精选城市旅游攻略 &nbsp;·&nbsp; 探索中国之美</p>
+  <p>漫游中国 · 省市旅游攻略 &nbsp;·&nbsp; 探索华夏之美</p>
 </footer>
 
-<!-- ── Modal ── -->
-<div class="modal-backdrop" id="modalBackdrop"></div>
-<div class="modal" id="modal">
-  <div class="modal-img">
-    <img id="modalImg" src="" alt="" />
-    <div class="modal-img-overlay"></div>
-    <button class="modal-close" id="modalClose">✕</button>
-  </div>
-  <div class="modal-body">
-    <span class="modal-tag" id="modalTag"></span>
-    <h2 class="modal-title" id="modalTitle"></h2>
-    <p class="modal-subtitle" id="modalSubtitle"></p>
-
-    <h3 class="modal-section-title">推荐理由</h3>
-    <ul class="modal-spots" id="modalSpots"></ul>
-
-    <div class="modal-tags" id="modalTags"></div>
-  </div>
-</div>
-
 <script>
-// ── City Data ──
-const cities = {
-  chongqing: {
-    name: '重庆',
-    sub: '山城雾都 · 火锅与江湖',
-    image: 'https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80',
-    days: '3-5',
-    budget: '¥1500',
-    temp: '18-28°C',
-    season: '春秋',
-    spots: [
-      {
-        tag: '夜景',
-        title: '洪崖洞',
-        desc: '现实版《千与千寻》汤屋，夜幕降临灯光亮起，仿佛穿越到梦幻世界。',
-        icon: 'view'
-      },
-      {
-        tag: '古迹',
-        title: '磁器口古镇',
-        desc: '千年古镇，青石板路、茶馆、川剧，让你感受老重庆的烟火气。',
-        icon: 'castle'
-      },
-      {
-        tag: '地标',
-        title: '解放碑',
-        desc: '重庆的城市地标，八一路好吃街汇聚了最地道的重庆小吃。',
-        icon: 'star'
-      },
-      {
-        tag: '自然',
-        title: '武隆天生三桥',
-        desc: '《变形金刚4》取景地，大自然的鬼斧神工让人叹为观止。',
-        icon: 'mountain'
+// ── Data Structure ──
+const data = {
+  provinces: {
+    sichuan: {
+      name: '四川省',
+      subtitle: '天府之国 · 熊猫故乡',
+      cover: 'https://images.unsplash.com/photo-1598928506311-c55ez89a2cc8?w=1600&q=80',
+      cities: {
+        chengdu: {
+          name: '成都',
+          sub: '天府之国 · 慢生活之都',
+          image: 'https://images.unsplash.com/photo-1598928506311-c55ez89a2cc8?w=1600&q=80',
+          days: '4-5',
+          budget: '¥2000',
+          temp: '16-26°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '市区人文之旅',
+              stops: [
+                { time: '09:00', name: '宽窄巷子', desc: '漫步清末古街，体验成都慢生活。掏耳朵、品盖碗茶，感受老成都韵味。', tags: ['古镇', '茶馆', '特色体验'] },
+                { time: '12:00', name: '人民公园', desc: '相亲角、鹤鸣茶社，最地道的成都市井生活。', tags: ['公园', '市井'] },
+                { time: '14:00', name: '武侯祠', desc: '三国圣地，刘备诸葛亮君臣合祀祠庙，红墙夹道拍照绝美。', tags: ['古迹', '三国文化'] },
+                { time: '17:00', name: '锦里古街', desc: '傍晚时分，红灯笼亮起，品尝三大炮、兔头等小吃。', tags: ['美食', '夜景'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '熊猫与自然',
+              stops: [
+                { time: '08:00', name: '成都大熊猫繁育基地', desc: '一定要早起！8点是熊猫最活跃时段，看国宝吃竹子、爬树、打滚。', tags: ['熊猫', '亲子'] },
+                { time: '12:00', name: '春熙路', desc: '成都最繁华商圈，IFS熊猫屁股打卡，太古里购物休憩。', tags: ['购物', '美食'] },
+                { time: '19:00', name: '九眼桥酒吧街', desc: '夜生活从这里开始，民谣、清吧、火锅，体验成都的"巴适"。', tags: ['夜生活', '酒吧'] }
+              ]
+            },
+            {
+              day: '第三天',
+              title: '青城都江堰',
+              stops: [
+                { time: '08:00', name: '青城山', desc: '"青城天下幽"，道教名山。前山看道观，后山徒步避暑。', tags: ['名山', '道教'] },
+                { time: '14:00', name: '都江堰', desc: '两千年前的水利工程奇迹，鱼嘴、飞沙堰、宝瓶口三大部分。', tags: ['世界遗产', '水利'] },
+                { time: '18:00', name: '南桥夜景', desc: '蓝眼泪般的夜景，网红打卡地。', tags: ['夜景', '拍照'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '萌宠', name: '成都大熊猫基地', desc: '全球最大熊猫保护研究机构，近距离看国宝卖萌。' },
+            { tag: '古镇', name: '宽窄巷子', desc: '清末古街，泡桐树下的茶馆，成都生活的缩影。' },
+            { tag: '道教', name: '青城山', desc: '道教名山，"青城天下幽"，徒步其间感受自然。' },
+            { tag: '奇迹', name: '都江堰', desc: '两千年前的水利奇迹，至今仍在发挥作用。' },
+            { tag: '美食', name: '锦里古街', desc: '三国文化街，红灯笼、串串、兔头、冰粉。' },
+            { tag: '古迹', name: '武侯祠', desc: '三国圣地，红墙夹道，拍照绝佳。' }
+          ]
+        },
+        jiuzhaigou: {
+          name: '九寨沟',
+          sub: '童话世界 · 人间仙境',
+          image: 'https://images.unsplash.com/photo-1513415756790-2ac1db1297d2?w=1600&q=80',
+          days: '2-3',
+          budget: '¥1500',
+          temp: '8-20°C',
+          season: '秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '九寨沟精华游',
+              stops: [
+                { time: '07:30', name: '沟口乘观光车', desc: '早起进沟，避开人流高峰。观光车直达日则沟尽头。', tags: ['入园', '准备'] },
+                { time: '09:00', name: '五花海', desc: '九寨沟精华中的精华，水色如蓝宝石，倒影如画。', tags: ['精华', '拍照'] },
+                { time: '10:30', name: '珍珠滩瀑布', desc: '《西游记》片尾取景地，瀑布如碎玉飞溅。', tags: ['瀑布', '经典'] },
+                { time: '12:00', name: '镜海', desc: '水质清澈如镜，早晚无风时倒影最完美。', tags: ['日出', '倒影'] },
+                { time: '14:00', name: '诺日朗瀑布', desc: '中国最宽高原瀑布，气势磅礴。', tags: ['瀑布', '打卡'] },
+                { time: '16:00', name: '长海', desc: '九寨沟最大海子，深秋时节层林尽染。', tags: ['秋景', '最高点'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '树正沟漫步',
+              stops: [
+                { time: '08:00', name: '犀牛海', desc: '水中倒影如镜，是拍倒影的最佳点位。', tags: ['倒影', '宁静'] },
+                { time: '09:30', name: '树正瀑布', desc: '小巧精致的水帘瀑布，藏式经幡点缀。', tags: ['瀑布', '藏文化'] },
+                { time: '11:00', name: '火花海', desc: '阳光下波光粼粼如火花跳跃。', tags: ['小众', '特色'] },
+                { time: '13:00', name: '芦苇海', desc: '芦苇丛中的玉带河，秋日金黄一片。', tags: ['秋景', '摄影'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '精华', name: '五花海', desc: '九寨沟最美海子，水色斑斓如宝石。' },
+            { tag: '瀑布', name: '珍珠滩瀑布', desc: '《西游记》取景地，瀑布飞流直下。' },
+            { tag: '经典', name: '诺日朗瀑布', desc: '中国最宽高原瀑布。' },
+            { tag: '日出', name: '镜海', desc: '无风时倒影如画，晨拍最佳。' }
+          ]
+        },
+        leshan: {
+          name: '乐山',
+          sub: '大佛故里 · 美食之城',
+          image: 'https://images.unsplash.com/photo-1506905925346-21b41842a49a?w=1600&q=80',
+          days: '2天',
+          budget: '¥800',
+          temp: '15-28°C',
+          season: '全年',
+          routes: [
+            {
+              day: '第一天',
+              title: '大佛朝圣',
+              stops: [
+                { time: '08:00', name: '乐山大佛景区', desc: '世界最大石刻佛像，高71米。可从头顶走到脚底。', tags: ['世界遗产', '佛教'] },
+                { time: '10:00', name: '九曲栈道', desc: '沿悬崖栈道下行，近距离观看大佛头部和手部细节。', tags: ['古栈道', '观景'] },
+                { time: '12:00', name: '凌云寺', desc: '大佛背后的古刹，香火鼎盛。', tags: ['寺庙', '祈福'] },
+                { time: '15:00', name: '乌尤寺', desc: '小众清幽，可远眺大佛全景。', tags: ['小众', '全景'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '美食探店',
+              stops: [
+                { time: '09:00', name: '乐山港码头', desc: '乘船游览，从江面看大佛全貌。', tags: ['游船', '全景'] },
+                { time: '12:00', name: '张公桥美食街', desc: '钵钵鸡、甜皮鸭、豆腐脑，乐山美食一条街。', tags: ['美食', '小吃'] },
+                { time: '14:00', name: '苏稽古镇', desc: '千年古镇，豆腐脑发源地。', tags: ['古镇', '美食'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '世界遗产', name: '乐山大佛', desc: '世界最大石刻弥勒佛，震撼人心。' },
+            { tag: '美食', name: '张公桥', desc: '乐山美食聚集地，钵钵鸡必尝。' },
+            { tag: '古镇', name: '苏稽', desc: '豆腐脑发源地，古韵悠悠。' }
+          ]
+        }
       }
-    ],
-    tags: ['火锅', '夜景', '古镇', '江景', '轻轨穿楼', '辣妹子']
-  },
-  chengdu: {
-    name: '成都',
-    sub: '天府之国 · 慢生活之都',
-    image: 'https://images.unsplash.com/photo-1598928506311-c55ez89a2cc8?w=1600&q=80',
-    days: '4-5',
-    budget: '¥2000',
-    temp: '16-26°C',
-    season: '春秋',
-    spots: [
-      {
-        tag: '萌宠',
-        title: '成都大熊猫基地',
-        desc: '全球最大熊猫保护研究机构，近距离看国宝卖萌，治愈力满分。',
-        icon: 'star'
-      },
-      {
-        tag: '古镇',
-        title: '宽窄巷子',
-        desc: '清末古街，泡桐树下的茶馆、掏耳朵的悠闲，成都生活的缩影。',
-        icon: 'castle'
-      },
-      {
-        tag: '道教',
-        title: '青城山',
-        desc: '道教名山，幽静清凉，徒步其间感受"青城天下幽"的意境。',
-        icon: 'mountain'
-      },
-      {
-        tag: '美食',
-        title: '锦里古街',
-        desc: '三国文化街，夜晚红灯笼亮起，串串、兔头、冰粉吃到撑。',
-        icon: 'view'
+    },
+    yunnan: {
+      name: '云南省',
+      subtitle: '彩云之南 · 多元秘境',
+      cover: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&q=80',
+      cities: {
+        lijiang: {
+          name: '丽江',
+          sub: '艳遇之城 · 纳西古韵',
+          image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&q=80',
+          days: '4-5',
+          budget: '¥2000',
+          temp: '12-22°C',
+          season: '全年',
+          routes: [
+            {
+              day: '第一天',
+              title: '古城初探',
+              stops: [
+                { time: '10:00', name: '丽江古城', desc: '大水车打卡，四方街闲逛，感受纳西族建筑之美。', tags: ['古城', '打卡'] },
+                { time: '14:00', name: '木府', desc: '"北有故宫南有木府"，纳西土司的皇家宫殿。', tags: ['古迹', '历史'] },
+                { time: '17:00', name: '狮子山', desc: '登万古楼，俯瞰古城全景，日落时分最美。', tags: ['观景', '日落'] },
+                { time: '20:00', name: '酒吧街', desc: '四方街旁酒吧一条街，民谣、艳遇、故事。', tags: ['夜生活', '民谣'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '玉龙雪山',
+              stops: [
+                { time: '07:00', name: '冰川公园', desc: '乘大索道直达4680米，看千年冰川。高反记得带氧气！', tags: ['雪山', '索道'] },
+                { time: '12:00', name: '蓝月谷', desc: '湖水如蓝宝石，雪山倒影绝美。', tags: ['湖景', '拍照'] },
+                { time: '15:00', name: '《印象丽江》', desc: '张艺谋导演实景演出，雪山为背景，纳西演员演绎。', tags: ['演出', '文化'] }
+              ]
+            },
+            {
+              day: '第三天',
+              title: '束河白沙',
+              stops: [
+                { time: '09:00', name: '束河古镇', desc: '比丽江古城更安静，茶马古道重要驿站。', tags: ['古镇', '清静'] },
+                { time: '14:00', name: '白沙古镇', desc: '纳西族发源地，保存完好的明清壁画。', tags: ['古迹', '壁画'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '古城', name: '丽江古城', desc: '世界遗产，小桥流水，酒吧街热闹非凡。' },
+            { tag: '雪山', name: '玉龙雪山', desc: '纳西族神山，海拔4680米冰川公园。' },
+            { tag: '古镇', name: '束河', desc: '比丽江更清静，适合发呆晒太阳。' },
+            { tag: '演出', name: '印象丽江', desc: '张艺谋导演，雪山实景演出。' }
+          ]
+        },
+        dali: {
+          name: '大理',
+          sub: '风花雪月 · 苍山洱海',
+          image: 'https://images.unsplash.com/photo-1545893835-abaa50cbe628?w=1600&q=80',
+          days: '4-5',
+          budget: '¥1800',
+          temp: '15-25°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '古城漫步',
+              stops: [
+                { time: '10:00', name: '大理古城', desc: '洋人街、人民路闲逛，文艺小店、手工艺品。', tags: ['古城', '文艺'] },
+                { time: '14:00', name: '崇圣寺三塔', desc: '大理地标，千年古塔，倒影如画。', tags: ['地标', '古迹'] },
+                { time: '18:00', name: '才村码头', desc: '洱海边看日落，金色阳光洒满湖面。', tags: ['日落', '洱海'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '环洱海骑行',
+              stops: [
+                { time: '09:00', name: '海西骑行', desc: '租电瓶车沿环海西路，田园风光，白族村落。', tags: ['骑行', '田园'] },
+                { time: '12:00', name: '喜洲古镇', desc: '白族民居，喜洲粑粑必尝。', tags: ['古镇', '美食'] },
+                { time: '14:00', name: '双廊', desc: '洱海东岸最美小镇，南诏风情岛。', tags: ['小镇', '海景'] },
+                { time: '17:00', name: '小普陀', desc: '小岛寺庙，日落时分的剪影最美。', tags: ['岛屿', '日落'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '地标', name: '崇圣寺三塔', desc: '大理地标，倒影如画。' },
+            { tag: '骑行', name: '环洱海', desc: '120公里环湖路，田园与白族村落。' },
+            { tag: '古镇', name: '喜洲', desc: '白族民居群，喜洲粑粑必尝。' },
+            { tag: '海景', name: '双廊', desc: '洱海东岸最美小镇。' }
+          ]
+        },
+        kunming: {
+          name: '昆明',
+          sub: '春城无处不飞花',
+          image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80',
+          days: '2-3',
+          budget: '¥1000',
+          temp: '15-25°C',
+          season: '全年',
+          routes: [
+            {
+              day: '第一天',
+              title: '春城初印象',
+              stops: [
+                { time: '09:00', name: '翠湖公园', desc: '冬季有红嘴鸥，夏天荷花盛开，本地人休闲首选。', tags: ['公园', '海鸥'] },
+                { time: '12:00', name: '云南大学', desc: '百年名校，银杏大道秋季绝美。', tags: ['校园', '银杏'] },
+                { time: '15:00', name: '陆军讲武堂', desc: '黄墙军校，打卡拍照圣地。', tags: ['历史', '拍照'] },
+                { time: '18:00', name: '南屏街', desc: '昆明最繁华商圈，过桥米线、汽锅鸡。', tags: ['美食', '购物'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '公园', name: '翠湖', desc: '冬季红嘴鸥，当地人休闲之地。' },
+            { tag: '校园', name: '云南大学', desc: '百年名校，银杏大道秋季绝美。' },
+            { tag: '美食', name: '南屏街', desc: '过桥米线、汽锅鸡必尝。' }
+          ]
+        },
+        xishuangbanna: {
+          name: '西双版纳',
+          sub: '热带雨林 · 傣族风情',
+          image: 'https://images.unsplash.com/photo-1506905925346-21b41842a49a?w=1600&q=80',
+          days: '4-5',
+          budget: '¥2500',
+          temp: '20-35°C',
+          season: '冬春',
+          routes: [
+            {
+              day: '第一天',
+              title: '热带雨林',
+              stops: [
+                { time: '09:00', name: '中科院植物园', desc: '中国最大的热带植物园，奇花异草。', tags: ['植物', '科普'] },
+                { time: '14:00', name: '望天树景区', desc: '空中走廊，体验直插云霄的巨型树木。', tags: ['雨林', '探险'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '傣族风情',
+              stops: [
+                { time: '09:00', name: '曼听公园', desc: '傣王御花园，有大型篝火晚会。', tags: ['公园', '晚会'] },
+                { time: '14:00', name: '傣族园', desc: '泼水节体验，傣族村寨探访。', tags: ['民族', '泼水'] },
+                { time: '19:00', name: '星光夜市', desc: '告庄西双景，网红夜市，泰国风情。', tags: ['夜市', '美食'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '自然', name: '植物园', desc: '中国最大热带植物园。' },
+            { tag: '民族', name: '傣族园', desc: '泼水节体验，傣族村寨。' },
+            { tag: '夜市', name: '星光夜市', desc: '网红夜市，泰国风情。' }
+          ]
+        }
       }
-    ],
-    tags: ['熊猫', '火锅', '茶馆', '川剧', '都江堰', '盖碗茶']
-  },
-  hangzhou: {
-    name: '杭州',
-    sub: '人间天堂 · 西湖十景',
-    image: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
-    days: '3-4',
-    budget: '¥1800',
-    temp: '15-25°C',
-    season: '春秋',
-    spots: [
-      {
-        tag: '湖景',
-        title: '西湖',
-        desc: '苏堤春晓、断桥残雪，十景如诗如画，泛舟湖上感受"淡妆浓抹总相宜"。',
-        icon: 'view'
-      },
-      {
-        tag: '茶园',
-        title: '龙井村',
-        desc: '漫山茶园，清明前后的龙井茶清香四溢，体验采茶炒茶之乐。',
-        icon: 'mountain'
-      },
-      {
-        tag: '古镇',
-        title: '乌镇',
-        desc: '江南水乡的代表，小桥流水人家，夜晚灯火阑珊如入画中。',
-        icon: 'castle'
-      },
-      {
-        tag: '寺庙',
-        title: '灵隐寺',
-        desc: '千年古刹，香火鼎盛，济公和尚的道场，在山林间静心祈福。',
-        icon: 'star'
+    },
+    zhejiang: {
+      name: '浙江省',
+      subtitle: '诗画江南 · 山水画卷',
+      cover: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
+      cities: {
+        hangzhou: {
+          name: '杭州',
+          sub: '人间天堂 · 西湖十景',
+          image: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
+          days: '3-4',
+          budget: '¥1500',
+          temp: '15-25°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '西湖环游',
+              stops: [
+                { time: '08:00', name: '断桥残雪', desc: '西湖十景之首，白娘子传说发源地。', tags: ['十景', '传说'] },
+                { time: '09:30', name: '白堤', desc: '漫步白堤，柳絮飞舞，桃红柳绿。', tags: ['步行', '春景'] },
+                { time: '11:00', name: '孤山', desc: '西湖最大岛屿，西冷印社所在地。', tags: ['岛屿', '文化'] },
+                { time: '14:00', name: '苏堤春晓', desc: '2.8公里长堤，六座单孔桥。', tags: ['十景', '骑行'] },
+                { time: '17:00', name: '雷峰塔', desc: '登塔看西湖全景，日落时分最美。', tags: ['古迹', '日落'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '灵隐茶园',
+              stops: [
+                { time: '08:00', name: '灵隐寺', desc: '千年古刹，济公和尚道场，香火鼎盛。', tags: ['寺庙', '祈福'] },
+                { time: '11:00', name: '飞来峰', desc: '奇石嶙峋，石刻造像精美。', tags: ['石窟', '古迹'] },
+                { time: '14:00', name: '龙井村', desc: '满山茶园，品正宗龙井，体验采茶炒茶。', tags: ['茶园', '体验'] },
+                { time: '17:00', name: '九溪烟树', desc: '溪水潺潺，茶园竹林，徒步避暑胜地。', tags: ['徒步', '自然'] }
+              ]
+            },
+            {
+              day: '第三天',
+              title: '水乡古镇',
+              stops: [
+                { time: '09:00', name: '乌镇', desc: '江南水乡代表，小桥流水人家。夜游最美！', tags: ['古镇', '夜景'] },
+                { time: '14:00', name: '西栅', desc: '比东栅更精致，民宿、染坊、酒坊。', tags: ['古镇', '民宿'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '湖景', name: '西湖', desc: '"淡妆浓抹总相宜"，十景如诗如画。' },
+            { tag: '寺庙', name: '灵隐寺', desc: '千年古刹，香火鼎盛。' },
+            { tag: '茶园', name: '龙井村', desc: '正宗龙井茶产地。' },
+            { tag: '古镇', name: '乌镇', desc: '江南水乡代表。' }
+          ]
+        },
+        wuzhen: {
+          name: '乌镇',
+          sub: '江南水乡 · 枕水人家',
+          image: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
+          days: '1-2',
+          budget: '¥500',
+          temp: '15-25°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '一日游',
+              title: '乌镇慢生活',
+              stops: [
+                { time: '09:00', name: '东栅', desc: '茅盾故居，老街老店，市井生活。', tags: ['老街', '人文'] },
+                { time: '13:00', name: '西栅', desc: '更精致，染坊、当铺、龙形田。', tags: ['精华', '拍照'] },
+                { time: '18:00', name: '夜游乌镇', desc: '灯笼亮起，乘摇橹船，如入画中。', tags: ['夜景', '游船'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '江南', name: '东栅', desc: '茅盾故乡，市井生活。' },
+            { tag: '夜景', name: '西栅', desc: '灯火阑珊，摇橹船。' }
+          ]
+        }
       }
-    ],
-    tags: ['西湖', '龙井', '古镇', '丝绸', '雷峰塔', '灵隐寺']
-  },
-  xian: {
-    name: '西安',
-    sub: '十三朝古都 · 丝路起点',
-    image: 'https://images.unsplash.com/photo-1591017403286-fd8493524e1e?w=1600&q=80',
-    days: '4-5',
-    budget: '¥1600',
-    temp: '12-28°C',
-    season: '春秋',
-    spots: [
-      {
-        tag: '奇迹',
-        title: '秦始皇兵马俑',
-        desc: '世界第八大奇迹，两千年前的地下军团，震撼程度无与伦比。',
-        icon: 'star'
-      },
-      {
-        tag: '城墙',
-        title: '西安城墙',
-        desc: '中国现存最完整的古代城垣，骑自行车环城一周，感受历史厚度。',
-        icon: 'castle'
-      },
-      {
-        tag: '美食',
-        title: '回民街',
-        desc: '牛羊肉泡馍、凉皮、肉夹馍、biangbiang面，吃遍西北美食。',
-        icon: 'view'
-      },
-      {
-        tag: '佛教',
-        title: '大雁塔',
-        desc: '玄奘取经归来翻译佛经之地，登塔远眺西安全景，夜景尤美。',
-        icon: 'mountain'
+    },
+    shaanxi: {
+      name: '陕西省',
+      subtitle: '十三朝古都 · 丝路起点',
+      cover: 'https://images.unsplash.com/photo-1591017403286-fd8493524e1e?w=1600&q=80',
+      cities: {
+        xian: {
+          name: '西安',
+          sub: '千年帝都 · 大唐风华',
+          image: 'https://images.unsplash.com/photo-1591017403286-fd8493524e1e?w=1600&q=80',
+          days: '4-5',
+          budget: '¥1500',
+          temp: '12-28°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '城墙与回民街',
+              stops: [
+                { time: '09:00', name: '西安城墙', desc: '骑自行车环城一周13.7公里，感受古城厚重。', tags: ['城墙', '骑行'] },
+                { time: '12:00', name: '回民街', desc: '牛羊肉泡馍、肉夹馍、凉皮，吃遍西北美食。', tags: ['美食', '小吃'] },
+                { time: '15:00', name: '钟鼓楼', desc: '西安地标，登楼远眺，看城市变迁。', tags: ['地标', '观景'] },
+                { time: '19:00', name: '大唐不夜城', desc: '夜晚灯光秀，穿越回盛唐长安。', tags: ['夜景', '唐风'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '兵马俑震撼',
+              stops: [
+                { time: '08:00', name: '兵马俑博物馆', desc: '世界第八大奇迹！提前预约门票，建议请导游讲解。', tags: ['世界奇迹', '必看'] },
+                { time: '12:00', name: '秦始皇陵', desc: '千古一帝的陵墓，神秘地宫尚在发掘。', tags: ['陵墓', '历史'] },
+                { time: '14:00', name: '华清宫', desc: '杨贵妃沐浴地，有《长恨歌》实景演出。', tags: ['温泉', '演出'] }
+              ]
+            },
+            {
+              day: '第三天',
+              title: '大雁塔与历史',
+              stops: [
+                { time: '09:00', name: '陕西历史博物馆', desc: '华夏珍宝库，提前预约！周一闭馆。', tags: ['博物馆', '珍宝'] },
+                { time: '12:00', name: '大雁塔', desc: '玄奘取经归来译经地，登塔俯瞰全城。', tags: ['古迹', '佛教'] },
+                { time: '18:00', name: '大慈恩寺', desc: '傍晚时分，塔前广场音乐喷泉。', tags: ['喷泉', '夜景'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '奇迹', name: '兵马俑', desc: '世界第八大奇迹，震撼无比。' },
+            { tag: '城墙', name: '西安城墙', desc: '中国最完整的古代城垣。' },
+            { tag: '美食', name: '回民街', desc: '牛羊肉泡馍、肉夹馍。' },
+            { tag: '唐风', name: '大唐不夜城', desc: '夜景灯光，梦回长安。' }
+          ]
+        },
+        huashan: {
+          name: '华山',
+          sub: '奇险天下第一山',
+          image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80',
+          days: '2天',
+          budget: '¥800',
+          temp: '10-25°C',
+          season: '夏秋',
+          routes: [
+            {
+              day: '一日',
+              title: '华山论剑',
+              stops: [
+                { time: '07:00', name: '北峰索道', desc: '体力不够可乘索道，挑战者从玉泉院徒步上山。', tags: ['索道', '选择'] },
+                { time: '10:00', name: '北峰', desc: '华山最矮峰，但也是绝佳观景点。', tags: ['北峰', '观景'] },
+                { time: '12:00', name: '苍龙岭', desc: '险峻栈道，两侧悬崖，心跳加速！', tags: ['险道', '挑战'] },
+                { time: '14:00', name: '金锁关', desc: '金锁锁住平安，满满的爱情锁。', tags: ['祈福', '打卡'] },
+                { time: '15:00', name: '西峰', desc: '最美落日观景点，乘索道下山最方便。', tags: ['西峰', '日落'] },
+                { time: '17:00', name: '西峰索道下山', desc: '体验长空栈道后乘索道下山。', tags: ['下山', '索道'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '险峰', name: '长空栈道', desc: '世界最险栈道，系好安全绳！' },
+            { tag: '观景', name: '西峰', desc: '最佳落日观景点。' },
+            { tag: '挑战', name: '苍龙岭', desc: '两侧悬崖，心跳加速。' }
+          ]
+        }
       }
-    ],
-    tags: ['兵马俑', '城墙', '回民街', '大雁塔', '大唐不夜城', '肉夹馍']
-  },
-  lijiang: {
-    name: '丽江',
-    sub: '艳遇之城 · 纳西古韵',
-    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&q=80',
-    days: '5-7',
-    budget: '¥2500',
-    temp: '12-22°C',
-    season: '全年',
-    spots: [
-      {
-        tag: '古城',
-        title: '丽江古城',
-        desc: '世界文化遗产，纳西族建筑精华，小桥流水配上夜晚酒吧街的热闹。',
-        icon: 'castle'
-      },
-      {
-        tag: '雪山',
-        title: '玉龙雪山',
-        desc: '纳西族神山，乘索道登顶4680米，看冰川奇观，蓝月谷如蓝宝石镶嵌。',
-        icon: 'mountain'
-      },
-      {
-        tag: '古镇',
-        title: '束河古镇',
-        desc: '比丽江古城更清静，茶马古道上的重要驿站，适合发呆晒太阳。',
-        icon: 'view'
-      },
-      {
-        tag: '表演',
-        title: '《印象·丽江》',
-        desc: '张艺谋导演的实景演出，玉龙雪山做背景，纳西族演员倾情演绎。',
-        icon: 'star'
+    },
+    guangxi: {
+      name: '广西',
+      subtitle: '山水甲天下',
+      cover: 'https://images.unsplash.com/photo-1533127057258-5b44c4b7c012?w=1600&q=80',
+      cities: {
+        guilin: {
+          name: '桂林',
+          sub: '桂林山水甲天下',
+          image: 'https://images.unsplash.com/photo-1533127057258-5b44c4b7c012?w=1600&q=80',
+          days: '3-4',
+          budget: '¥1200',
+          temp: '18-28°C',
+          season: '夏秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '漓江精华',
+              stops: [
+                { time: '08:00', name: '漓江竹筏', desc: '兴坪-九马画山段最美，白天可看20元人民币风景。', tags: ['竹筏', '精华'] },
+                { time: '14:00', name: '阳朔西街', desc: '中西合璧的小镇，酒吧、咖啡、手工艺。', tags: ['小镇', '休闲'] },
+                { time: '18:00', name: '十里画廊', desc: '骑行田园风光，傍晚时分骑电动车最惬意。', tags: ['骑行', '田园'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '溶洞与古寨',
+              stops: [
+                { time: '09:00', name: '银子岩', desc: '"游了银子岩，一世不缺钱"，溶洞奇观。', tags: ['溶洞', '奇观'] },
+                { time: '14:00', name: '遇龙河', desc: '乘竹筏漂流，比漓江更悠闲宁静。', tags: ['漂流', '悠闲'] },
+                { time: '19:00', name: '《印象刘三姐', desc: '张艺谋导演，山水实景演出。', tags: ['演出', '山水'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '精华', name: '漓江竹筏', desc: '20元人民币取景地。' },
+            { tag: '小镇', name: '阳朔西街', desc: '中西合璧，背包客天堂。' },
+            { tag: '溶洞', name: '银子岩', desc: '溶洞奇观，不缺钱。' },
+            { tag: '漂流', name: '遇龙河', desc: '比漓江更悠闲。' }
+          ]
+        },
+        yangshuo: {
+          name: '阳朔',
+          sub: '桂林山水精华',
+          image: 'https://images.unsplash.com/photo-1533127057258-5b44c4b7c012?w=1600&q=80',
+          days: '2-3',
+          budget: '¥800',
+          temp: '18-28°C',
+          season: '夏秋',
+          routes: [
+            {
+              day: '一日',
+              title: '阳朔精华',
+              stops: [
+                { time: '08:00', name: '相公山', desc: '漓江第一湾全景，日出拍摄圣地。', tags: ['日出', '全景'] },
+                { time: '11:00', name: '兴坪古镇', desc: '20元人民币背景，渔翁撒网。', tags: ['古镇', '打卡'] },
+                { time: '15:00', name: '遇龙河漂流', desc: '人工竹筏，悠闲宁静。', tags: ['漂流', '悠闲'] },
+                { time: '19:00', name: '西街夜生活', desc: '酒吧、美食、演出。', tags: ['夜生活', '美食'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '日出', name: '相公山', desc: '漓江第一湾全景。' },
+            { tag: '古镇', name: '兴坪', desc: '20元人民币背景。' },
+            { tag: '漂流', name: '遇龙河', desc: '人工竹筏悠闲。' }
+          ]
+        }
       }
-    ],
-    tags: ['古城', '雪山', '泸沽湖', '艳遇', '纳西族', '茶马古道']
-  },
-  guilin: {
-    name: '桂林',
-    sub: '山水甲天下 · 漓江画廊',
-    image: 'https://images.unsplash.com/photo-1533127057258-5b44c4b7c012?w=1600&q=80',
-    days: '3-4',
-    budget: '¥1200',
-    temp: '18-28°C',
-    season: '夏秋',
-    spots: [
-      {
-        tag: '漓江',
-        title: '漓江竹筏',
-        desc: '乘竹筏顺流而下，九马画山、黄布倒影，真正体会"桂林山水甲天下"。',
-        icon: 'view'
-      },
-      {
-        tag: '溶洞',
-        title: '芦笛岩',
-        desc: '"国宾洞"美誉，亿万年形成的喀斯特溶洞，灯光下如地下宫殿。',
-        icon: 'star'
-      },
-      {
-        tag: '梯田',
-        title: '龙脊梯田',
-        desc: '层层叠叠的稻田随季节变换色彩，少数民族村寨点缀其间，如诗如画。',
-        icon: 'mountain'
-      },
-      {
-        tag: '古镇',
-        title: '阳朔西街',
-        desc: '1400年历史的古街，中西文化交融，夜晚热闹非凡，是背包客的天堂。',
-        icon: 'castle'
+    },
+    fujian: {
+      name: '福建',
+      subtitle: '海上丝路 · 土楼古韵',
+      cover: 'https://images.unsplash.com/photo-1559682468-a6a29e7d9517?w=1600&q=80',
+      cities: {
+        xiamen: {
+          name: '厦门',
+          sub: '海上花园 · 文艺鹭岛',
+          image: 'https://images.unsplash.com/photo-1559682468-a6a29e7d9517?w=1600&q=80',
+          days: '3-4',
+          budget: '¥1500',
+          temp: '20-30°C',
+          season: '春秋冬',
+          routes: [
+            {
+              day: '第一天',
+              title: '鼓浪屿的一天',
+              stops: [
+                { time: '08:30', name: '邮轮中心乘船', desc: '提前预约！上岛后买套票参观景点。', tags: ['上岛', '准备'] },
+                { time: '10:00', name: '菽庄花园', desc: '钢琴博物馆，海景花园。', tags: ['花园', '钢琴'] },
+                { time: '12:00', name: '龙头路美食', desc: '沙茶面、鱼丸、烧肉粽。', tags: ['美食', '小吃'] },
+                { time: '14:00', name: '日光岩', desc: '鼓浪屿最高点，俯瞰全岛和厦门市区。', tags: ['观景', '必爬'] },
+                { time: '17:00', name: '最美转角', desc: '网红拍照点，傍晚光线最好。', tags: ['拍照', '打卡'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '闽南风情',
+              stops: [
+                { time: '09:00', name: '南普陀寺', desc: '闽南佛教圣地，登五老峰看厦门全景。', tags: ['寺庙', '观景'] },
+                { time: '12:00', name: '厦门大学', desc: '最美大学，需要预约入校。', tags: ['校园', '拍照'] },
+                { time: '15:00', name: '环岛路骑行', desc: '最美海岸线，阳光沙滩椰林。', tags: ['骑行', '海岸'] },
+                { time: '18:00', name: '曾厝垵', desc: '文艺小吃街，各种闽南古早味。', tags: ['美食', '文艺'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '岛屿', name: '鼓浪屿', desc: '世界遗产，万国建筑博览。' },
+            { tag: '寺庙', name: '南普陀', desc: '闽南佛教名刹。' },
+            { tag: '骑行', name: '环岛路', desc: '最美海岸线骑行。' },
+            { tag: '美食', name: '曾厝垵', desc: '闽南小吃聚集地。' }
+          ]
+        },
+        quanzhou: {
+          name: '泉州',
+          sub: '海上丝绸之路起点',
+          image: 'https://images.unsplash.com/photo-1565610038-9c0a4d2b2d1e?w=1600&q=80',
+          days: '2天',
+          budget: '¥800',
+          temp: '18-30°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '世遗之城',
+              stops: [
+                { time: '09:00', name: '开元寺', desc: '福建最大寺院，东西双塔。', tags: ['寺庙', '古迹'] },
+                { time: '12:00', name: '西街', desc: '美食小吃，泉州古城风貌。', tags: ['美食', '老街'] },
+                { time: '15:00', name: '清净寺', desc: '中国现存最古老伊斯兰教寺院。', tags: ['古迹', '多元'] },
+                { time: '17:00', name: '洛阳桥', desc: '千年古桥，日落时分最美。', tags: ['古桥', '日落'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '寺庙', name: '开元寺', desc: '福建最大寺院。' },
+            { tag: '古桥', name: '洛阳桥', desc: '千年古桥。' },
+            { tag: '老街', name: '西街', desc: '古城风貌。' }
+          ]
+        },
+        tulou: {
+          name: '土楼',
+          sub: '客家民居奇迹',
+          image: 'https://images.unsplash.com/photo-1506905925346-21b41842a49a?w=1600&q=80',
+          days: '2天',
+          budget: '¥600',
+          temp: '15-28°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '一日',
+              title: '土楼探秘',
+              stops: [
+                { time: '09:00', name: '田螺坑土楼群', desc: '"四菜一汤"，俯瞰最美土楼群。', tags: ['经典', '观景'] },
+                { time: '13:00', name: '承启楼', desc: '"土楼王"，直径最大的圆形土楼。', tags: ['最大', '必看'] },
+                { time: '16:00', name: '裕昌楼', desc: '"东歪西斜楼"，500年不倒。', tags: ['奇特', '奇迹'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '经典', name: '田螺坑', desc: '"四菜一汤"最美土楼群。' },
+            { tag: '最大', name: '承启楼', desc: '土楼王。' }
+          ]
+        }
       }
-    ],
-    tags: ['漓江', '阳朔', '象鼻山', '米粉', '梯田', '竹筏']
-  },
-  xiamen: {
-    name: '厦门',
-    sub: '海上花园 · 文艺鹭岛',
-    image: 'https://images.unsplash.com/photo-156561003熟8-9c0d4db2d1e?w=1600&q=80',
-    days: '4-5',
-    budget: '¥2000',
-    temp: '20-30°C',
-    season: '春秋冬',
-    spots: [
-      {
-        tag: '海岛',
-        title: '鼓浪屿',
-        desc: '世界遗产小岛，万国建筑博览馆，漫步小街小巷邂逅浪漫与文艺。',
-        icon: 'castle'
-      },
-      {
-        tag: '寺庙',
-        title: '南普陀寺',
-        desc: '闽南佛教胜地，香火鼎盛，后山五老峰可俯瞰厦门全景。',
-        icon: 'star'
-      },
-      {
-        tag: '沙滩',
-        title: '环岛路',
-        desc: '厦门最美的海岸线，骑行或散步，阳光沙滩椰林，感受海岛慢生活。',
-        icon: 'view'
-      },
-      {
-        tag: '美食',
-        title: '曾厝垵',
-        desc: '中国最文艺小吃街，沙茶面、花生汤、烧肉粽，各种闽南古早味吃到满足。',
-        icon: 'mountain'
+    },
+    heilongjiang: {
+      name: '黑龙江',
+      subtitle: '冰城雪乡 · 北国风光',
+      cover: 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600&q=80',
+      cities: {
+        harbin: {
+          name: '哈尔滨',
+          sub: '冰城夏都 · 俄式风情',
+          image: 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600&q=80',
+          days: '4-5',
+          budget: '¥1800',
+          temp: '-20~22°C',
+          season: '冬夏',
+          routes: [
+            {
+              day: '第一天',
+              title: '俄式风情',
+              stops: [
+                { time: '10:00', name: '中央大街', desc: '百年欧式建筑街，马迭尔冰棍必吃！', tags: ['老街', '美食'] },
+                { time: '12:00', name: '圣索菲亚教堂', desc: '洋葱头穹顶，哈尔滨地标。', tags: ['地标', '教堂'] },
+                { time: '15:00', name: '松花江', desc: '冬季可滑冰玩雪圈，夏季散步吹风。', tags: ['江边', '休闲'] },
+                { time: '19:00', name: '俄式西餐', desc: '华梅西餐厅、马迭尔西餐厅。', tags: ['美食', '俄式'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '冰雪世界',
+              stops: [
+                { time: '09:00', name: '冰雪大世界', desc: '冬季限定！傍晚开灯后最美，预算门票约300元。', tags: ['冰雕', '夜景'] },
+                { time: '14:00', name: '太阳岛雪博会', desc: '雪雕艺术，白天参观效果好。', tags: ['雪雕', '公园'] }
+              ]
+            },
+            {
+              day: '第三天',
+              title: '滑雪温泉',
+              stops: [
+                { time: '09:00', name: '亚布力滑雪场', desc: '中国最大滑雪场，初学者可请教练。', tags: ['滑雪', '运动'] },
+                { time: '16:00', name: '温泉疗愈', desc: '滑雪后泡温泉，解除疲劳。', tags: ['温泉', '休闲'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '老街', name: '中央大街', desc: '百年欧式建筑。' },
+            { tag: '教堂', name: '圣索菲亚', desc: '洋葱头地标。' },
+            { tag: '冰雪', name: '冰雪大世界', desc: '冬季限定，震撼冰雕。' },
+            { tag: '滑雪', name: '亚布力', desc: '中国最大滑雪场。' }
+          ]
+        },
+        xuexiang: {
+          name: '雪乡',
+          sub: '中国雪乡 · 童话世界',
+          image: 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600&q=80',
+          days: '2-3',
+          budget: '¥1500',
+          temp: '-30~-15°C',
+          season: '冬',
+          routes: [
+            {
+              day: '第一晚',
+              title: '雪乡童话夜',
+              stops: [
+                { time: '18:00', name: '雪乡夜景', desc: '红灯笼亮起，蘑菇房子，童话雪世界。', tags: ['夜景', '童话'] },
+                { time: '20:00', name: '东北大炕', desc: '体验火炕，吃东北铁锅炖。', tags: ['住宿', '美食'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '雪景徒步',
+              stops: [
+                { time: '07:00', name: '羊草山日出', desc: '徒步看日出，雪景震撼。', tags: ['日出', '徒步'] },
+                { time: '14:00', name: '梦幻家园', desc: '雪蘑菇、雪房子，拍照圣地。', tags: ['拍照', '雪景'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '夜景', name: '雪乡夜景', desc: '红灯笼蘑菇房。' },
+            { tag: '日出', name: '羊草山', desc: '雪景日出。' },
+            { tag: '体验', name: '东北炕', desc: '火炕体验。' }
+          ]
+        }
       }
-    ],
-    tags: ['鼓浪屿', '海岛', '沙茶面', '闽南', '骑行', '文艺']
-  },
-  harbin: {
-    name: '哈尔滨',
-    sub: '冰城夏都 · 俄式风情',
-    image: 'https://images.unsplash.com/photo-155阶梯0-d4e8-4e5e8a7b3c9d?w=1600&q=80',
-    days: '4-6',
-    budget: '¥1800',
-    temp: '-20-22°C',
-    season: '冬夏',
-    spots: [
-      {
-        tag: '建筑',
-        title: '中央大街',
-        desc: '百年欧式建筑街区，马迭尔冰棍、俄式西餐，尽显冰城异域风情。',
-        icon: 'castle'
-      },
-      {
-        tag: '教堂',
-        title: '圣索菲亚教堂',
-        desc: '远东地区最大的东正教堂，洋葱头穹顶是哈尔滨的标志性建筑。',
-        icon: 'star'
-      },
-      {
-        tag: '冰雪',
-        title: '冰雪大世界',
-        desc: '世界最大冰雪主题乐园，冰雕雪雕晶莹剔透，夜晚灯光秀如梦似幻。',
-        icon: 'mountain'
-      },
-      {
-        tag: '自然',
-        title: '太阳岛',
-        desc: '松花江畔的绿洲，夏天避暑胜地，雪博会时化身童话般的冰雪王国。',
-        icon: 'view'
+    },
+    chongqing: {
+      name: '重庆',
+      subtitle: '山城雾都 · 火锅江湖',
+      cover: 'https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80',
+      cities: {
+        chongqing: {
+          name: '重庆市区',
+          sub: '8D魔幻城市',
+          image: 'https://images.unsplash.com/photo-1537531383496-f4749b8032cf?w=1600&q=80',
+          days: '3-4',
+          budget: '¥1200',
+          temp: '18-28°C',
+          season: '春秋',
+          routes: [
+            {
+              day: '第一天',
+              title: '魔幻山城',
+              stops: [
+                { time: '10:00', name: '解放碑', desc: '重庆地标，八一路好吃街小吃。', tags: ['地标', '美食'] },
+                { time: '12:00', name: '洪崖洞', desc: '千与千寻现实版，建议傍晚看夜景！', tags: ['夜景', '必看'] },
+                { time: '15:00', name: '长江索道', desc: '乘索道过江，俯瞰两岸风光。', tags: ['索道', '观景'] },
+                { time: '19:00', name: '南滨路', desc: '看洪崖洞夜景最佳位置。', tags: ['夜景', '江景'] }
+              ]
+            },
+            {
+              day: '第二天',
+              title: '老重庆记忆',
+              stops: [
+                { time: '09:00', name: '磁器口古镇', desc: '千年古镇，茶馆泡茶、川剧变脸。', tags: ['古镇', '文化'] },
+                { time: '14:00', name: '李子坝轻轨', desc: '轻轨穿楼奇观，打卡必拍。', tags: ['奇观', '打卡'] },
+                { time: '17:00', name: '鹅岭二厂', desc: '《从你的全世界路过》取景地。', tags: ['文艺', '拍照'] },
+                { time: '19:00', name: '火锅体验', desc: '正宗重庆火锅，九宫格、毛肚必点！', tags: ['美食', '火锅'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '夜景', name: '洪崖洞', desc: '现实版千与千寻。' },
+            { tag: '古镇', name: '磁器口', desc: '千年古镇茶馆。' },
+            { tag: '奇观', name: '李子坝', desc: '轻轨穿楼。' },
+            { tag: '美食', name: '火锅', desc: '正宗重庆火锅。' }
+          ]
+        },
+        wulong: {
+          name: '武隆',
+          sub: '天生三桥 · 仙女山',
+          image: 'https://images.unsplash.com/photo-1506905925346-21b41842a49a?w=1600&q=80',
+          days: '2天',
+          budget: '¥600',
+          temp: '15-25°C',
+          season: '夏秋',
+          routes: [
+            {
+              day: '一日',
+              title: '武隆奇观',
+              stops: [
+                { time: '09:00', name: '天生三桥', desc: '《变形金刚4》取景地，天坑天生桥奇观。', tags: ['奇观', '电影'] },
+                { time: '13:00', name: '仙女山', desc: '高山草原，夏季避暑，冬天滑雪。', tags: ['草原', '避暑'] }
+              ]
+            }
+          ],
+          spots: [
+            { tag: '奇观', name: '天生三桥', desc: '《变形金刚》取景地。' },
+            { tag: '草原', name: '仙女山', desc: '高山草原避暑。' }
+          ]
+        }
       }
-    ],
-    tags: ['冰雪', '俄式', '中央大街', '圣索菲亚', '红肠', '冰灯']
+    }
   }
 };
 
-// Fix image URLs for Xiamen and Harbin
-cities.xiamen.image = 'https://images.unsplash.com/photo-1559682468-a6a29e7d9517?w=1600&q=80';
-cities.harbin.image = 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600&q=80';
-
-// ── Icon SVGs ──
-const icons = {
-  view: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
-  castle: `<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11l4-7 4 7v10M13 21V11l4-7 4 7v10"/><path d="M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>`,
-  star: `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-  mountain: `<svg viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="m4.14 15.08 2.86-2.86M15.86 15.08l-2.86-2.86"/></svg>`
-};
-
 // ── State ──
-let currentCity = 'chongqing';
+let currentProvince = null;
+let currentCity = null;
+let view = 'province'; // 'province' | 'cities' | 'city'
 
-// ── Render Cards ──
-function renderCards(cityKey) {
-  const city = cities[cityKey];
-  const grid = document.getElementById('cardGrid');
-  grid.innerHTML = city.spots.map((spot, i) => `
-    <article class="card" data-index="${i}" onclick="openModal(${i})">
-      <div class="card-img">
-        <img src="https://picsum.photos/seed/${cityKey}${i}/600/400" alt="${spot.title}" loading="lazy" />
-        <span class="card-tag">${spot.tag}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-category">景点推荐</div>
-        <h3 class="card-title">${spot.title}</h3>
-        <p class="card-desc">${spot.desc}</p>
-      </div>
-      <div class="card-footer">
-        <div class="card-meta">
-          <span>📍 ${city.name}</span>
-          <span>⭐ ${(4 + Math.random()).toFixed(1)}</span>
-        </div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </div>
-    </article>
-  `).join('');
+// ── Init Province Bar ──
+function initProvinceBar() {
+  const bar = document.getElementById('provinceBar');
+  bar.innerHTML = Object.keys(data.provinces).map(key => {
+    const p = data.provinces[key];
+    return `<div class="province-tab" data-province="${key}">${p.name}</div>`;
+  }).join('');
 }
 
-// ── Update City ──
-function updateCity(cityKey) {
-  const city = cities[cityKey];
-  const hero = document.getElementById('heroImage');
-
-  hero.style.opacity = '0';
-  hero.style.transform = 'scale(1.06)';
-
-  setTimeout(() => {
-    hero.style.backgroundImage = `url('${city.image}')`;
-    hero.style.opacity = '1';
-    hero.style.transform = 'scale(1.0)';
-    hero.classList.add('loaded');
-  }, 350);
-
-  document.getElementById('heroCityName').textContent = city.name;
-  document.getElementById('heroSub').textContent = city.sub;
-  document.getElementById('infoDays').textContent = city.days;
-  document.getElementById('infoBudget').textContent = city.budget;
-  document.getElementById('infoTemp').textContent = city.temp;
-  document.getElementById('infoSeason').textContent = city.season;
-
-  renderCards(cityKey);
+// ── Render Province Grid ──
+function renderProvinceGrid(provinceKey = null) {
+  const grid = document.getElementById('provinceGrid');
+  const title = document.getElementById('provinceTitle');
+  const subtitle = document.getElementById('provinceSubtitle');
+  
+  if (provinceKey) {
+    const p = data.provinces[provinceKey];
+    title.textContent = p.name;
+    subtitle.textContent = p.subtitle;
+    grid.innerHTML = Object.keys(p.cities).map(cityKey => {
+      const c = p.cities[cityKey];
+      return `
+        <div class="province-card" data-city="${cityKey}">
+          <div class="province-card-img">
+            <img src="${c.image}" alt="${c.name}" loading="lazy" />
+          </div>
+          <div class="province-card-body">
+            <h3 class="province-card-name">${c.name}</h3>
+            <p class="province-card-count">${c.sub}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } else {
+    title.textContent = '探索中国';
+    subtitle.textContent = '选择省份 · 发现美景';
+    grid.innerHTML = Object.keys(data.provinces).map(key => {
+      const p = data.provinces[key];
+      const cityCount = Object.keys(p.cities).length;
+      return `
+        <div class="province-card" data-province="${key}">
+          <div class="province-card-img">
+            <img src="${p.cover}" alt="${p.name}" loading="lazy" />
+          </div>
+          <div class="province-card-body">
+            <h3 class="province-card-name">${p.name}</h3>
+            <p class="province-card-count">${cityCount} 个城市</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
-// ── Tabs ──
-document.getElementById('cityTabs').addEventListener('click', e => {
+// ── Click Handlers ──
+document.getElementById('provinceGrid').addEventListener('click', e => {
+  const card = e.target.closest('.province-card');
+  if (!card) return;
+  
+  if (card.dataset.province && !currentProvince) {
+    // Click on province -> show cities
+    selectProvince(card.dataset.province);
+  } else if (card.dataset.city && currentProvince) {
+    // Click on city -> show city detail
+    selectCity(card.dataset.city);
+  }
+});
+
+document.getElementById('provinceBar').addEventListener('click', e => {
+  const tab = e.target.closest('.province-tab');
+  if (!tab) return;
+  document.querySelectorAll('.province-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  selectProvince(tab.dataset.province);
+});
+
+document.getElementById('cityBar').addEventListener('click', e => {
   const tab = e.target.closest('.city-tab');
   if (!tab) return;
   document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
-  currentCity = tab.dataset.city;
-  updateCity(currentCity);
+  selectCity(tab.dataset.city);
 });
 
-// ── Modal ──
-function openModal(index) {
-  const city = cities[currentCity];
-  const spot = city.spots[index];
+// ── Select Province ──
+function selectProvince(key) {
+  currentProvince = key;
+  currentCity = null;
+  view = 'cities';
+  
+  const p = data.provinces[key];
+  document.getElementById('provinceBar').querySelectorAll('.province-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.province === key);
+  });
+  
+  // Show city bar
+  const cityBar = document.getElementById('cityBar');
+  cityBar.innerHTML = Object.keys(p.cities).map(cityKey => {
+    return `<div class="city-tab" data-city="${cityKey}">${p.cities[cityKey].name}</div>`;
+  }).join('');
+  cityBar.classList.add('visible');
+  
+  // Render cities
+  renderProvinceGrid(key);
+  updateBreadcrumb();
+}
 
-  document.getElementById('modalImg').src = `https://picsum.photos/seed/${currentCity}${index}/800/400`;
-  document.getElementById('modalTag').textContent = spot.tag;
-  document.getElementById('modalTitle').textContent = spot.title;
-  document.getElementById('modalSubtitle').textContent = spot.desc;
-  document.getElementById('modalSpots').innerHTML = `
-    <li class="modal-spot">
-      <div class="spot-icon">${icons[spot.icon] || icons.view}</div>
-      <div class="spot-info">
-        <h4>${spot.title}</h4>
-        <p>${spot.desc}</p>
-      </div>
-    </li>
-    <li class="modal-spot">
-      <div class="spot-icon">${icons.view}</div>
-      <div class="spot-info">
-        <h4>游览建议</h4>
-        <p>建议游玩时长2-3小时，上午前往可避开人流高峰，拍照效果最佳。春季和秋季天气舒适，是最佳游览季节。</p>
-      </div>
-    </li>
+// ── Select City ──
+function selectCity(key) {
+  currentCity = key;
+  view = 'city';
+  
+  const city = data.provinces[currentProvince].cities[key];
+  
+  // Update city bar tabs
+  document.getElementById('cityBar').querySelectorAll('.city-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.city === key);
+  });
+  
+  // Show city view
+  document.getElementById('provinceView').style.display = 'none';
+  document.getElementById('cityView').classList.add('visible');
+  
+  // Render city
+  renderCity(city);
+  updateBreadcrumb();
+}
+
+// ── Render City ──
+function renderCity(city) {
+  // Hero
+  document.getElementById('cityHeroImg').style.backgroundImage = `url('${city.image}')`;
+  document.getElementById('cityHeroName').textContent = city.name;
+  document.getElementById('cityHeroSub').textContent = city.sub;
+  
+  // Info grid
+  document.getElementById('infoGrid').innerHTML = `
+    <div class="info-item"><div class="info-value">${city.days}</div><div class="info-label">建议天数</div></div>
+    <div class="info-item"><div class="info-value">${city.budget}</div><div class="info-label">人均预算</div></div>
+    <div class="info-item"><div class="info-value">${city.temp}</div><div class="info-label">最佳温度</div></div>
+    <div class="info-item"><div class="info-value">${city.season}</div><div class="info-label">推荐季节</div></div>
   `;
-  document.getElementById('modalTags').innerHTML = city.tags.map(t =>
-    `<span class="modal-tag-pill">${t}</span>`
-  ).join('');
-
-  document.getElementById('modalBackdrop').classList.add('open');
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  
+  // Routes
+  const routesContainer = document.getElementById('routesContainer');
+  routesContainer.innerHTML = city.routes.map(route => `
+    <div class="route-card" data-day="${route.day}">
+      <h3 class="route-card-title">${route.title}</h3>
+      <div class="route-timeline">
+        ${route.stops.map(stop => `
+          <div class="route-stop">
+            <div class="route-stop-dot"></div>
+            <div class="route-stop-content">
+              <div class="route-stop-time">${stop.time}</div>
+              <h4>${stop.name}</h4>
+              <p>${stop.desc}</p>
+              <div class="route-stop-tags">
+                ${stop.tags.map(t => `<span class="route-stop-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  
+  // Spots
+  document.getElementById('spotsGrid').innerHTML = city.spots.map((spot, i) => `
+    <div class="spot-card">
+      <div class="spot-img">
+        <img src="https://picsum.photos/seed/${currentProvince}${currentCity}${i}/400/300" alt="${spot.name}" loading="lazy" />
+      </div>
+      <div class="spot-body">
+        <div class="spot-tag">${spot.tag}</div>
+        <h4 class="spot-name">${spot.name}</h4>
+        <p class="spot-desc">${spot.desc}</p>
+      </div>
+    </div>
+  `).join('');
 }
 
-function closeModal() {
-  document.getElementById('modalBackdrop').classList.remove('open');
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow = '';
+// ── Breadcrumb ──
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  let html = '<span onclick="goHome()">中国</span>';
+  
+  if (currentProvince) {
+    html += '<span class="sep">›</span>';
+    html += `<span onclick="goProvince()">${data.provinces[currentProvince].name}</span>`;
+  }
+  
+  if (currentCity) {
+    html += '<span class="sep">›</span>';
+    html += `<span class="current">${data.provinces[currentProvince].cities[currentCity].name}</span>`;
+  }
+  
+  bc.innerHTML = html;
 }
 
-document.getElementById('modalBackdrop').addEventListener('click', closeModal);
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function goHome() {
+  currentProvince = null;
+  currentCity = null;
+  view = 'province';
+  
+  document.getElementById('provinceBar').querySelectorAll('.province-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('cityBar').classList.remove('visible');
+  document.getElementById('provinceView').style.display = 'block';
+  document.getElementById('cityView').classList.remove('visible');
+  
+  renderProvinceGrid();
+  updateBreadcrumb();
+}
+
+function goProvince() {
+  if (!currentProvince) return;
+  currentCity = null;
+  view = 'cities';
+  
+  document.getElementById('provinceView').style.display = 'block';
+  document.getElementById('cityView').classList.remove('visible');
+  renderProvinceGrid(currentProvince);
+  updateBreadcrumb();
+}
 
 // ── Init ──
-renderCards(currentCity);
+initProvinceBar();
+renderProvinceGrid();
 </script>
 </body>
 </html>
