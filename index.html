@@ -3,3030 +3,429 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>漫游中国 · 专业旅游攻略</title>
+  <title>漫游中国 · 省市区景区三级旅游攻略</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f7f3ee;
-      --ink: #1a1209;
-      --ink-light: #7a6a5a;
-      --accent: #c0632a;
-      --accent-soft: #e8a87c;
-      --paper: #fffaf5;
-      --border: #e2d8cf;
-      --shadow: rgba(26,18,9,0.10);
-      --shadow-deep: rgba(26,18,9,0.22);
-      --success: #2a9d63;
-      --warning: #e6a23c;
-      --danger: #d9534f;
-      --radius: 8px;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'Nunito', 'Noto Serif SC', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(247,243,238,0.95);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-    }
-
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      color: var(--ink);
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .logo em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--ink-light);
-    }
-
-    .breadcrumb span {
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .breadcrumb span:hover { color: var(--accent); }
-    .breadcrumb .sep { color: var(--border); cursor: default; }
-    .breadcrumb .current { color: var(--ink); font-weight: 500; }
-
-    /* Home View */
-    .home-view {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 48px 24px;
-    }
-
-    .home-hero {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .home-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 300;
-      color: var(--ink);
-      margin-bottom: 12px;
-    }
-
-    .home-subtitle {
-      font-size: 14px;
-      color: var(--ink-light);
-      letter-spacing: 0.15em;
-    }
-
-    .city-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    .city-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .city-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px var(--shadow-deep);
-    }
-
-    .city-card-img {
-      height: 160px;
-      overflow: hidden;
-    }
-
-    .city-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-
-    .city-card:hover .city-card-img img {
-      transform: scale(1.05);
-    }
-
-    .city-card-body {
-      padding: 16px;
-    }
-
-    .city-card-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .city-card-meta {
-      font-size: 12px;
-      color: var(--ink-light);
-      display: flex;
-      gap: 12px;
-    }
-
-    /* Guide View */
-    .guide-view {
-      display: none;
-    }
-
-    .guide-view.visible {
-      display: block;
-    }
-
-    .guide-hero {
-      position: relative;
-      height: 40vh;
-      min-height: 300px;
-      overflow: hidden;
-    }
-
-    .guide-hero-img {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .guide-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(26,18,9,0.2) 0%, rgba(26,18,9,0.7) 100%);
-    }
-
-    .guide-hero-text {
-      position: absolute;
-      bottom: 32px;
-      left: 0;
-      right: 0;
-      padding: 0 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .guide-hero-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 6vw, 56px);
-      font-weight: 300;
-      color: var(--paper);
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .guide-hero-sub {
-      font-size: 14px;
-      color: rgba(255,250,245,0.8);
-      letter-spacing: 0.1em;
-    }
-
-    /* Steps Navigation */
-    .steps-nav {
-      position: sticky;
-      top: 53px;
-      z-index: 90;
-      background: var(--paper);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-    }
-
-    .steps-nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      gap: 4px;
-      overflow-x: auto;
-      padding: 8px 0;
-    }
-
-    .step-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: 24px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-light);
-      background: transparent;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-
-    .step-btn:hover {
-      background: rgba(192,99,42,0.08);
-      color: var(--ink);
-    }
-
-    .step-btn.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-
-    .step-num {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .step-btn.active .step-num {
-      background: rgba(255,255,255,0.25);
-    }
-
-    /* Guide Content */
-    .guide-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-
-    .step-section {
-      display: none;
-    }
-
-    .step-section.visible {
-      display: block;
-    }
-
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title::before {
-      content: '';
-      width: 4px;
-      height: 28px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    .section-desc {
-      font-size: 14px;
-      color: var(--ink-light);
-      margin-bottom: 24px;
-      padding-left: 16px;
-    }
-
-    /* Step 1: Basic Info */
-    .info-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .info-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .info-card-icon {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
-    .info-card-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 400;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .info-card-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-light);
-    }
-
-    .preference-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .pref-tag {
-      padding: 6px 14px;
-      background: rgba(192,99,42,0.1);
-      color: var(--accent);
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    /* Step 2: Spots Filter */
-    .filter-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .filter-tab {
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--paper);
-      color: var(--ink-light);
-      transition: all 0.2s;
-    }
-
-    .filter-tab.must { border-color: var(--success); color: var(--success); }
-    .filter-tab.optional { border-color: var(--warning); color: var(--warning); }
-    .filter-tab.avoid { border-color: var(--danger); color: var(--danger); }
-
-    .filter-tab.active.must { background: var(--success); color: white; }
-    .filter-tab.active.optional { background: var(--warning); color: white; }
-    .filter-tab.active.avoid { background: var(--danger); color: white; }
-
-    .spots-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .spot-item {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-
-    .spot-rank {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .spot-item.must .spot-rank { background: var(--success); }
-    .spot-item.optional .spot-rank { background: var(--warning); }
-    .spot-item.avoid .spot-rank { background: var(--danger); }
-
-    .spot-content {
-      flex: 1;
-    }
-
-    .spot-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .spot-name {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .spot-badge {
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 10px;
-      font-weight: 600;
-    }
-
-    .spot-badge.must { background: rgba(42,157,99,0.15); color: var(--success); }
-    .spot-badge.optional { background: rgba(230,162,60,0.15); color: var(--warning); }
-    .spot-badge.avoid { background: rgba(217,83,79,0.15); color: var(--danger); }
-
-    .spot-desc {
-      font-size: 13px;
-      color: var(--ink-light);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    .spot-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      font-size: 12px;
-      color: var(--ink-light);
-    }
-
-    .spot-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .spot-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-    }
-
-    .spot-tag {
-      padding: 3px 10px;
-      background: var(--bg);
-      border-radius: 12px;
-      font-size: 10px;
-      color: var(--ink-light);
-    }
-
-    /* Step 3: Daily Schedule */
-    .day-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .day-header {
-      background: linear-gradient(135deg, var(--accent) 0%, #a85220 100%);
-      color: white;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .day-title {
-      font-size: 18px;
-      font-weight: 500;
-    }
-
-    .day-theme {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
-    .day-timeline {
-      padding: 20px;
-    }
-
-    .timeline-item {
-      display: flex;
-      gap: 16px;
-      padding-bottom: 20px;
-      position: relative;
-    }
-
-    .timeline-item:not(:last-child)::before {
-      content: '';
-      position: absolute;
-      left: 28px;
-      top: 36px;
-      bottom: 0;
-      width: 2px;
-      background: var(--border);
-    }
-
-    .timeline-time {
-      width: 56px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent);
-      flex-shrink: 0;
-      padding-top: 6px;
-    }
-
-    .timeline-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--accent);
-      margin-top: 8px;
-      flex-shrink: 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .timeline-content {
-      flex: 1;
-      background: var(--bg);
-      border-radius: 8px;
-      padding: 12px 16px;
-    }
-
-    .timeline-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .timeline-desc {
-      font-size: 12px;
-      color: var(--ink-light);
-      line-height: 1.5;
-    }
-
-    .timeline-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .timeline-tag {
-      padding: 2px 8px;
-      background: rgba(192,99,42,0.1);
-      color: var(--accent);
-      border-radius: 10px;
-      font-size: 10px;
-    }
-
-    /* Step 4: Food & Stay */
-    .subsection {
-      margin-bottom: 32px;
-    }
-
-    .subsection-title {
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .food-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .food-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .food-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .food-type {
-      font-size: 11px;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .food-desc {
-      font-size: 12px;
-      color: var(--ink-light);
-      line-height: 1.5;
-      margin-bottom: 8px;
-    }
-
-    .food-meta {
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
-      color: var(--ink-light);
-    }
-
-    .food-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      background: var(--success);
-      color: white;
-      border-radius: 10px;
-      font-size: 10px;
-      margin-right: 8px;
-    }
-
-    .food-badge.warning {
-      background: var(--danger);
-    }
-
-    .stay-section {
-      margin-top: 24px;
-    }
-
-    .stay-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .stay-area {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .stay-reason {
-      font-size: 13px;
-      color: var(--ink-light);
-      line-height: 1.6;
-    }
-
-    .transport-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-
-    .transport-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .transport-desc {
-      font-size: 12px;
-      color: var(--ink-light);
-      line-height: 1.5;
-    }
-
-    /* Step 5: Checklist */
-    .checklist-section {
-      margin-bottom: 32px;
-    }
-
-    .checklist-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .checklist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
-    }
-
-    .checklist-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 13px;
-    }
-
-    .checklist-checkbox {
-      width: 18px;
-      height: 18px;
-      border: 2px solid var(--border);
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .checklist-checkbox.checked {
-      background: var(--success);
-      border-color: var(--success);
-      color: white;
-    }
-
-    .checklist-checkbox.checked::after {
-      content: '✓';
-      font-size: 12px;
-    }
-
-    .tips-card {
-      background: rgba(217,83,79,0.05);
-      border: 1px solid rgba(217,83,79,0.2);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .tips-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--danger);
-      margin-bottom: 8px;
-    }
-
-    .tips-list {
-      list-style: none;
-    }
-
-    .tips-list li {
-      font-size: 12px;
-      color: var(--ink-light);
-      line-height: 1.6;
-      padding: 4px 0;
-      padding-left: 16px;
-      position: relative;
-    }
-
-    .tips-list li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: var(--danger);
-    }
-
-    .budget-table {
-      width: 100%;
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 16px;
-    }
-
-    .budget-row {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .budget-row:last-child {
-      border-bottom: none;
-    }
-
-    .budget-row.total {
-      background: var(--accent);
-      color: white;
-      font-weight: 600;
-    }
-
-    .budget-label {
-      flex: 1;
-      padding: 12px 16px;
-      font-size: 13px;
-    }
-
-    .budget-value {
-      width: 120px;
-      padding: 12px 16px;
-      text-align: right;
-      font-size: 13px;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 40px 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer p {
-      font-size: 12px;
-      font-weight: 300;
-      color: var(--ink-light);
-      letter-spacing: 0.08em;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header-inner { padding: 12px 0; }
-      .home-view { padding: 24px 16px; }
-      .guide-hero { height: 30vh; min-height: 220px; }
-      .guide-content { padding: 24px 16px 60px; }
-      .steps-nav { top: 50px; }
-      .step-btn { padding: 8px 12px; font-size: 12px; }
-      .step-btn span:last-child { display: none; }
-      .spot-item { flex-direction: column; }
-      .spot-rank { margin-bottom: 12px; }
-      .info-cards { grid-template-columns: repeat(2, 1fr); }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#faf8f5;--ink:#1c1814;--ink-light:#7a7068;--accent:#c84b2f;--accent-soft:#f4a582;--accent-light:#fdf0ec;--paper:#fff;--border:#ede8e0;--border-light:#f5f1eb;--shadow:rgba(28,24,20,0.08);--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--radius:10px;--radius-lg:16px}
+    body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:'Noto Serif SC',serif}
+    .header{background:var(--paper);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .header-logo{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:none;letter-spacing:1px}
+    .header-logo span{font-weight:300;color:var(--ink-light);font-size:12px;display:block;letter-spacing:2px}
+    .hero{background:linear-gradient(135deg,#1c1814 0%,#3d2a1e 50%,#c84b2f 100%);color:#fff;padding:80px 24px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23fff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+    .hero h1{font-size:42px;font-weight:700;margin-bottom:12px;position:relative}
+    .hero p{font-size:16px;opacity:.85;max-width:500px;margin:0 auto;position:relative;font-weight:300}
+    .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:32px;position:relative;flex-wrap:wrap}
+    .hero-stat{text-align:center}
+    .hero-stat-num{font-size:28px;font-weight:700;font-family:'Noto Serif SC',serif}
+    .hero-stat-label{font-size:12px;opacity:.7;margin-top:2px}
+    .hero-tabs{display:flex;justify-content:center;gap:8px;margin-top:32px;position:relative;flex-wrap:wrap}
+    .hero-tab{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);padding:8px 20px;border-radius:24px;font-size:13px;cursor:pointer;transition:all .2s}
+    .hero-tab:hover,.hero-tab.active{background:#fff;color:var(--accent);border-color:#fff}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .section{padding:48px 0}
+    .section-title{font-size:24px;font-weight:600;margin-bottom:6px}
+    .section-sub{color:var(--ink-light);font-size:14px;margin-bottom:28px}
+    .breadcrumb{padding:12px 0;font-size:13px;color:var(--ink-light);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .breadcrumb a,.breadcrumb span{color:var(--ink-light);text-decoration:none;cursor:pointer;transition:color .2s}
+    .breadcrumb a:hover{color:var(--accent)}
+    .breadcrumb .sep{color:var(--border)}
+    .breadcrumb .current{color:var(--accent);font-weight:500}
+    .region-group{margin-bottom:48px}
+    .region-label{font-size:13px;color:var(--ink-light);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+    .region-label::after{content:'';flex:1;height:1px;background:var(--border)}
+    .province-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+    .province-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
+    .province-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--shadow);transform:translateY(-2px)}
+    .province-card.coming-soon{opacity:.55;cursor:default}
+    .province-card.coming-soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
+    .province-card-name{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:600;margin-bottom:4px}
+    .province-card-meta{font-size:12px;color:var(--ink-light)}
+    .province-card-badge{position:absolute;top:12px;right:12px;background:var(--accent-light);color:var(--accent);font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+    .province-card-soon{position:absolute;top:12px;right:12px;background:var(--border-light);color:var(--ink-light);font-size:10px;padding:2px 8px;border-radius:10px}
+    .city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .city-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .25s ease}
+    .city-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--shadow);transform:translateY(-2px)}
+    .city-card-img{height:160px;background-size:cover;background-position:center;position:relative}
+    .city-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .city-card-body{padding:16px}
+    .city-card-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;margin-bottom:4px}
+    .city-card-desc{font-size:13px;color:var(--ink-light);margin-bottom:12px;line-height:1.5}
+    .city-card-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;display:inline-block}
+    .tag-gray{background:var(--border-light);color:var(--ink-light)}
+    .spot-list{display:flex;flex-direction:column;gap:12px}
+    .spot-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .2s ease;display:flex;gap:16px;align-items:flex-start}
+    .spot-card:hover{border-color:var(--accent);box-shadow:0 4px 16px var(--shadow)}
+    .spot-card-img{width:120px;height:90px;border-radius:8px;object-fit:cover;flex-shrink:0}
+    .spot-card-info{flex:1;min-width:0}
+    .spot-card-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .spot-card-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600}
+    .spot-card-level{background:#ffd700;color:#7a6000;font-size:10px;padding:1px 6px;border-radius:6px;font-weight:600}
+    .spot-card-desc{font-size:13px;color:var(--ink-light);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .spot-card-meta{display:flex;gap:16px;font-size:12px;color:var(--ink-light);flex-wrap:wrap}
+    .spot-card-arrow{color:var(--border);font-size:20px;align-self:center;flex-shrink:0}
+    .spot-detail{padding-bottom:80px}
+    .spot-hero{height:300px;background-size:cover;background-position:center;border-radius:var(--radius-lg);position:relative;margin-bottom:24px}
+    .spot-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,.7));border-radius:0 0 var(--radius-lg) var(--radius-lg);color:#fff}
+    .spot-hero-name{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;margin-bottom:6px}
+    .spot-hero-sub{font-size:14px;opacity:.85}
+    .spot-hero-back{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s}
+    .spot-hero-back:hover{background:#fff}
+    .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+    .info-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+    .info-card-icon{font-size:24px;margin-bottom:8px}
+    .info-card-label{font-size:11px;color:var(--ink-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .info-card-value{font-size:15px;font-weight:600;line-height:1.4}
+    .guide-hero{padding:32px 0 16px}
+    .guide-hero h2{font-size:24px;margin-bottom:6px}
+    .guide-hero p{color:var(--ink-light);font-size:14px;margin-bottom:16px}
+    .guide-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--border-light);padding:4px;border-radius:10px;width:fit-content;flex-wrap:wrap}
+    .guide-tab{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink-light);transition:all .2s}
+    .guide-tab:hover{color:var(--accent)}
+    .guide-tab.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px var(--shadow)}
+    .schedule-day{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+    .schedule-day-header{background:linear-gradient(135deg,var(--accent),#e8602c);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+    .schedule-day-title{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600}
+    .schedule-day-theme{font-size:12px;opacity:.85}
+    .schedule-items{padding:16px 20px}
+    .schedule-item{display:flex;gap:14px;padding:8px 0;border-bottom:1px dashed var(--border-light)}
+    .schedule-item:last-child{border-bottom:none}
+    .schedule-item-time{font-size:12px;color:var(--accent);font-weight:600;min-width:48px;padding-top:2px}
+    .schedule-item-info{flex:1}
+    .schedule-item-title{font-weight:600;font-size:14px;margin-bottom:2px}
+    .schedule-item-desc{font-size:13px;color:var(--ink-light)}
+    .spot-section{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+    .spot-section-title{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--accent);display:flex;align-items:center;gap:8px}
+    .transport-reason{font-size:13px;color:var(--ink-light);margin-bottom:12px;padding:10px;background:var(--border-light);border-radius:8px;line-height:1.6}
+    .transport-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .transport-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:var(--bg)}
+    .transport-card-title{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .transport-row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px;border-bottom:1px dashed var(--border-light);color:var(--ink-light)}
+    .transport-row:last-child{border-bottom:none}
+    .transport-row strong{color:var(--ink);font-weight:600}
+    .transport-row .val{color:var(--accent);font-weight:600}
+    .food-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--border-light)}
+    .food-item:last-child{border-bottom:none}
+    .food-item-name{font-weight:600;font-size:14px}
+    .food-item-desc{font-size:12px;color:var(--ink-light)}
+    .food-item-price{color:var(--accent);font-weight:600;font-size:13px;white-space:nowrap;margin-left:12px}
+    .tip-item{display:flex;gap:10px;padding:8px 0;font-size:14px}
+    .tip-icon{flex-shrink:0;width:20px;height:20px;background:var(--warning);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:2px}
+    .tip-item.warning .tip-icon{background:var(--danger)}
+    .tip-item.good .tip-icon{background:var(--success)}
+    .view{display:none}
+    .view.active{display:block;animation:fadeIn .3s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .more-soon{text-align:center;padding:48px;color:var(--ink-light);font-size:14px}
+    .rec-badge{background:var(--success);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    .no-rec-badge{background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    @media(max-width:768px){
+      .hero h1{font-size:28px}
+      .hero-stats{gap:24px}
+      .hero-stat-num{font-size:22px}
+      .province-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+      .city-card-img{height:140px}
+      .spot-card{flex-direction:column}
+      .spot-card-img{width:100%;height:160px}
+      .spot-hero{height:220px}
+      .info-cards{grid-template-columns:repeat(2,1fr)}
+      .transport-grid{grid-template-columns:1fr}
+      .header-nav{display:none}
+      .spot-hero-name{font-size:22px}
+      .guide-tabs{width:100%}
+      .guide-tab{flex:1;text-align:center;padding:8px 10px;font-size:12px}
     }
   </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <a class="logo" onclick="goHome()">漫游中国<em>·</em></a>
-    <div class="breadcrumb" id="breadcrumb"></div>
-  </div>
-</header>
+<div class="header">
+  <div class="header-logo" onclick="goHome()">漫游中国<span>省 · 市 · 景区 三级攻略</span></div>
+  <div class="header-nav"><a href="#">景点</a><a href="#">美食</a><a href="#">交通</a><a href="#">关于</a></div>
+</div>
 
 <!-- Home View -->
-<section class="home-view" id="homeView">
-  <div class="home-hero">
-    <h1 class="home-title">专业旅游攻略</h1>
-    <p class="home-subtitle">选择目的地 · 五步规划 · 轻松出行</p>
-  </div>
-  <div class="city-grid" id="cityGrid"></div>
-</section>
-
-<!-- Guide View -->
-<section class="guide-view" id="guideView">
-  <div class="guide-hero">
-    <div class="guide-hero-img" id="guideHeroImg"></div>
-    <div class="guide-hero-overlay"></div>
-    <div class="guide-hero-text">
-      <h1 class="guide-hero-name" id="guideHeroName"></h1>
-      <p class="guide-hero-sub" id="guideHeroSub"></p>
+<div id="homeView" class="view active">
+  <div class="hero">
+    <h1>漫游中国</h1>
+    <p>23省 · 景区攻略 · 交通指南 · 多日行程</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">23</div><div class="hero-stat-label">省份</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">200+</div><div class="hero-stat-label">城市</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">景区</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3-30</div><div class="hero-stat-label">天可选</div></div>
+    </div>
+    <div class="hero-tabs">
+      <div class="hero-tab active" onclick="showRegion('all')">全部</div>
+      <div class="hero-tab" onclick="showRegion('east')">华东</div>
+      <div class="hero-tab" onclick="showRegion('south')">华南</div>
+      <div class="hero-tab" onclick="showRegion('north')">华北</div>
+      <div class="hero-tab" onclick="showRegion('southwest')">西南</div>
+      <div class="hero-tab" onclick="showRegion('northwest')">西北</div>
+      <div class="hero-tab" onclick="showRegion('northeast')">东北</div>
+      <div class="hero-tab" onclick="showRegion('central')">华中</div>
     </div>
   </div>
-
-  <nav class="steps-nav">
-    <div class="steps-nav-inner" id="stepsNav"></div>
-  </nav>
-
-  <div class="guide-content">
-    <!-- Step 1: Basic Info -->
-    <section class="step-section" id="step1">
-      <h2 class="section-title">基础信息</h2>
-      <p class="section-desc">先定固定条件，后面所有内容围绕它选择</p>
-      <div class="info-cards" id="basicInfo"></div>
-      <h3 class="subsection-title">🎯 适合人群</h3>
-      <div class="preference-tags" id="preferenceTags"></div>
-    </section>
-
-    <!-- Step 2: Spots Filter -->
-    <section class="step-section" id="step2">
-      <h2 class="section-title">景点筛选</h2>
-      <p class="section-desc">只挑精华，就近组团，避免来回折返跑</p>
-      <div class="filter-tabs" id="filterTabs">
-        <div class="filter-tab must active" data-filter="must">必去景点</div>
-        <div class="filter-tab optional" data-filter="optional">可选景点</div>
-        <div class="filter-tab avoid" data-filter="avoid">避雷提醒</div>
-      </div>
-      <div class="spots-list" id="spotsList"></div>
-    </section>
-
-    <!-- Step 3: Daily Schedule -->
-    <section class="step-section" id="step3">
-      <h2 class="section-title">每日行程</h2>
-      <p class="section-desc">不走回头路，同一区域景点放同一天</p>
-      <div id="dailySchedule"></div>
-    </section>
-
-    <!-- Step 4: Food & Stay -->
-    <section class="step-section" id="step4">
-      <h2 class="section-title">吃住行清单</h2>
-      <p class="section-desc">详细清单，有备选方案</p>
-
-      <div class="subsection">
-        <h3 class="subsection-title">🍜 美食推荐</h3>
-        <div class="food-grid" id="foodList"></div>
-      </div>
-
-      <div class="subsection stay-section">
-        <h3 class="subsection-title">🏨 住宿建议</h3>
-        <div id="stayList"></div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-title">🚗 交通指南</h3>
-        <div id="transportList"></div>
-      </div>
-    </section>
-
-    <!-- Step 5: Checklist -->
-    <section class="step-section" id="step5">
-      <h2 class="section-title">备忘清单</h2>
-      <p class="section-desc">出行前的最后检查</p>
-
-      <div class="tips-card">
-        <div class="tips-title">⚠️ 避坑提醒</div>
-        <ul class="tips-list" id="avoidTips"></ul>
-      </div>
-
-      <div class="checklist-section">
-        <h3 class="checklist-title">📋 证件类</h3>
-        <div class="checklist-grid" id="checkDocs"></div>
-      </div>
-
-      <div class="checklist-section">
-        <h3 class="checklist-title">👔 衣物类</h3>
-        <div class="checklist-grid" id="checkClothes"></div>
-      </div>
-
-      <div class="checklist-section">
-        <h3 class="checklist-title">🎒 日用品</h3>
-        <div class="checklist-grid" id="checkDaily"></div>
-      </div>
-
-      <div class="checklist-section">
-        <h3 class="checklist-title">💊 药品</h3>
-        <div class="checklist-grid" id="checkMeds"></div>
-      </div>
-
-      <div class="checklist-section">
-        <h3 class="checklist-title">📱 电子设备</h3>
-        <div class="checklist-grid" id="checkElectronics"></div>
-      </div>
-
-      <h3 class="subsection-title" style="margin-top: 32px;">💰 预算明细</h3>
-      <div class="budget-table" id="budgetTable"></div>
-    </section>
+  <div class="container">
+    <div class="section">
+      <div class="section-title">选择您的目的地</div>
+      <div class="section-sub">点击省份 → 城市 → 景区，深入了解每个景点的开放时间、交通攻略和多日行程</div>
+      <div class="region-group" data-region="north"><div class="region-label">华北地区</div><div class="province-grid" id="northProvinces"></div></div>
+      <div class="region-group" data-region="northeast"><div class="region-label">东北地区</div><div class="province-grid" id="northeastProvinces"></div></div>
+      <div class="region-group" data-region="east"><div class="region-label">华东地区</div><div class="province-grid" id="eastProvinces"></div></div>
+      <div class="region-group" data-region="central"><div class="region-label">华中地区</div><div class="province-grid" id="centralProvinces"></div></div>
+      <div class="region-group" data-region="south"><div class="region-label">华南地区</div><div class="province-grid" id="southProvinces"></div></div>
+      <div class="region-group" data-region="southwest"><div class="region-label">西南地区</div><div class="province-grid" id="southwestProvinces"></div></div>
+      <div class="region-group" data-region="northwest"><div class="region-label">西北地区</div><div class="province-grid" id="northwestProvinces"></div></div>
+    </div>
   </div>
-</section>
+</div>
 
-<footer class="footer">
-  <p>漫游中国 · 专业旅游攻略 &nbsp;·&nbsp; 五步规划轻松出行</p>
-</footer>
+<!-- Province View -->
+<div id="provinceView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="provinceBreadcrumb"></div>
+    <div class="section">
+      <div class="section-title" id="provinceTitle"></div>
+      <div class="section-sub" id="provinceDesc"></div>
+      <div class="city-grid" id="cityGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- City View -->
+<div id="cityView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="cityBreadcrumb"></div>
+    <div class="section">
+      <div class="section-title" id="cityTitle"></div>
+      <div class="section-sub" id="cityDesc"></div>
+      <div class="spot-list" id="spotList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Spot Detail View -->
+<div id="spotView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="spotBreadcrumb"></div>
+    <div class="spot-detail">
+      <div class="spot-hero" id="spotHero">
+        <button class="spot-hero-back" onclick="goBack()">←</button>
+        <div class="spot-hero-overlay">
+          <div class="spot-hero-name" id="spotHeroName"></div>
+          <div class="spot-hero-sub" id="spotHeroSub"></div>
+        </div>
+      </div>
+      <div class="info-cards" id="infoCards"></div>
+      <div class="guide-hero">
+        <h2 id="guideTitle"></h2>
+        <p id="guideSub"></p>
+      </div>
+      <div class="guide-tabs" id="guideTabs">
+        <button class="guide-tab active" onclick="switchGuide('3-7')">🗓️ 3-7天攻略</button>
+        <button class="guide-tab" onclick="switchGuide('7-15')">🌍 7-15天攻略</button>
+        <button class="guide-tab" onclick="switchGuide('30')">✈️ 30天深度游</button>
+      </div>
+      <div id="scheduleList"></div>
+      <div class="spot-section"><div class="spot-section-title">🚌 交通攻略</div><div id="transportContent"></div></div>
+      <div class="spot-section"><div class="spot-section-title">🍜 周边美食</div><div id="foodContent"></div></div>
+      <div class="spot-section"><div class="spot-section-title">💡 实用贴士</div><div id="tipsContent"></div></div>
+    </div>
+  </div>
+</div>
 
 <script>
-// ── City Data ──
-const cities = {
-  chengdu: {
-    name: '成都',
-    subtitle: '天府之国 · 慢生活之都',
-    image: 'https://images.unsplash.com/photo-1598928506311-c55ez89a2cc8?w=1600&q=80',
-    basic: {
-      days: '4-5天',
-      budget: '2000-3000元',
-      season: '3-6月 / 9-11月',
-      temp: '15-25°C',
-      transport: '高铁/飞机',
-      crowd: '情侣/闺蜜/家庭'
-    },
-    preferences: ['打卡拍照', '美食探店', '悠闲躺平', '古镇人文'],
-    spots: {
-      must: [
-        { name: '成都大熊猫繁育基地', desc: '全球最大熊猫保护基地，看国宝卖萌。建议早上8点前到达，熊猫最活跃时段。', time: '3-4小时', cost: '55元', tags: ['亲子必去', '早上最佳'] },
-        { name: '宽窄巷子', desc: '清末古街，茶馆、掏耳朵、川剧变脸。建议傍晚去，灯笼亮起氛围更好。', time: '2-3小时', cost: '免费', tags: ['必打卡', '傍晚'] },
-        { name: '武侯祠', desc: '三国圣地，刘备诸葛亮君臣合祀祠庙。红墙夹道拍照绝美。', time: '2小时', cost: '50元', tags: ['三国文化', '拍照'] },
-        { name: '锦里古街', desc: '三国文化街，红灯笼、小吃一条街。晚上比白天好看。', time: '2小时', cost: '免费', tags: ['夜景', '小吃'] }
-      ],
-      optional: [
-        { name: '人民公园', desc: '本地人休闲地，相亲角、茶馆。适合体验成都慢生活。', time: '1-2小时', cost: '免费', tags: ['悠闲', '茶馆'] },
-        { name: '春熙路/太古里', desc: '成都最繁华商圈，购物美食。IFS熊猫屁股打卡。', time: '2-3小时', cost: '免费', tags: ['购物', '美食'] },
-        { name: '九眼桥酒吧街', desc: '夜生活聚集地，民谣、清吧、火锅。', time: '2-3小时', cost: '人均100+', tags: ['夜生活', '酒吧'] }
-      ],
-      avoid: [
-        { name: '景区门口的熊猫公仔', desc: '质量差价格贵，不如去基地买正版。', tags: ['购物陷阱'] },
-        { name: '锦里的高价小吃', desc: '比外面贵一倍，建议只逛不吃。', tags: ['价格虚高'] },
-        { name: '路边拉客的一日游', desc: '低价团各种购物点，浪费时间。', tags: ['低价团坑'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '抵达 · 市区初探',
-        items: [
-          { time: '14:00', title: '入住酒店', desc: '建议住春熙路/太古里附近，交通便利' },
-          { time: '16:00', title: '宽窄巷子', desc: '漫步清末古街，掏耳朵、品盖碗茶' },
-          { time: '19:00', title: '锦里古街', desc: '夜景红灯笼，小吃一条街，兔头必尝' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '熊猫 · 市区精华',
-        items: [
-          { time: '07:30', title: '大熊猫基地', desc: '早起！8点是熊猫最活跃时段' },
-          { time: '12:00', title: '春熙路午餐', desc: 'IFS熊猫打卡，太古里逛吃' },
-          { time: '15:00', title: '人民公园', desc: '鹤鸣茶社喝茶，体验成都慢生活' },
-          { time: '18:00', title: '九眼桥', desc: '民谣酒吧，火锅，夜生活' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '周边一日游',
-        items: [
-          { time: '08:00', title: '青城山', desc: '道教名山，前山看道观，索道上下' },
-          { time: '13:00', title: '都江堰', desc: '千年水利工程，鱼嘴飞沙堰宝瓶口' },
-          { time: '17:00', title: '南桥夜景', desc: '蓝眼泪般的灯光，网红打卡' }
-        ]
-      },
-      {
-        day: 'Day 4',
-        theme: '人文 · 返程',
-        items: [
-          { time: '09:00', title: '武侯祠', desc: '三国圣地，红墙夹道拍照' },
-          { time: '12:00', title: '午餐+购物', desc: '最后采购特产，准备返程' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '龙抄手', type: '小吃', desc: '成都名小吃，红油抄手、钟水饺。', price: '20-30元' },
-        { name: '担担面', type: '小吃', desc: '麻辣鲜香，小面馆比大店好吃。', price: '15-25元' },
-        { name: '钵钵鸡', type: '小吃', desc: '冷锅串串，乐山风味。', price: '40-60元' },
-        { name: '成都火锅', type: '正餐', desc: '九宫格、毛肚、鸭肠必点。', price: '人均100+' }
-      ],
-      shops: [
-        { name: '陈麻婆豆腐', desc: '百年老店，麻婆豆腐发源地。', price: '人均50元', badge: '本地人推荐' },
-        { name: '盘飧市', desc: '卤味老字号，排队也要吃。', price: '人均40元', badge: '本地人推荐' },
-        { name: '蜀九香火锅', desc: '成都火锅代表，味道正宗。', price: '人均100元', badge: '必吃' }
-      ],
-      avoid: [
-        { name: '锦里小吃街', desc: '价格翻倍，味道一般', badge: '避雷', isWarning: true }
-      ]
-    },
-    stay: [
-      { area: '春熙路/太古里', reason: '市中心，交通方便，购物美食集中。预算300-500元/晚。' },
-      { area: '宽窄巷子附近', reason: '老城区氛围好，民宿多。预算200-400元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '双流机场/天府机场→市区：地铁10号线/18号线，约30分钟。高铁：成都东站，地铁可达市区。' },
-      { title: '市内交通', desc: '地铁为主，覆盖主要景点。打车起步价8元，高峰期易堵。' },
-      { title: '青城山/都江堰', desc: '城际高铁：成都→青城山30分钟，→都江堰20分钟。景区有接驳车。' }
-    ],
-    tips: [
-      '熊猫基地门票提前1天在公众号预约，现场买贵10元',
-      '景区周边"免费拍照"都是套路，最后要收费',
-      '出租车司机推荐的火锅店大多有回扣',
-      '春熙路、太古里可逛可买，但别买特产',
-      '早晚温差大，带件薄外套'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证(优惠)', '健康码/核酸(如需)'],
-      clothes: ['薄外套', '舒适鞋子', '防晒衣'],
-      daily: ['充电宝', '雨伞', '纸巾', '水杯'],
-      meds: ['肠胃药', '创可贴', '感冒药'],
-      electronics: ['手机', '充电器', '相机(可选)']
-    },
-    budget: [
-      { label: '交通', value: '500元' },
-      { label: '住宿(4晚)', value: '800元' },
-      { label: '门票', value: '200元' },
-      { label: '餐饮', value: '500元' },
-      { label: '特产/纪念品', value: '200元' },
-      { label: '备用金', value: '300元' },
-      { label: '合计', value: '2500元' }
-    ]
-  },
-  lijiang: {
-    name: '丽江',
-    subtitle: '艳遇之城 · 纳西古韵',
-    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&q=80',
-    basic: {
-      days: '4-5天',
-      budget: '2500-3500元',
-      season: '全年',
-      temp: '12-22°C',
-      transport: '飞机',
-      crowd: '情侣/闺蜜/独行'
-    },
-    preferences: ['古镇人文', '雪山风光', '文艺打卡', '悠闲躺平'],
-    spots: {
-      must: [
-        { name: '丽江古城', desc: '大水车、四方街、酒吧街。建议住一晚客栈，感受古城早晚。', time: '1-2天', cost: '古城维护费50元', tags: ['必住', '夜景'] },
-        { name: '玉龙雪山', desc: '纳西族神山，冰川公园4680米。提前预约大索道票！', time: '1天', cost: '索道180元', tags: ['必去', '高反预警'] },
-        { name: '蓝月谷', desc: '湖水如蓝宝石，雪山倒影绝美。包含在雪山门票内。', time: '2小时', cost: '含雪山门票', tags: ['拍照', '免费'] }
-      ],
-      optional: [
-        { name: '束河古镇', desc: '比丽江古城更安静，适合发呆晒太阳。', time: '半天', cost: '30元', tags: ['清静', '古镇'] },
-        { name: '白沙古镇', desc: '纳西族发源地，明清壁画。更原始更小众。', time: '2小时', cost: '30元', tags: ['小众', '壁画'] },
-        { name: '《印象丽江》', desc: '张艺谋导演实景演出，雪山为背景。', time: '1小时', cost: '280元', tags: ['演出', '文化'] }
-      ],
-      avoid: [
-        { name: '酒吧街高价酒水', desc: '一瓶啤酒动辄50+，不建议消费。', tags: ['价格虚高'] },
-        { name: '拉市海骑马', desc: '各种隐形消费，体验一般。', tags: ['性价比低'] },
-        { name: '古城"艳遇"套路', desc: '酒托饭托多，保持警惕。', tags: ['骗局'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '古城初探',
-        items: [
-          { time: '14:00', title: '入住古城客栈', desc: '建议住古城内，感受早晚氛围' },
-          { time: '16:00', title: '大水车/四方街', desc: '古城地标打卡' },
-          { time: '19:00', title: '酒吧街', desc: '民谣、故事，但不建议高消费' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '雪山一日',
-        items: [
-          { time: '07:00', title: '出发玉龙雪山', desc: '提前预约大索道！旺季需抢票' },
-          { time: '09:00', title: '冰川公园', desc: '4680米，带氧气瓶！' },
-          { time: '12:00', title: '蓝月谷', desc: '湖景拍照，雪山倒影' },
-          { time: '15:00', title: '《印象丽江》', desc: '实景演出，震撼' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '古镇慢生活',
-        items: [
-          { time: '10:00', title: '束河古镇', desc: '比古城更安静，晒太阳发呆' },
-          { time: '14:00', title: '白沙古镇', desc: '纳西族发源地，壁画古迹' },
-          { time: '18:00', title: '返回古城', desc: '晚餐、闲逛' }
-        ]
-      },
-      {
-        day: 'Day 4',
-        theme: '古城慢时光',
-        items: [
-          { time: '09:00', title: '木府', desc: '"北有故宫南有木府"' },
-          { time: '12:00', title: '狮子山', desc: '万古楼看古城全景' },
-          { time: '15:00', title: '自由活动', desc: '购物、发呆、返程准备' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '丽江粑粑', type: '小吃', desc: '酥油茶配粑粑，当地早餐。', price: '10-15元' },
-        { name: '鸡豆凉粉', type: '小吃', desc: '丽江特色，黑凉粉。', price: '15-20元' },
-        { name: '腊排骨火锅', type: '正餐', desc: '纳西族特色，汤鲜味美。', price: '人均80元' }
-      ],
-      shops: [
-        { name: '阿妈意', desc: '纳西菜老店，腊排骨必点。', price: '人均70元', badge: '本地人推荐' }
-      ],
-      avoid: [
-        { name: '酒吧街酒水', desc: '价格虚高，酒托多', badge: '避雷', isWarning: true }
-      ]
-    },
-    stay: [
-      { area: '古城内客栈', reason: '感受古城早晚，氛围好。但行李要拖进古城。预算200-500元/晚。' },
-      { area: '古城外酒店', reason: '交通便利，设施好。适合行李多的游客。预算300-600元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '丽江三义机场→古城：机场大巴20元，打车80元。高铁站→古城：打车30元。' },
-      { title: '市内交通', desc: '古城内步行，外围打车。去雪山可拼车或报团。' },
-      { title: '玉龙雪山', desc: '可在古城购买一日游，含接送和门票。或自己拼车前往。' }
-    ],
-    tips: [
-      '古城维护费50元，部分客栈会代收',
-      '玉龙雪山大索道票旺季需提前抢，或找客栈代订',
-      '高反因人而异，建议提前备氧气瓶(古城买便宜)',
-      '古城石板路，不建议拖行李箱',
-      '早晚温差大，带厚外套'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证(优惠)', '雪山预约码'],
-      clothes: ['厚外套', '舒适鞋(石板路)', '防晒衣'],
-      daily: ['充电宝', '雨伞', '防晒霜', '氧气瓶'],
-      meds: ['高反药', '肠胃药', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '800元' },
-      { label: '住宿(4晚)', value: '1000元' },
-      { label: '门票', value: '500元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产/纪念品', value: '300元' },
-      { label: '备用金', value: '300元' },
-      { label: '合计', value: '3300元' }
-    ]
-  },
-  xian: {
-    name: '西安',
-    subtitle: '千年帝都 · 大唐风华',
-    image: 'https://images.unsplash.com/photo-1591017403286-fd8493524e1e?w=1600&q=80',
-    basic: {
-      days: '4-5天',
-      budget: '1500-2500元',
-      season: '3-5月 / 9-11月',
-      temp: '12-28°C',
-      transport: '高铁/飞机',
-      crowd: '家庭/情侣/历史迷'
-    },
-    preferences: ['历史人文', '美食探店', '打卡拍照', '博物馆'],
-    spots: {
-      must: [
-        { name: '兵马俑', desc: '世界第八大奇迹！建议请导游讲解，提前预约门票。', time: '3-4小时', cost: '120元', tags: ['必看', '世界遗产'] },
-        { name: '西安城墙', desc: '中国最完整古代城垣。骑行一周13.7公里，约1.5小时。', time: '2-3小时', cost: '54元', tags: ['骑行', '日落'] },
-        { name: '大唐不夜城', desc: '夜景灯光秀，穿越回盛唐。晚上去！', time: '2-3小时', cost: '免费', tags: ['夜景', '免费'] },
-        { name: '回民街', desc: '美食一条街，牛羊肉泡馍、肉夹馍、凉皮。', time: '2小时', cost: '免费', tags: ['美食', '小吃'] }
-      ],
-      optional: [
-        { name: '陕西历史博物馆', desc: '华夏珍宝库！免费但需提前预约，周一闭馆。', time: '3小时', cost: '免费/30元', tags: ['博物馆', '必预约'] },
-        { name: '大雁塔', desc: '玄奘译经地，登塔俯瞰全城。', time: '2小时', cost: '40元', tags: ['古迹', '观景'] },
-        { name: '华清宫', desc: '杨贵妃沐浴地，《长恨歌》实景演出。', time: '半天', cost: '120元', tags: ['温泉', '演出'] }
-      ],
-      avoid: [
-        { name: '回民街主街高价小吃', desc: '往小巷子里走，更便宜更好吃。', tags: ['价格虚高'] },
-        { name: '兵马俑路边拉客', desc: '说是"便宜票"都是假的，官方渠道买。', tags: ['假票'] },
-        { name: '华清宫"温泉体验"', desc: '大多是小池子，不如酒店泡澡。', tags: ['性价比低'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '城墙 · 回民街',
-        items: [
-          { time: '14:00', title: '入住酒店', desc: '建议住钟楼/回民街附近' },
-          { time: '16:00', title: '西安城墙', desc: '南门上，骑行一周，看日落' },
-          { time: '19:00', title: '回民街', desc: '牛羊肉泡馍、肉夹馍' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '兵马俑震撼',
-        items: [
-          { time: '08:00', title: '出发兵马俑', desc: '地铁+公交，或报一日团' },
-          { time: '10:00', title: '兵马俑博物馆', desc: '请导游讲解，震撼无比' },
-          { time: '14:00', title: '华清宫', desc: '杨贵妃沐浴地，可选看《长恨歌》' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '博物馆 · 大雁塔',
-        items: [
-          { time: '09:00', title: '陕西历史博物馆', desc: '提前预约！免费票难抢，可买收费展' },
-          { time: '13:00', title: '大雁塔', desc: '登塔观景，塔前广场音乐喷泉' },
-          { time: '18:00', title: '大唐不夜城', desc: '夜景灯光，梦回长安' }
-        ]
-      },
-      {
-        day: 'Day 4',
-        theme: '市区漫游',
-        items: [
-          { time: '09:00', title: '钟鼓楼', desc: '地标建筑，登楼观景' },
-          { time: '12:00', title: '自由活动/返程', desc: '购物特产，准备返程' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '牛羊肉泡馍', type: '正餐', desc: '西安代表美食，自己掰馍才地道。', price: '30-50元' },
-        { name: '肉夹馍', type: '小吃', desc: '陕西汉堡，腊汁肉夹馍最经典。', price: '15-20元' },
-        { name: '凉皮', type: '小吃', desc: '麻酱凉皮、擀面皮都好吃。', price: '10-15元' },
-        { name: 'Biangbiang面', type: '正餐', desc: '陕西特色宽面，辣子多才香。', price: '20-30元' }
-      ],
-      shops: [
-        { name: '老孙家泡馍', desc: '百年老店，泡馍发源地。', price: '人均50元', badge: '老字号' },
-        { name: '樊记肉夹馍', desc: '本地人排队，味道正宗。', price: '人均25元', badge: '本地人推荐' }
-      ],
-      avoid: [
-        { name: '回民街主街店铺', desc: '往小巷走，大皮院、西羊市更好', badge: '避雷', isWarning: true }
-      ]
-    },
-    stay: [
-      { area: '钟楼/回民街附近', reason: '市中心，交通便利，美食集中。预算200-400元/晚。' },
-      { area: '大雁塔附近', reason: '靠近大唐不夜城，夜景美。预算250-500元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '咸阳机场→市区：机场大巴25元，地铁14号线。高铁：西安北站，地铁2号线到钟楼。' },
-      { title: '市内交通', desc: '地铁覆盖主要景点，公交便宜但慢。打车起步价9元。' },
-      { title: '兵马俑', desc: '地铁9号线到华清池，转公交或打车。或报一日游团，省心。' }
-    ],
-    tips: [
-      '兵马俑、陕西历史博物馆都要提前预约！',
-      '回民街不要只走主街，往小巷子走更地道',
-      '城墙骑行建议下午去，看日落',
-      '博物馆周一闭馆，注意安排',
-      '西安地铁很方便，下载"西安电子地铁通"'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证(半价)', '预约码'],
-      clothes: ['薄外套', '舒适鞋(骑行)', '防晒'],
-      daily: ['充电宝', '雨伞', '纸巾'],
-      meds: ['肠胃药', '创可贴', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '400元' },
-      { label: '住宿(4晚)', value: '800元' },
-      { label: '门票', value: '250元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '2250元' }
-    ]
-  },
-  hangzhou: {
-    name: '杭州',
-    subtitle: '人间天堂 · 西湖十景',
-    image: 'https://images.unsplash.com/photo-1598887142487-3c854d51eabb?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1500-2000元',
-      season: '3-5月 / 9-11月',
-      temp: '15-25°C',
-      transport: '高铁',
-      crowd: '情侣/家庭/文艺青年'
-    },
-    preferences: ['湖光山色', '古镇人文', '茶园体验', '悠闲漫步'],
-    spots: {
-      must: [
-        { name: '西湖', desc: '"淡妆浓抹总相宜"，断桥、苏堤、雷峰塔。建议骑行+步行环湖。', time: '1天', cost: '免费', tags: ['必去', '免费'] },
-        { name: '灵隐寺', desc: '千年古刹，济公和尚道场。香火鼎盛，祈福灵验。', time: '2-3小时', cost: '75元', tags: ['寺庙', '祈福'] },
-        { name: '龙井村', desc: '满山茶园，品正宗龙井。可体验采茶炒茶。', time: '2-3小时', cost: '免费', tags: ['茶园', '体验'] }
-      ],
-      optional: [
-        { name: '乌镇', desc: '江南水乡代表，小桥流水人家。夜游最美！', time: '1天', cost: '150元', tags: ['古镇', '夜景'] },
-        { name: '九溪烟树', desc: '溪水潺潺，茶园竹林。徒步避暑胜地。', time: '半天', cost: '免费', tags: ['徒步', '自然'] },
-        { name: '河坊街', desc: '杭州老街，小吃特产。热闹但商业化。', time: '2小时', cost: '免费', tags: ['老街', '小吃'] }
-      ],
-      avoid: [
-        { name: '西湖边的"免费导游"', desc: '带你去买茶叶丝绸，拿回扣。', tags: ['购物陷阱'] },
-        { name: '灵隐寺外的"香火摊"', desc: '寺内有免费赠香，外面买的贵且不灵。', tags: ['价格虚高'] },
-        { name: '河坊街高价小吃', desc: '比外面贵，看看就好。', tags: ['性价比低'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '西湖环游',
-        items: [
-          { time: '09:00', title: '断桥残雪', desc: '西湖十景之首' },
-          { time: '10:00', title: '白堤漫步', desc: '柳絮飞舞，桃红柳绿' },
-          { time: '12:00', title: '孤山/楼外楼', desc: '西湖醋鱼发源地' },
-          { time: '14:00', title: '苏堤骑行', desc: '2.8公里长堤，租自行车' },
-          { time: '17:00', title: '雷峰塔', desc: '登塔看西湖全景日落' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '灵隐茶园',
-        items: [
-          { time: '08:00', title: '灵隐寺', desc: '千年古刹，早点去人少' },
-          { time: '11:00', title: '飞来峰', desc: '奇石嶙峋，石刻造像' },
-          { time: '14:00', title: '龙井村', desc: '品茶、采茶体验' },
-          { time: '17:00', title: '九溪烟树', desc: '徒步茶园竹林' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '乌镇一日',
-        items: [
-          { time: '09:00', title: '出发乌镇', desc: '高铁或大巴，约1.5小时' },
-          { time: '10:30', title: '东栅/西栅', desc: '西栅更精致，建议住一晚' },
-          { time: '18:00', title: '夜游乌镇', desc: '灯火阑珊，摇橹船' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '西湖醋鱼', type: '正餐', desc: '杭州代表菜，酸甜口。', price: '100元+' },
-        { name: '东坡肉', type: '正餐', desc: '肥而不腻，入口即化。', price: '50元+' },
-        { name: '龙井虾仁', type: '正餐', desc: '茶香与虾鲜的完美结合。', price: '80元+' },
-        { name: '片儿川', type: '小吃', desc: '杭州面食，笋片肉片。', price: '20-30元' }
-      ],
-      shops: [
-        { name: '楼外楼', desc: '西湖醋鱼发源地，老字号。', price: '人均150元', badge: '必吃' },
-        { name: '知味观', desc: '杭州小吃大全，小笼包必点。', price: '人均50元', badge: '本地人推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '西湖边', reason: '风景好，步行游湖。但价格高。预算400-800元/晚。' },
-      { area: '市中心/武林广场', reason: '交通便利，购物方便。预算250-500元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '萧山机场→市区：机场大巴20元，地铁1号线。高铁：杭州东站，地铁可达市区。' },
-      { title: '市内交通', desc: '地铁+公交+共享单车。西湖边建议骑行或步行。' },
-      { title: '乌镇', desc: '高铁到桐乡站，转公交K282到乌镇。或从杭州坐大巴直达。' }
-    ],
-    tips: [
-      '西湖免费，但游船收费',
-      '灵隐寺外香火贵，寺内有免费赠香',
-      '龙井村买茶要砍价，或直接去茶庄',
-      '周末西湖人多，建议工作日去',
-      '乌镇夜游票便宜，下午4点后入园'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['薄外套', '舒适鞋', '防晒衣'],
-      daily: ['充电宝', '雨伞', '水杯'],
-      meds: ['肠胃药', '创可贴'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '300元' },
-      { label: '住宿(3晚)', value: '750元' },
-      { label: '门票', value: '200元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产', value: '150元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '2000元' }
-    ]
-  },
-  xiamen: {
-    name: '厦门',
-    subtitle: '海上花园 · 文艺鹭岛',
-    image: 'https://images.unsplash.com/photo-1559682468-a6a29e7d9517?w=1600?q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1500-2000元',
-      season: '10-4月',
-      temp: '18-28°C',
-      transport: '飞机/高铁',
-      crowd: '情侣/闺蜜/文艺青年'
-    },
-    preferences: ['海岛度假', '文艺打卡', '美食探店', '悠闲漫步'],
-    spots: {
-      must: [
-        { name: '鼓浪屿', desc: '万国建筑博览，钢琴之岛。建议住一晚，感受清晨傍晚。', time: '1天', cost: '船票35元', tags: ['必去', '住一晚'] },
-        { name: '南普陀寺', desc: '闽南佛教圣地，登五老峰看厦门全景。', time: '2-3小时', cost: '免费', tags: ['寺庙', '免费'] },
-        { name: '环岛路骑行', desc: '最美海岸线，阳光沙滩椰林。', time: '2-3小时', cost: '租车30元', tags: ['骑行', '海岸'] }
-      ],
-      optional: [
-        { name: '厦门大学', desc: '最美大学，需要预约入校。芙蓉隧道拍照打卡。', time: '2小时', cost: '免费', tags: ['校园', '拍照'] },
-        { name: '曾厝垵', desc: '文艺小吃街，各种闽南小吃。', time: '2小时', cost: '免费', tags: ['美食', '文艺'] },
-        { name: '沙坡尾', desc: '老港区文艺改造，拍照好看。', time: '1-2小时', cost: '免费', tags: ['文艺', '拍照'] }
-      ],
-      avoid: [
-        { name: '鼓浪屿上的"野导游"', desc: '带你去消费拿回扣，不必跟团。', tags: ['购物陷阱'] },
-        { name: '曾厝垵的海鲜排档', desc: '价格不透明，容易被宰。', tags: ['价格陷阱'] },
-        { name: '珍珠奶茶店"免费试喝"', desc: '试了就让你买，价格虚高。', tags: ['推销套路'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '鼓浪屿一日',
-        items: [
-          { time: '08:30', title: '乘船上岛', desc: '提前买票！从邮轮中心出发' },
-          { time: '10:00', title: '菽庄花园', desc: '钢琴博物馆，海景花园' },
-          { time: '12:00', title: '龙头路午餐', desc: '沙茶面、鱼丸' },
-          { time: '14:00', title: '日光岩', desc: '最高点俯瞰全岛' },
-          { time: '17:00', title: '最美转角', desc: '傍晚拍照光线最好' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '厦门精华',
-        items: [
-          { time: '09:00', title: '南普陀寺', desc: '闽南名刹，免费赠香' },
-          { time: '12:00', title: '厦门大学', desc: '提前预约！最美校园' },
-          { time: '15:00', title: '环岛路骑行', desc: '海岸线最美公路' },
-          { time: '18:00', title: '曾厝垵', desc: '小吃街，晚餐' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '文艺漫步',
-        items: [
-          { time: '10:00', title: '沙坡尾', desc: '老港区文艺改造' },
-          { time: '12:00', title: '中山路', desc: '老街购物，特产' },
-          { time: '15:00', title: '返程', desc: '或继续自由活动' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '沙茶面', type: '小吃', desc: '厦门特色，汤头浓郁。', price: '20-30元' },
-        { name: '土笋冻', type: '小吃', desc: '海鲜冻，本地人最爱。', price: '15-25元' },
-        { name: '海蛎煎', type: '小吃', desc: '闽南经典，香脆可口。', price: '20-30元' },
-        { name: '花生汤', type: '甜品', desc: '黄则和花生汤最出名。', price: '10元' }
-      ],
-      shops: [
-        { name: '黄则和', desc: '花生汤、沙茶面，中山路老店。', price: '人均30元', badge: '必吃' },
-        { name: '乌糖沙茶面', desc: '本地人排队，味道正宗。', price: '人均35元', badge: '本地人推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '鼓浪屿客栈', reason: '感受岛上清晨傍晚，但要拖行李上岛。预算200-500元/晚。' },
-      { area: '中山路/曾厝垵', reason: '市区方便，美食集中。预算180-400元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '高崎机场→市区：机场大巴15元，打车50元。高铁：厦门站/厦门北站，地铁可达市区。' },
-      { title: '鼓浪屿', desc: '从邮轮中心厦鼓码头乘船，35元往返。旺季需提前买票！' },
-      { title: '市内交通', desc: '公交发达，打车便宜。环岛路可租电动车或自行车。' }
-    ],
-    tips: [
-      '鼓浪屿船票旺季需提前买！现场买不到',
-      '南普陀寺免费赠香，外面不用买',
-      '厦门大学需提前在公众号预约',
-      '曾厝垵小吃多但贵，看看就好',
-      '防晒必备！海边紫外线强'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '鼓浪屿船票'],
-      clothes: ['薄衫', '泳衣(可选)', '防晒衣', '拖鞋'],
-      daily: ['充电宝', '防晒霜', '墨镜', '沙滩巾'],
-      meds: ['肠胃药', '晒伤药', '创可贴'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '400元' },
-      { label: '住宿(3晚)', value: '600元' },
-      { label: '门票', value: '100元' },
-      { label: '餐饮', value: '350元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '1850元' }
-    ]
-  },
-  beijing: {
-    name: '北京',
-    subtitle: '帝都风华 · 千年古都',
-    image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&q=80',
-    basic: {
-      days: '4-5天',
-      budget: '2000-3000元',
-      season: '4-6月 / 9-11月',
-      temp: '12-26°C',
-      transport: '飞机/高铁',
-      crowd: '家庭/历史迷/文艺青年'
-    },
-    preferences: ['历史人文', '博物馆', '文艺打卡', '胡同美食'],
-    spots: {
-      must: [
-        { name: '故宫博物院', desc: '明清皇宫，世界最大宫殿建筑群。需提前10天预约！', time: '半天', cost: '60元', tags: ['必去', '提前预约'] },
-        { name: '长城(八达岭)', desc: '不到长城非好汉。建议早7点前到，避开人流。', time: '半天', cost: '40元', tags: ['必去', '世界遗产'] },
-        { name: '天安门广场', desc: '看升旗仪式需凌晨3点排队，震撼难忘。', time: '1-2小时', cost: '免费', tags: ['必打卡', '升旗'] },
-        { name: '颐和园', desc: '皇家园林，昆明湖万寿山。建议租船游湖。', time: '3小时', cost: '30元', tags: ['皇家园林', '游船'] }
-      ],
-      optional: [
-        { name: '天坛', desc: '明清祭天场所，祈年殿地标建筑。', time: '2小时', cost: '15元', tags: ['古建', '公园'] },
-        { name: '南锣鼓巷', desc: '北京最古老街区，胡同、小吃、文艺店。', time: '2小时', cost: '免费', tags: ['胡同', '小吃'] },
-        { name: '798艺术区', desc: '工厂改造艺术区，拍照打卡圣地。', time: '2-3小时', cost: '免费', tags: ['文艺', '拍照'] }
-      ],
-      avoid: [
-        { name: '南锣鼓巷主街小吃', desc: '价格贵味道一般，往胡同深处走。', tags: ['价格虚高'] },
-        { name: '长城一日游低价团', desc: '强制购物，浪费时间。', tags: ['低价团坑'] },
-        { name: '故宫门口的"导游"', desc: '官方讲解在入口处租借，不要信路边。', tags: ['黑导游'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '故宫 · 天安门',
-        items: [
-          { time: '05:00', title: '天安门升旗', desc: '提前查升旗时间，3点到排队' },
-          { time: '08:30', title: '故宫', desc: '提前预约！午门进，神武门出' },
-          { time: '14:00', title: '景山公园', desc: '俯瞰故宫全景' },
-          { time: '16:00', title: '王府井', desc: '小吃街、购物' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '长城一日',
-        items: [
-          { time: '06:30', title: '出发八达岭', desc: '早去避人流！S2线或旅游公交' },
-          { time: '09:00', title: '登长城', desc: '好汉坡、烽火台' },
-          { time: '13:00', title: '返回市区', desc: '午餐、休息' },
-          { time: '16:00', title: '鸟巢/水立方', desc: '奥运场馆，夜景' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '皇家园林',
-        items: [
-          { time: '09:00', title: '颐和园', desc: '昆明湖、长廊、佛香阁' },
-          { time: '13:00', title: '圆明园', desc: '西洋楼遗址' },
-          { time: '17:00', title: '清华大学', desc: '提前预约入校' }
-        ]
-      },
-      {
-        day: 'Day 4',
-        theme: '胡同文化',
-        items: [
-          { time: '09:00', title: '天坛', desc: '祈年殿、回音壁' },
-          { time: '12:00', title: '南锣鼓巷', desc: '胡同、小吃' },
-          { time: '15:00', title: '后海/什刹海', desc: '酒吧街、胡同游' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '北京烤鸭', type: '正餐', desc: '全聚德、大董、便宜坊。', price: '人均150元' },
-        { name: '炸酱面', type: '小吃', desc: '老北京家常面，配菜丰富。', price: '20-30元' },
-        { name: '卤煮火烧', type: '小吃', desc: '老北京味道，小肠陈最出名。', price: '25元' },
-        { name: '豆汁焦圈', type: '小吃', desc: '北京独特早餐，有人爱有人怕。', price: '10元' }
-      ],
-      shops: [
-        { name: '四季民福烤鸭', desc: '故宫店可边看故宫边吃。', price: '人均120元', badge: '必吃' },
-        { name: '姚记炒肝', desc: '鼓楼老店，炒肝配包子。', price: '人均25元', badge: '本地人推荐' }
-      ],
-      avoid: [
-        { name: '王府井小吃街', desc: '贵且不地道，看看就好', badge: '避雷', isWarning: true }
-      ]
-    },
-    stay: [
-      { area: '王府井/东单', reason: '市中心，交通便利。预算400-800元/晚。' },
-      { area: '前门/大栅栏', reason: '老北京氛围，胡同客栈多。预算250-500元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '首都机场/大兴机场→市区：机场大巴25元，地铁机场线25元。高铁：北京站/北京西站/北京南站。' },
-      { title: '市内交通', desc: '地铁为主，覆盖所有景点。一卡通或手机支付。' },
-      { title: '长城', desc: 'S2线城铁从北京北站出发，1小时到八达岭。或德胜门坐877路公交。' }
-    ],
-    tips: [
-      '故宫门票提前10天官网预约，旺季秒没',
-      '天安门升旗要凌晨去，带身份证',
-      '长城建议早7点前到，避开旅行团',
-      '北京地铁早晚高峰非常挤，错峰出行',
-      '清华北大需提前在公众号预约入校'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '故宫预约码'],
-      clothes: ['薄外套', '舒适鞋(长城)', '防晒'],
-      daily: ['充电宝', '水杯', '纸巾'],
-      meds: ['肠胃药', '创可贴', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '400元' },
-      { label: '住宿(4晚)', value: '1200元' },
-      { label: '门票', value: '200元' },
-      { label: '餐饮', value: '500元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '300元' },
-      { label: '合计', value: '2800元' }
-    ]
-  },
-  chongqing: {
-    name: '重庆',
-    subtitle: '山城魔幻 · 火锅之都',
-    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1500-2000元',
-      season: '全年',
-      temp: '16-28°C',
-      transport: '飞机/高铁',
-      crowd: '情侣/闺蜜/吃货'
-    },
-    preferences: ['美食探店', '打卡拍照', '夜景', '魔幻8D'],
-    spots: {
-      must: [
-        { name: '洪崖洞', desc: '千与千寻现实版！夜景最美，建议晚上去。', time: '2-3小时', cost: '免费', tags: ['必打卡', '夜景'] },
-        { name: '解放碑', desc: '重庆地标，步行街购物美食。', time: '1-2小时', cost: '免费', tags: ['地标', '购物'] },
-        { name: '李子坝轻轨', desc: '轻轨穿楼而过，魔幻8D重庆。', time: '30分钟', cost: '免费', tags: ['打卡', '网红'] },
-        { name: '长江索道', desc: '横渡长江，俯瞰山城。往返体验最佳。', time: '1小时', cost: '30元', tags: ['必体验', '观景'] }
-      ],
-      optional: [
-        { name: '磁器口古镇', desc: '千年古镇，小吃特产。商业化较重。', time: '2小时', cost: '免费', tags: ['古镇', '小吃'] },
-        { name: '武隆天坑', desc: '变形金刚取景地，自然奇观。需一天。', time: '1天', cost: '135元', tags: ['自然', '一日游'] },
-        { name: '南山一棵树', desc: '重庆夜景最佳观赏点。', time: '1小时', cost: '30元', tags: ['夜景', '观景台'] }
-      ],
-      avoid: [
-        { name: '洪崖洞里的餐厅', desc: '价格贵味道一般，拍拍照就好。', tags: ['价格虚高'] },
-        { name: '磁器口特产店', desc: '陈麻花排队是套路，超市买一样。', tags: ['套路'] },
-        { name: '出租车推荐的火锅', desc: '有回扣，不一定好吃。', tags: ['购物陷阱'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '解放碑 · 洪崖洞',
-        items: [
-          { time: '14:00', title: '入住酒店', desc: '建议住解放碑附近' },
-          { time: '16:00', title: '解放碑步行街', desc: '地标打卡、购物' },
-          { time: '19:00', title: '洪崖洞', desc: '夜景最美！等灯亮' },
-          { time: '21:00', title: '火锅', desc: '深夜火锅走起' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '魔幻8D体验',
-        items: [
-          { time: '09:00', title: '李子坝轻轨站', desc: '看轻轨穿楼' },
-          { time: '11:00', title: '鹅岭公园', desc: '俯瞰重庆全景' },
-          { time: '14:00', title: '长江索道', desc: '横渡长江，往返体验' },
-          { time: '17:00', title: '南山一棵树', desc: '夜景观景台' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '古镇/周边',
-        items: [
-          { time: '09:00', title: '磁器口古镇', desc: '小吃、特产' },
-          { time: '13:00', title: '白公馆/渣滓洞', desc: '红色历史' },
-          { time: '16:00', title: '返程', desc: '或继续火锅' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '重庆火锅', type: '正餐', desc: '九宫格、毛肚、鸭肠、血旺。', price: '人均80元' },
-        { name: '小面', type: '小吃', desc: '重庆人早餐标配，豌杂面必试。', price: '15-20元' },
-        { name: '酸辣粉', desc: '解放碑好又来最出名。', price: '10元', type: '小吃' },
-        { name: '抄手', desc: '红油抄手，麻辣鲜香。', price: '18元', type: '小吃' }
-      ],
-      shops: [
-        { name: '珮姐老火锅', desc: '重庆火锅排队王。', price: '人均90元', badge: '必吃' },
-        { name: '花市豌杂面', desc: '本地人早餐首选。', price: '人均15元', badge: '本地人推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '解放碑/洪崖洞', reason: '市中心，交通便利，夜景美。预算250-500元/晚。' },
-      { area: '观音桥', reason: '本地人商圈，美食多。预算200-400元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '江北机场→市区：机场大巴20元，地铁3号线。高铁：重庆北站/重庆西站。' },
-      { title: '市内交通', desc: '地铁为主，打车便宜但易堵。步行+轻轨是最佳组合。' }
-    ],
-    tips: [
-      '重庆导航经常飘，问路比导航靠谱',
-      '洪崖洞夜景最美，但不要在里面吃',
-      '吃火锅量力而行，微辣已经很辣',
-      '穿舒适的鞋！重庆全是坡和楼梯',
-      '解放碑附近很多火锅，不用专门找网红店'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['舒适鞋(必带)', '薄外套', '防晒'],
-      daily: ['充电宝', '雨伞', '纸巾'],
-      meds: ['肠胃药', '降火药', '创可贴'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '400元' },
-      { label: '住宿(3晚)', value: '600元' },
-      { label: '门票', value: '100元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '1900元' }
-    ]
-  },
-  kunming: {
-    name: '昆明',
-    subtitle: '春城花都 · 四季如春',
-    image: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=1600&q=80',
-    basic: {
-      days: '2-3天',
-      budget: '1000-1500元',
-      season: '全年',
-      temp: '15-22°C',
-      transport: '飞机/高铁',
-      crowd: '家庭/情侣/休闲'
-    },
-    preferences: ['湖光山色', '花卉园', '美食探店', '悠闲躺平'],
-    spots: {
-      must: [
-        { name: '滇池', desc: '云南最大淡水湖，冬季红嘴鸥成群。环湖骑行超美。', time: '半天', cost: '免费', tags: ['必去', '观鸟'] },
-        { name: '石林', desc: '喀斯特地貌奇观，世界自然遗产。阿诗玛传说。', time: '1天', cost: '130元', tags: ['必去', '世界遗产'] },
-        { name: '翠湖公园', desc: '昆明市民休闲地，冬季红嘴鸥飞舞。', time: '2小时', cost: '免费', tags: ['悠闲', '免费'] }
-      ],
-      optional: [
-        { name: '云南民族村', desc: '25个少数民族村寨，表演丰富。', time: '半天', cost: '90元', tags: ['民族文化', '表演'] },
-        { name: '金马碧鸡坊', desc: '昆明地标，老街夜市。', time: '1小时', cost: '免费', tags: ['地标', '夜市'] },
-        { name: '斗南花市', desc: '亚洲最大鲜花交易市场，白菜价买花。', time: '2小时', cost: '免费', tags: ['花卉', '便宜'] }
-      ],
-      avoid: [
-        { name: '景区门口的"导游"', desc: '带你去消费拿回扣。', tags: ['黑导游'] },
-        { name: '石林低价团', desc: '购物点多，浪费时间。', tags: '低价团坑' }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '市区初探',
-        items: [
-          { time: '14:00', title: '翠湖公园', desc: '红嘴鸥、喂食、拍照' },
-          { time: '16:00', title: '金马碧鸡坊', desc: '老街、小吃' },
-          { time: '19:00', title: '南屏街', desc: '购物、晚餐' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '滇池 · 石林',
-        items: [
-          { time: '07:00', title: '滇池日出', desc: '海埂大坝看日出喂海鸥' },
-          { time: '09:00', title: '石林', desc: '喀斯特奇观，请导游讲解' },
-          { time: '16:00', title: '返回市区', desc: '晚餐、休息' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '过桥米线', type: '小吃', desc: '云南代表美食，滚汤烫熟。', price: '25-40元' },
-        { name: '汽锅鸡', type: '正餐', desc: '建水汽锅蒸制，原汁原味。', price: '80-120元' },
-        { name: '鲜花饼', type: '特产', desc: '嘉华最出名，伴手礼首选。', price: '30元/盒' }
-      ],
-      shops: [
-        { name: '建新园', desc: '过桥米线老字号。', price: '人均35元', badge: '必吃' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '翠湖/南屏街', reason: '市中心，交通便利，美食集中。预算180-350元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '长水机场→市区：机场大巴25元，地铁6号线。高铁：昆明南站。' },
-      { title: '石林', desc: '东部客运站坐大巴，约2小时。或报一日游。' }
-    ],
-    tips: [
-      '滇池冬季(11-3月)有红嘴鸥，最佳观鸟季',
-      '斗南花市晚上才热闹，白天看拍卖',
-      '昆明海拔高，注意防晒',
-      '石林建议请导游，不然看不懂'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['薄外套', '防晒衣', '舒适鞋'],
-      daily: ['充电宝', '防晒霜', '墨镜'],
-      meds: ['肠胃药', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '300元' },
-      { label: '住宿(2晚)', value: '350元' },
-      { label: '门票', value: '130元' },
-      { label: '餐饮', value: '250元' },
-      { label: '特产', value: '150元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1330元' }
-    ]
-  },
-  dali: {
-    name: '大理',
-    subtitle: '风花雪月 · 苍山洱海',
-    image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1500-2000元',
-      season: '3-5月 / 10-12月',
-      temp: '12-22°C',
-      transport: '飞机/高铁',
-      crowd: '情侣/闺蜜/文艺青年'
-    },
-    preferences: ['湖光山色', '古镇人文', '悠闲躺平', '骑行'],
-    spots: {
-      must: [
-        { name: '洱海环湖', desc: '租车或骑行环洱海，最美海景公路。建议2天慢慢玩。', time: '1-2天', cost: '租车200元/天', tags: ['必去', '骑行'] },
-        { name: '大理古城', desc: '南诏古国，洋人街、人民路。建议住古城客栈。', time: '1-2天', cost: '免费', tags: ['古镇', '必住'] },
-        { name: '苍山', desc: '乘索道上山，俯瞰洱海。洗马潭、七龙女池。', time: '半天', cost: '索道180元', tags: ['山景', '观景'] }
-      ],
-      optional: [
-        { name: '双廊古镇', desc: '洱海边最美小镇，日落绝美。', time: '半天', cost: '免费', tags: ['古镇', '日落'] },
-        { name: '喜洲古镇', desc: '白族民居，喜洲粑粑必尝。', time: '2小时', cost: '免费', tags: ['古镇', '美食'] },
-        { name: '崇圣寺三塔', desc: '大理地标，千年古塔。', time: '2小时', cost: '75元', tags: ['地标', '古建'] }
-      ],
-      avoid: [
-        { name: '古城里的"酒吧"', desc: '酒托多，消费陷阱。', tags: ['酒托陷阱'] },
-        { name: '洱海边骑马', desc: '时间短价格贵，体验一般。', tags: ['性价比低'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '古城漫游',
-        items: [
-          { time: '14:00', title: '入住古城客栈', desc: '建议住古城内' },
-          { time: '16:00', title: '人民路/洋人街', desc: '文艺小店、咖啡馆' },
-          { time: '19:00', title: '古城夜景', desc: '酒吧、民谣' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '洱海环湖',
-        items: [
-          { time: '09:00', title: '租车/电动车', desc: '环洱海约130公里' },
-          { time: '10:30', title: '喜洲古镇', desc: '白族民居、喜洲粑粑' },
-          { time: '13:00', title: '双廊古镇', desc: '洱海边最美小镇' },
-          { time: '18:00', title: '小普陀日落', desc: '海鸥飞舞，日落绝美' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '苍山/返程',
-        items: [
-          { time: '09:00', title: '苍山索道', desc: '感通索道或洗马潭索道' },
-          { time: '13:00', title: '崇圣寺三塔', desc: '大理地标' },
-          { time: '16:00', title: '返程', desc: '或继续休闲' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '喜洲粑粑', type: '小吃', desc: '外酥里嫩，甜咸两种。', price: '10-15元' },
-        { name: '烤乳扇', type: '小吃', desc: '白族特色，奶酪制成。', price: '10元' },
-        { name: '酸辣鱼', type: '正餐', desc: '洱海鲫鱼，酸木瓜调味。', price: '80元+' },
-        { name: '白族三道茶', type: '体验', desc: '一苦二甜三回味。', price: '30元' }
-      ],
-      shops: [
-        { name: '复盛和小吃', desc: '喜洲粑粑最正宗。', price: '人均15元', badge: '必吃' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '大理古城', reason: '氛围好，吃喝方便。预算150-350元/晚。' },
-      { area: '双廊', reason: '海景房，适合躺平。预算300-600元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '大理机场→古城：机场大巴20元。高铁：大理站→古城打车30元。' },
-      { title: '环洱海', desc: '租电动车(80元/天)或汽车(200元/天)。建议电动车更自由。' }
-    ],
-    tips: [
-      '洱海环湖防晒必备！高原紫外线强',
-      '双廊住宿要提前订，旺季很抢手',
-      '古城里问路说"人民路"，不问"酒吧"',
-      '环洱海至少安排1天，慢慢玩'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '驾驶证(租车)'],
-      clothes: ['防晒衣', '墨镜', '薄外套', '舒适鞋'],
-      daily: ['充电宝', '防晒霜', '雨伞'],
-      meds: ['肠胃药', '感冒药', '创可贴'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '350元' },
-      { label: '住宿(3晚)', value: '600元' },
-      { label: '门票', value: '300元' },
-      { label: '餐饮', value: '350元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '2000元' }
-    ]
-  },
-  guilin: {
-    name: '桂林',
-    subtitle: '山水甲天下 · 漓江竹筏',
-    image: 'https://images.unsplash.com/photo-1537531383496-f4749b02b709?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1200-1800元',
-      season: '4-10月',
-      temp: '18-28°C',
-      transport: '飞机/高铁',
-      crowd: '家庭/情侣/摄影'
-    },
-    preferences: ['山水风光', '竹筏漂流', '溶洞奇观', '古镇'],
-    spots: {
-      must: [
-        { name: '漓江竹筏', desc: '桂林山水精华！阳朔段最美，20元人民币背景。', time: '半天', cost: '200元+', tags: ['必去', '竹筏'] },
-        { name: '阳朔西街', desc: '洋人街，酒吧、小吃。建议住一晚。', time: '1天', cost: '免费', tags: ['古镇', '夜生活'] },
-        { name: '遇龙河竹筏', desc: '小漓江，更安静。人工撑筏体验佳。', time: '2小时', cost: '150元', tags: ['竹筏', '必去'] }
-      ],
-      optional: [
-        { name: '象鼻山', desc: '桂林城徽，山形似象。', time: '1小时', cost: '55元', tags: ['地标', '打卡'] },
-        { name: '银子岩', desc: '最美溶洞，"游了银子岩一世不缺钱"。', time: '2小时', cost: '70元', tags: ['溶洞', '奇观'] },
-        { name: '龙脊梯田', desc: '壮瑶族梯田，四季景不同。需一天。', time: '1天', cost: '80元', tags: ['梯田', '一日游'] }
-      ],
-      avoid: [
-        { name: '西街酒吧酒托', desc: '搭讪的女生可能酒托，注意。', tags: ['酒托陷阱'] },
-        { name: '景区门口"低价竹筏"', desc: '不安全，无保险。', tags: ['安全隐患'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '桂林市区',
-        items: [
-          { time: '14:00', title: '象鼻山', desc: '桂林城徽打卡' },
-          { time: '16:00', title: '两江四湖', desc: '傍晚游船或步行' },
-          { time: '19:00', title: '正阳步行街', desc: '小吃、桂林米粉' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '漓江 · 阳朔',
-        items: [
-          { time: '08:00', title: '漓江竹筏', desc: '兴坪→九马画山段最美' },
-          { time: '13:00', title: '阳朔西街', desc: '入住、闲逛' },
-          { time: '18:00', title: '西街夜景', desc: '酒吧、小吃' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '遇龙河 · 返程',
-        items: [
-          { time: '09:00', title: '遇龙河竹筏', desc: '人工撑筏，更安静' },
-          { time: '12:00', title: '银子岩', desc: '最美溶洞' },
-          { time: '16:00', title: '返程', desc: '阳朔→桂林→回家' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '桂林米粉', type: '小吃', desc: '卤水+米粉+配料，早餐标配。', price: '8-15元' },
-        { name: '啤酒鱼', type: '正餐', desc: '阳朔特色，漓江鱼+啤酒炖煮。', price: '80-120元' },
-        { name: '荔浦芋头扣肉', type: '正餐', desc: '桂林名菜，芋头+五花肉。', price: '50元+' }
-      ],
-      shops: [
-        { name: '崇善米粉', desc: '桂林米粉连锁，品质稳定。', price: '人均12元', badge: '推荐' },
-        { name: '大师傅啤酒鱼', desc: '阳朔老店，名气大。', price: '人均90元', badge: '必吃' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '阳朔西街', reason: '热闹方便，夜景美。预算150-300元/晚。' },
-      { area: '桂林市区', reason: '交通便利，适合中转。预算120-250元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '两江机场→市区：机场大巴20元。高铁：桂林站/桂林北站。' },
-      { title: '桂林→阳朔', desc: '漓江游船(4小时)或大巴(1.5小时)或包车。' }
-    ],
-    tips: [
-      '漓江竹筏选兴坪段，20元人民币背景',
-      '遇龙河竹筏要砍价，官方价偏贵',
-      '阳朔住宿西街内热闹，西街外安静',
-      '龙脊梯田至少1天，住一晚看日出更佳'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['防晒衣', '薄外套', '舒适鞋'],
-      daily: ['充电宝', '防晒霜', '雨伞'],
-      meds: ['肠胃药', '晕车药', '创可贴'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '300元' },
-      { label: '住宿(3晚)', value: '450元' },
-      { label: '门票', value: '400元' },
-      { label: '餐饮', value: '300元' },
-      { label: '特产', value: '150元' },
-      { label: '备用金', value: '200元' },
-      { label: '合计', value: '1800元' }
-    ]
-  },
-  wuhan: {
-    name: '武汉',
-    subtitle: '江城魅力 · 热干面之乡',
-    image: 'https://images.unsplash.com/photo-1583996046379-70f0a6c5f295?w=1600&q=80',
-    basic: {
-      days: '2-3天',
-      budget: '800-1200元',
-      season: '3-5月 / 9-11月',
-      temp: '15-28°C',
-      transport: '高铁',
-      crowd: '吃货/学生/历史迷'
-    },
-    preferences: ['美食探店', '江景', '樱花', '历史人文'],
-    spots: {
-      must: [
-        { name: '黄鹤楼', desc: '江南三大名楼之一，"昔人已乘黄鹤去"。登楼俯瞰长江。', time: '2小时', cost: '70元', tags: ['地标', '必去'] },
-        { name: '户部巷', desc: '武汉小吃一条街，热干面、豆皮、鸭脖。', time: '2小时', cost: '免费', tags: ['美食', '必去'] },
-        { name: '东湖', desc: '中国最大城中湖，樱花园春季最美。', time: '半天', cost: '免费/樱花园60元', tags: ['湖景', '樱花'] }
-      ],
-      optional: [
-        { name: '武汉大学', desc: '最美大学，樱花季(3月)绝美。需预约入校。', time: '2小时', cost: '免费', tags: ['校园', '樱花'] },
-        { name: '长江大桥', desc: '万里长江第一桥，可步行过江。', time: '1小时', cost: '免费', tags: ['地标', '步行'] },
-        { name: '江汉路步行街', desc: '武汉最繁华商圈，购物美食。', time: '2小时', cost: '免费', tags: ['购物', '美食'] }
-      ],
-      avoid: [
-        { name: '户部巷主街高价小吃', desc: '往旁边小街走，更便宜更好吃。', tags: ['价格虚高'] },
-        { name: '黄鹤楼"电梯"', desc: '门票已含，不要信所谓"快速通道"。', tags: ['套路'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '经典打卡',
-        items: [
-          { time: '09:00', title: '黄鹤楼', desc: '登楼远眺长江' },
-          { time: '12:00', title: '户部巷', desc: '午餐、小吃' },
-          { time: '15:00', title: '长江大桥', desc: '步行过江' },
-          { time: '18:00', title: '江汉路', desc: '晚餐、逛街' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '东湖漫步',
-        items: [
-          { time: '09:00', title: '东湖绿道', desc: '骑行或步行' },
-          { time: '12:00', title: '武汉大学', desc: '校园漫步(需预约)' },
-          { time: '16:00', title: '返程', desc: '或继续自由活动' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '热干面', type: '小吃', desc: '武汉灵魂早餐，芝麻酱香浓。', price: '8-12元' },
-        { name: '豆皮', type: '小吃', desc: '糯米+蛋皮+配料，早餐必吃。', price: '10-15元' },
-        { name: '鸭脖', type: '小吃', desc: '周黑鸭、精武鸭脖，可买带走。', price: '30元/盒' },
-        { name: '面窝', type: '小吃', desc: '油炸米饼，外酥里嫩。', price: '3-5元' }
-      ],
-      shops: [
-        { name: '蔡林记', desc: '热干面老字号，品质稳定。', price: '人均15元', badge: '必吃' },
-        { name: '四季美', desc: '汤包老店，皮薄馅大。', price: '人均25元', badge: '推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '江汉路/汉口江滩', reason: '市中心，交通便利。预算150-300元/晚。' },
-      { area: '光谷', reason: '大学城，美食多。预算120-250元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '天河机场→市区：地铁2号线。高铁：武汉站/汉口站/武昌站。' },
-      { title: '市内交通', desc: '地铁发达，公交便宜。轮渡过江2元，体验佳。' }
-    ],
-    tips: [
-      '热干面要趁热拌，不然芝麻酱会干',
-      '武大樱花季(3月中下旬)需提前预约',
-      '户部巷不要只走主街，旁边小街更地道',
-      '过江轮渡2元，比地铁更有感觉'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '武大预约码(樱花季)'],
-      clothes: ['薄外套', '舒适鞋', '防晒'],
-      daily: ['充电宝', '雨伞', '水杯'],
-      meds: ['肠胃药', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '200元' },
-      { label: '住宿(2晚)', value: '300元' },
-      { label: '门票', value: '100元' },
-      { label: '餐饮', value: '250元' },
-      { label: '特产', value: '100元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1100元' }
-    ]
-  },
-  nanjing: {
-    name: '南京',
-    subtitle: '六朝古都 · 金陵风韵',
-    image: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=1600&q=80',
-    basic: {
-      days: '2-3天',
-      budget: '800-1200元',
-      season: '3-5月 / 9-11月',
-      temp: '14-26°C',
-      transport: '高铁',
-      crowd: '历史迷/学生/情侣'
-    },
-    preferences: ['历史人文', '博物馆', '民国风情', '美食'],
-    spots: {
-      must: [
-        { name: '中山陵', desc: '孙中山陵墓，392级台阶。免费但需预约。', time: '2-3小时', cost: '免费', tags: ['必去', '预约'] },
-        { name: '夫子庙/秦淮河', desc: '十里秦淮，夜游画舫最美。江南贡院、乌衣巷。', time: '半天', cost: '免费/画舫80元', tags: ['必去', '夜景'] },
-        { name: '总统府', desc: '中国近代史遗址，太平天国、民国建筑群。', time: '2-3小时', cost: '35元', tags: ['历史', '必去'] }
-      ],
-      optional: [
-        { name: '南京博物院', desc: '中国三大博物馆之一，免费但需预约。', time: '半天', cost: '免费', tags: ['博物馆', '必预约'] },
-        { name: '明孝陵', desc: '明太祖朱元璋陵墓，神道石刻精美。', time: '2小时', cost: '70元', tags: ['皇陵', '秋景'] },
-        { name: '玄武湖', desc: '江南三大名湖，环湖骑行。', time: '2小时', cost: '免费', tags: ['湖景', '免费'] }
-      ],
-      avoid: [
-        { name: '夫子庙主街小吃', desc: '价格贵，往旁边小巷走。', tags: ['价格虚高'] },
-        { name: '秦淮河"快艇"', desc: '贵且体验差，画舫更好。', tags: ['性价比低'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '钟山风景区',
-        items: [
-          { time: '09:00', title: '中山陵', desc: '提前预约！免费' },
-          { time: '12:00', title: '明孝陵', desc: '神道石刻' },
-          { time: '16:00', title: '美龄宫', desc: '民国建筑' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '市区经典',
-        items: [
-          { time: '09:00', title: '总统府', desc: '近代史遗址' },
-          { time: '12:00', title: '1912街区', desc: '午餐、民国风情街' },
-          { time: '15:00', title: '夫子庙', desc: '逛庙会、小吃' },
-          { time: '19:00', title: '秦淮河夜游', desc: '画舫、夜景' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '博物馆/返程',
-        items: [
-          { time: '09:00', title: '南京博物院', desc: '提前预约！免费' },
-          { time: '13:00', title: '玄武湖', desc: '环湖漫步' },
-          { time: '16:00', title: '返程', desc: '或继续自由活动' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '鸭血粉丝汤', type: '小吃', desc: '南京代表美食，鸭血+粉丝+鸭肝。', price: '15-20元' },
-        { name: '盐水鸭', type: '特产', desc: '南京特产，可买带走。', price: '40-60元/只' },
-        { name: '小笼包', type: '小吃', desc: '皮薄汁多，蘸醋吃。', price: '20元' },
-        { name: '梅花糕', type: '小吃', desc: '夫子庙特产，糯米制成。', price: '5元' }
-      ],
-      shops: [
-        { name: '回味鸭血粉丝汤', desc: '连锁店，品质稳定。', price: '人均18元', badge: '推荐' },
-        { name: '尹氏鸡汁汤包', desc: '汤包老字号。', price: '人均25元', badge: '必吃' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '新街口', reason: '市中心，交通便利。预算180-350元/晚。' },
-      { area: '夫子庙附近', reason: '靠近景区，夜景美。预算150-300元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '禄口机场→市区：地铁S1号线。高铁：南京站/南京南站。' },
-      { title: '市内交通', desc: '地铁发达，覆盖主要景点。公交1-2元。' }
-    ],
-    tips: [
-      '中山陵、南京博物院都要提前预约！',
-      '秦淮河夜景最美，建议晚上去',
-      '夫子庙小吃不要在主街吃，价格翻倍',
-      '明孝陵秋天最美，神道银杏金黄'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '预约码'],
-      clothes: ['薄外套', '舒适鞋', '防晒'],
-      daily: ['充电宝', '雨伞', '水杯'],
-      meds: ['肠胃药', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '200元' },
-      { label: '住宿(2晚)', value: '350元' },
-      { label: '门票', value: '100元' },
-      { label: '餐饮', value: '250元' },
-      { label: '特产', value: '100元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1150元' }
-    ]
-  },
-  suzhou: {
-    name: '苏州',
-    subtitle: '人间天堂 · 园林之城',
-    image: 'https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?w=1600&q=80',
-    basic: {
-      days: '2-3天',
-      budget: '1000-1500元',
-      season: '3-5月 / 9-11月',
-      temp: '14-26°C',
-      transport: '高铁',
-      crowd: '文艺青年/情侣/家庭'
-    },
-    preferences: ['古典园林', '古镇水乡', '文艺打卡', '悠闲'],
-    spots: {
-      must: [
-        { name: '拙政园', desc: '中国四大名园之首，苏州园林代表。夏季荷花最美。', time: '2-3小时', cost: '80元', tags: ['必去', '园林'] },
-        { name: '平江路', desc: '千年古街，小桥流水人家。文艺小店、咖啡馆。', time: '2-3小时', cost: '免费', tags: ['古街', '必去'] },
-        { name: '山塘街', desc: '七里山塘，夜景最美。可乘船游览。', time: '2小时', cost: '免费/船票50元', tags: ['古街', '夜景'] }
-      ],
-      optional: [
-        { name: '狮子林', desc: '假山迷宫，有趣好玩。离拙政园近。', time: '1.5小时', cost: '40元', tags: ['园林', '假山'] },
-        { name: '苏州博物馆', desc: '贝聿铭设计，建筑本身就是艺术品。', time: '2小时', cost: '免费', tags: ['博物馆', '建筑'] },
-        { name: '周庄/同里', desc: '江南水乡古镇，建议住一晚。', time: '1天', cost: '100元', tags: ['古镇', '一日游'] }
-      ],
-      avoid: [
-        { name: '平江路高价奶茶/咖啡', desc: '网红店价格贵，看看就好。', tags: ['价格虚高'] },
-        { name: '景区门口"摇橹船"', desc: '价格不透明，容易被宰。', tags: ['价格陷阱'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '园林经典',
-        items: [
-          { time: '09:00', title: '拙政园', desc: '中国四大名园之首' },
-          { time: '12:00', title: '苏州博物馆', desc: '贝聿铭设计，免费但预约' },
-          { time: '14:00', title: '狮子林', desc: '假山迷宫，有趣' },
-          { time: '17:00', title: '平江路', desc: '古街漫步、晚餐' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '山塘 · 古镇',
-        items: [
-          { time: '09:00', title: '山塘街', desc: '七里山塘' },
-          { time: '13:00', title: '周庄/同里', desc: '水乡古镇，住一晚' },
-          { time: '18:00', title: '古镇夜景', desc: '摇橹船、灯笼' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '松鼠桂鱼', type: '正餐', desc: '苏州名菜，造型似松鼠。', price: '100元+' },
-        { name: '阳澄湖大闸蟹', type: '季节美食', desc: '秋季(9-11月)最肥美。', price: '100-300元/对' },
-        { name: '苏式面', type: '小吃', desc: '枫镇大面、奥灶面。', price: '20-30元' },
-        { name: '糖粥', type: '甜品', desc: '赤豆糖粥，平江路有卖。', price: '8元' }
-      ],
-      shops: [
-        { name: '得月楼', desc: '松鼠桂鱼发源地。', price: '人均150元', badge: '必吃' },
-        { name: '同得兴', desc: '苏式面老字号。', price: '人均25元', badge: '本地人推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '平江路附近', reason: '古街氛围好，步行可达景点。预算200-400元/晚。' },
-      { area: '观前街', reason: '市中心，交通便利。预算180-350元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '高铁：苏州站/苏州北站。上海→苏州高铁25分钟。' },
-      { title: '市内交通', desc: '地铁+步行。古城区建议步行或骑行。' },
-      { title: '周庄/同里', desc: '苏州汽车站坐大巴，约1小时。' }
-    ],
-    tips: [
-      '拙政园夏季荷花最美，人多建议早去',
-      '苏州博物馆需提前预约，周一闭馆',
-      '平江路晚上比白天更有味道',
-      '阳澄湖大闸蟹秋季才肥美，不要夏季吃'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '博物馆预约码'],
-      clothes: ['汉服(可选)', '舒适鞋', '薄外套'],
-      daily: ['充电宝', '雨伞', '防晒霜'],
-      meds: ['肠胃药', '感冒药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '200元' },
-      { label: '住宿(2晚)', value: '400元' },
-      { label: '门票', value: '200元' },
-      { label: '餐饮', value: '300元' },
-      { label: '特产', value: '150元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1400元' }
-    ]
-  },
-  guangzhou: {
-    name: '广州',
-    subtitle: '美食之都 · 花城广州',
-    image: 'https://images.unsplash.com/photo-1583859028030-8c9b30a4f026?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '1200-1800元',
-      season: '10-4月',
-      temp: '18-28°C',
-      transport: '飞机/高铁',
-      crowd: '吃货/家庭/购物'
-    },
-    preferences: ['美食探店', '城市漫步', '购物', '岭南文化'],
-    spots: {
-      must: [
-        { name: '广州塔(小蛮腰)', desc: '广州地标，登塔俯瞰全城。夜景最美。', time: '2小时', cost: '150元+', tags: ['地标', '夜景'] },
-        { name: '沙面岛', desc: '欧式建筑群，拍照圣地。适合悠闲漫步。', time: '2小时', cost: '免费', tags: ['文艺', '免费'] },
-        { name: '陈家祠', desc: '岭南建筑艺术瑰宝，木雕砖雕精美。', time: '2小时', cost: '10元', tags: ['古建', '必去'] }
-      ],
-      optional: [
-        { name: '长隆野生动物世界', desc: '看熊猫三胞胎，亲子必去。需一天。', time: '1天', cost: '300元', tags: ['亲子', '动物园'] },
-        { name: '北京路步行街', desc: '千年古道，购物美食。', time: '2小时', cost: '免费', tags: ['购物', '美食'] },
-        { name: '珠江夜游', desc: '乘船看两岸灯光秀。', time: '1.5小时', cost: '60元', tags: ['夜景', '游船'] }
-      ],
-      avoid: [
-        { name: '上下九步行街', desc: '比北京路乱，小偷多。', tags: ['治安'] },
-        { name: '景区门口的"广州特产"', desc: '超市买更便宜。', tags: ['价格虚高'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '老城漫步',
-        items: [
-          { time: '09:00', title: '早茶', desc: '点都德/陶陶居' },
-          { time: '11:00', title: '陈家祠', desc: '岭南建筑艺术' },
-          { time: '14:00', title: '沙面岛', desc: '欧式建筑，拍照' },
-          { time: '17:00', title: '北京路', desc: '购物、晚餐' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '新城打卡',
-        items: [
-          { time: '09:00', title: '早茶', desc: '广州人必吃早茶' },
-          { time: '11:00', title: '广州塔', desc: '登塔观景' },
-          { time: '15:00', title: '珠江新城', desc: 'CBD漫步' },
-          { time: '19:00', title: '珠江夜游', desc: '灯光秀' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '亲子/返程',
-        items: [
-          { time: '09:00', title: '长隆(可选)', desc: '野生动物世界' },
-          { time: '12:00', title: '返程', desc: '或继续逛吃' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '广式早茶', type: '早餐', desc: '虾饺、烧卖、凤爪、肠粉。广州人周末必吃。', price: '人均60元' },
-        { name: '煲仔饭', type: '正餐', desc: '腊肠、滑鸡、排骨，锅巴最香。', price: '25-40元' },
-        { name: '云吞面', type: '小吃', desc: '竹升面+鲜虾云吞。', price: '20-30元' },
-        { name: '肠粉', type: '小吃', desc: '布拉肠、拉肠，早餐首选。', price: '8-15元' }
-      ],
-      shops: [
-        { name: '点都德', desc: '早茶连锁，品质稳定。', price: '人均70元', badge: '必吃' },
-        { name: '陶陶居', desc: '百年老字号，虾饺必点。', price: '人均90元', badge: '老字号' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '北京路/上下九', reason: '老城区，美食集中。预算180-350元/晚。' },
-      { area: '珠江新城', reason: '新城区，购物方便。预算250-500元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '白云机场→市区：地铁3号线。高铁：广州南站/广州东站。' },
-      { title: '市内交通', desc: '地铁发达，覆盖主要景点。APM线到广州塔。' }
-    ],
-    tips: [
-      '早茶要排队，建议9点前到',
-      '广州人说的"一盅两件"就是早茶',
-      '北京路比上下九更适合逛街',
-      '长隆很大，至少要一天'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['薄衫', '舒适鞋', '防晒衣'],
-      daily: ['充电宝', '雨伞', '防晒霜'],
-      meds: ['肠胃药', '感冒药', '降火药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '300元' },
-      { label: '住宿(3晚)', value: '600元' },
-      { label: '门票', value: '200元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产', value: '150元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1800元' }
-    ]
-  },
-  sanya: {
-    name: '三亚',
-    subtitle: '东方夏威夷 · 热带天堂',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80',
-    basic: {
-      days: '4-5天',
-      budget: '3000-5000元',
-      season: '11-4月',
-      temp: '22-28°C',
-      transport: '飞机',
-      crowd: '情侣/家庭/度假'
-    },
-    preferences: ['海岛度假', '水上项目', '悠闲躺平', '免税购物'],
-    spots: {
-      must: [
-        { name: '亚龙湾', desc: '"天下第一湾"，7公里银白沙滩。海水最清。', time: '1天', cost: '免费', tags: ['海滩', '必去'] },
-        { name: '蜈支洲岛', desc: '中国的马尔代夫，潜水天堂。水上项目丰富。', time: '1天', cost: '门票+船票150元', tags: ['海岛', '潜水'] },
-        { name: '天涯海角', desc: '情侣必去，天涯石、海角石。', time: '2小时', cost: '81元', tags: ['地标', '情侣'] }
-      ],
-      optional: [
-        { name: '南山文化旅游区', desc: '108米海上观音，祈福圣地。', time: '半天', cost: '129元', tags: ['文化', '祈福'] },
-        { name: '三亚免税店', desc: '全球最大单体免税店！血拼天堂。', time: '半天', cost: '看钱包', tags: ['购物', '免税'] },
-        { name: '椰梦长廊', desc: '20公里椰林海岸线，日落绝美。', time: '2小时', cost: '免费', tags: ['日落', '免费'] }
-      ],
-      avoid: [
-        { name: '海鲜排档"时价"', desc: '点菜前问清价格，防止被宰。', tags: ['价格陷阱'] },
-        { name: '景区门口的"潜水"', desc: '比官方贵，安全无保障。', tags: ['安全隐患'] },
-        { name: '出租车推荐的"海鲜店"', desc: '有回扣，价格虚高。', tags: ['购物陷阱'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '亚龙湾海滩',
-        items: [
-          { time: '12:00', title: '入住酒店', desc: '建议住亚龙湾海景房' },
-          { time: '14:00', title: '亚龙湾沙滩', desc: '晒太阳、游泳、躺平' },
-          { time: '18:00', title: '椰梦长廊', desc: '日落最美' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '蜈支洲岛',
-        items: [
-          { time: '08:00', title: '乘船上岛', desc: '早去避开人流' },
-          { time: '09:30', title: '水上项目', desc: '潜水、摩托艇、拖伞' },
-          { time: '16:00', title: '离岛', desc: '岛上住一晚更好' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '南山 · 天涯',
-        items: [
-          { time: '09:00', title: '南山寺', desc: '海上观音，祈福' },
-          { time: '14:00', title: '天涯海角', desc: '地标打卡' },
-          { time: '18:00', title: '免税店', desc: '血拼' }
-        ]
-      },
-      {
-        day: 'Day 4',
-        theme: '休闲返程',
-        items: [
-          { time: '09:00', title: '海滩躺平', desc: '最后享受海岛时光' },
-          { time: '14:00', title: '返程', desc: '带着免税战利品回家' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '海鲜大餐', type: '正餐', desc: '龙虾、石斑、和乐蟹。第一市场买海鲜加工。', price: '人均150元+' },
-        { name: '椰子鸡', type: '正餐', desc: '椰子水+文昌鸡，清甜滋补。', price: '人均80元' },
-        { name: '清补凉', type: '甜品', desc: '椰奶+各种配料，解暑神器。', price: '15-20元' },
-        { name: '热带水果', type: '水果', desc: '芒果、椰子、菠萝蜜，便宜又好吃。', price: '看重量' }
-      ],
-      shops: [
-        { name: '第一市场', desc: '买海鲜加工，自己挑新鲜。', price: '看买什么', badge: '必去' },
-        { name: '嗲嗲的椰子鸡', desc: '网红店，汤鲜肉嫩。', price: '人均90元', badge: '推荐' }
-      ],
-      avoid: [
-        { name: '景区海鲜排档', desc: '价格不透明，容易被宰', badge: '避雷', isWarning: true }
-      ]
-    },
-    stay: [
-      { area: '亚龙湾', reason: '沙滩最好，适合度假。预算500-1500元/晚。' },
-      { area: '三亚湾', reason: '离市区近，性价比高。预算250-500元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '凤凰机场→市区：机场大巴20元，打车50元。' },
-      { title: '市内交通', desc: '打车为主，公交便宜但慢。去蜈支洲岛可在淘宝买接送。' }
-    ],
-    tips: [
-      '免税店要带身份证，每人每年10万额度',
-      '海鲜去第一市场买，加工费另算',
-      '蜈支洲岛建议早去，下午人多',
-      '防晒！防晒！防晒！重要的事说三遍'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证(半价)', '机票'],
-      clothes: ['泳衣', '防晒衣', '沙滩巾', '拖鞋', '墨镜'],
-      daily: ['充电宝', '防晒霜(50+)', '晒后修复', '防水袋'],
-      meds: ['肠胃药', '晒伤药', '防蚊虫'],
-      electronics: ['手机', '充电器', '相机', '水下相机(可选)']
-    },
-    budget: [
-      { label: '交通', value: '1500元' },
-      { label: '住宿(4晚)', value: '1600元' },
-      { label: '门票/水上项目', value: '800元' },
-      { label: '餐饮', value: '600元' },
-      { label: '免税购物', value: '看预算' },
-      { label: '备用金', value: '500元' },
-      { label: '合计', value: '5000元+' }
-    ]
-  },
-  harbin: {
-    name: '哈尔滨',
-    subtitle: '冰城雪国 · 东方莫斯科',
-    image: 'https://images.unsplash.com/photo-1548777123-e216912df7d8?w=1600&q=80',
-    basic: {
-      days: '3-4天',
-      budget: '2000-3000元',
-      season: '12-2月',
-      temp: '-25~-10°C',
-      transport: '飞机/高铁',
-      crowd: '情侣/家庭/摄影'
-    },
-    preferences: ['冰雪世界', '俄式风情', '美食', '冬季体验'],
-    spots: {
-      must: [
-        { name: '冰雪大世界', desc: '世界最大冰雪主题乐园！冰雕、冰滑梯、冰酒吧。', time: '半天', cost: '330元', tags: ['必去', '冬季限定'] },
-        { name: '中央大街', desc: '百年俄式步行街，欧式建筑、马迭尔冰棍。', time: '2-3小时', cost: '免费', tags: ['必去', '免费'] },
-        { name: '圣索菲亚大教堂', desc: '拜占庭式东正教堂，哈尔滨地标。', time: '1小时', cost: '20元', tags: ['地标', '必打卡'] }
-      ],
-      optional: [
-        { name: '太阳岛雪博会', desc: '大型雪雕艺术展。白天去更好。', time: '半天', cost: '240元', tags: ['雪雕', '白天'] },
-        { name: '松花江冬泳', desc: '看冬泳表演，体验东北人的豪爽。', time: '1小时', cost: '免费', tags: ['体验', '免费'] },
-        { name: '亚布力滑雪', desc: '中国最大滑雪场，需一天。', time: '1天', cost: '200元+', tags: ['滑雪', '一日游'] }
-      ],
-      avoid: [
-        { name: '冰雪大世界"黄牛票"', desc: '官方渠道买，防止假票。', tags: ['假票'] },
-        { name: '中央大街高价俄罗斯商品', desc: '义乌制造，不要买。', tags: ['购物陷阱'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '中央大街',
-        items: [
-          { time: '14:00', title: '入住酒店', desc: '建议住中央大街附近' },
-          { time: '16:00', title: '中央大街', desc: '欧式建筑、马迭尔冰棍' },
-          { time: '18:00', title: '圣索菲亚教堂', desc: '夜景灯光' },
-          { time: '20:00', title: '俄式晚餐', desc: '华梅西餐厅/马迭尔' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '冰雪大世界',
-        items: [
-          { time: '14:00', title: '冰雪大世界', desc: '下午去，玩到晚上看灯光' },
-          { time: '21:00', title: '返回市区', desc: '晚餐、休息' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '雪博/滑雪',
-        items: [
-          { time: '09:00', title: '太阳岛雪博会', desc: '白天看雪雕' },
-          { time: '13:00', title: '松花江', desc: '冬泳、冰上项目' },
-          { time: '16:00', title: '返程', desc: '或去亚布力滑雪' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '锅包肉', type: '正餐', desc: '东北名菜，酸甜酥脆。', price: '40-60元' },
-        { name: '红肠', type: '特产', desc: '哈尔滨特产，秋林里道斯最出名。', price: '30元/根' },
-        { name: '马迭尔冰棍', type: '小吃', desc: '中央大街必吃！-20°C吃冰棍。', price: '5-10元' },
-        { name: '俄式西餐', type: '正餐', desc: '红菜汤、罐牛、列巴。', price: '人均80元' }
-      ],
-      shops: [
-        { name: '华梅西餐厅', desc: '百年俄式老店。', price: '人均80元', badge: '必吃' },
-        { name: '东方饺子王', desc: '东北饺子，皮薄馅大。', price: '人均40元', badge: '推荐' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '中央大街', reason: '市中心，交通便利。预算200-400元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '太平机场→市区：机场大巴20元。高铁：哈尔滨站/哈尔滨西站。' },
-      { title: '市内交通', desc: '地铁+公交+打车。去冰雪大世界有免费接驳车。' }
-    ],
-    tips: [
-      '一定要穿最厚的衣服！帽子手套围巾必备',
-      '冰雪大世界下午去，晚上看灯光秀',
-      '马迭尔冰棍要吃，在零下吃冰棍很爽',
-      '手机冻得快没电，贴身放或带充电宝'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证', '机票'],
-      clothes: ['羽绒服(最长)', '帽子', '围巾', '手套', '雪地靴', '保暖内衣'],
-      daily: ['充电宝', '暖宝宝', '唇膏', '护手霜'],
-      meds: ['感冒药', '冻伤药', '肠胃药'],
-      electronics: ['手机', '充电器', '相机(注意保暖)']
-    },
-    budget: [
-      { label: '交通', value: '800元' },
-      { label: '住宿(3晚)', value: '600元' },
-      { label: '门票', value: '600元' },
-      { label: '餐饮', value: '400元' },
-      { label: '特产', value: '200元' },
-      { label: '备用金', value: '400元' },
-      { label: '合计', value: '3000元' }
-    ]
-  },
-  huangshan: {
-    name: '黄山',
-    subtitle: '天下第一奇山 · 云海奇松',
-    image: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600&q=80',
-    basic: {
-      days: '2-3天',
-      budget: '1000-1500元',
-      season: '3-5月 / 9-11月',
-      temp: '8-18°C',
-      transport: '高铁',
-      crowd: '摄影/登山/情侣'
-    },
-    preferences: ['山岳风光', '日出云海', '摄影', '登山'],
-    spots: {
-      must: [
-        { name: '黄山风景区', desc: '五岳归来不看山，黄山归来不看岳。建议住山顶看日出。', time: '2天', cost: '190元', tags: ['必去', '世界遗产'] },
-        { name: '迎客松', desc: '黄山标志性景点，必打卡。', time: '30分钟', cost: '含门票', tags: ['地标', '必拍'] },
-        { name: '光明顶看日出', desc: '黄山日出最佳观景点。需住山顶。', time: '清晨', cost: '含门票', tags: ['日出', '必看'] }
-      ],
-      optional: [
-        { name: '西递/宏村', desc: '皖南古村落，徽派建筑。世界遗产。', time: '1天', cost: '104元', tags: ['古镇', '世界遗产'] },
-        { name: '屯溪老街', desc: '黄山市区老街，特产美食。', time: '2小时', cost: '免费', tags: ['老街', '特产'] }
-      ],
-      avoid: [
-        { name: '山下"低价门票"', desc: '正规渠道买，防止被骗。', tags: ['假票'] },
-        { name: '山顶泡面价格', desc: '贵但正常，挑夫挑上去的。', tags: ['正常价'] }
-      ]
-    },
-    schedule: [
-      {
-        day: 'Day 1',
-        theme: '登黄山',
-        items: [
-          { time: '08:00', title: '乘车上山', desc: '汤口→云谷寺' },
-          { time: '09:00', title: '索道上山', desc: '云谷索道80元' },
-          { time: '11:00', title: '始信峰', desc: '奇松集中地' },
-          { time: '14:00', title: '西海大峡谷', desc: '最美峡谷，走一环' },
-          { time: '18:00', title: '入住山顶', desc: '看日落，准备看日出' }
-        ]
-      },
-      {
-        day: 'Day 2',
-        theme: '日出下山',
-        items: [
-          { time: '05:00', title: '光明顶日出', desc: '提前半小时到占位' },
-          { time: '07:00', title: '飞来石', desc: '电视剧取景地' },
-          { time: '10:00', title: '迎客松', desc: '必打卡' },
-          { time: '12:00', title: '索道下山', desc: '玉屏索道90元' },
-          { time: '14:00', title: '宏村', desc: '徽派古村' }
-        ]
-      },
-      {
-        day: 'Day 3',
-        theme: '古村返程',
-        items: [
-          { time: '09:00', title: '宏村', desc: '南湖、月沼' },
-          { time: '12:00', title: '屯溪老街', desc: '特产、午餐' },
-          { time: '15:00', title: '返程', desc: '高铁回家' }
-        ]
-      }
-    ],
-    food: {
-      must: [
-        { name: '徽菜', type: '正餐', desc: '臭鳜鱼、毛豆腐、石耳炖鸡。', price: '人均80元' },
-        { name: '黄山烧饼', type: '特产', desc: '梅干菜馅，伴手礼首选。', price: '20元/袋' },
-        { name: '毛豆腐', type: '小吃', desc: '发酵豆腐，外酥里嫩。', price: '15元' }
-      ],
-      shops: [
-        { name: '老街第一楼', desc: '徽菜老字号。', price: '人均80元', badge: '必吃' }
-      ],
-      avoid: []
-    },
-    stay: [
-      { area: '山顶酒店', reason: '看日出必备，但价格高。预算600-1200元/晚。' },
-      { area: '汤口镇', reason: '山脚下，上山方便。预算150-300元/晚。' }
-    ],
-    transport: [
-      { title: '大交通', desc: '黄山北站→汤口：大巴30元，1小时。' },
-      { title: '上山', desc: '景区大巴19元到索道站，索道单程80-90元。' }
-    ],
-    tips: [
-      '山顶住宿要提前订，旺季很抢手',
-      '看日出要提前半小时占位',
-      '山上物价高，可自带干粮',
-      '穿舒适登山鞋，山路多'
-    ],
-    checklist: {
-      docs: ['身份证', '学生证'],
-      clothes: ['冲锋衣', '舒适登山鞋', '薄外套', '雨衣'],
-      daily: ['充电宝', '手电筒', '雨伞', '干粮'],
-      meds: ['感冒药', '创可贴', '晕车药'],
-      electronics: ['手机', '充电器', '相机']
-    },
-    budget: [
-      { label: '交通', value: '250元' },
-      { label: '住宿(2晚)', value: '400元' },
-      { label: '门票+索道', value: '400元' },
-      { label: '餐饮', value: '250元' },
-      { label: '特产', value: '100元' },
-      { label: '备用金', value: '150元' },
-      { label: '合计', value: '1550元' }
-    ]
-  }
-};
+// ═══════════════════════════════════════════════════════════
+// TRAVEL DATA — Province → City → Scenic Spot
+// ═══════════════════════════════════════════════════════════
+const DB = {"meta": {"name": "漫游中国", "subtitle": "省市区景区三级旅游攻略", "stats": {"provinces": 23, "cities": 200, "spots": 500, "days": "3-30"}}, "provinces": {"beijing": {"name": "北京市", "short": "北京", "region": "north", "desc": "首都 · 千年古都", "cities": {"beijing_city": {"name": "北京市区", "desc": "明清皇城 · 现代首都", "spots": {"gugong": {"name": "故宫博物院", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=80", "desc": "世界最大宫殿建筑群，明清两代皇宫。建议预留一整天！", "address": "北京市东城区景山前街4号", "phone": "010-85007938", "opening": {"peak": "08:30-17:00（4月-10月）", "offpeak": "08:30-16:30（11月-3月）", "closed": "周一闭馆（法定节假日除外）", "tip": "建议早8:30一开门就进，人最少"}, "ticket": {"adult": "60元", "student": "20元", "senior": "免费（60岁以上）", "extra": "珍宝馆10元，钟表馆10元", "booking": "必须提前预约！", "bookingTip": "提前7-10天故宫官网或公众号抢号，旺季秒没！"}, "transport": {"recommended": "地铁", "reason": "故宫位于市中心，停车困难，地铁直达最方便", "metro": {"lines": ["1号线 天安门东站B口", "1号线 天安门西站B口", "8号线 金鱼胡同站C口"], "walk": "从任意出口步行5-10分钟到午门入口"}, "driving": {"parking": "东华门/西华门停车场，10元/15分钟，位置紧张", "tips": "不建议开车！周边停车难且贵，周末和节假日可能限行", "restrictions": "长安街及故宫周边实行交通管制，无法靠近"}, "bus": [{"name": "1路", "from": "东单路口北", "to": "天安门东", "freq": "3-5分钟", "first": "05:00", "last": "23:00", "tips": "经过长安街，早晚高峰堵车风险高"}, {"name": "5路", "from": "东四十条桥南", "to": "天安门西", "freq": "5-8分钟", "first": "05:15", "last": "22:30", "tips": "西单购物可顺便坐这路"}], "taxi": {"fromCenter": "约20-30元", "tips": "只能到东华门或西华门，需步行入宫", "fromStation": "北京站约25元，北京西站约30元"}, "carRental": {"recommended": false, "reason": "市中心限行+停车极贵+堵车严重，全程公交最优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型200-350元/天"}}, "food": [{"name": "四季民福烤鸭", "desc": "故宫东门店，可边吃烤鸭边看故宫城墙，景观绝佳", "price": "人均150-200元", "tag": "必吃"}, {"name": "全聚德", "desc": "百年老字号，北京烤鸭代名词，前门店最正宗", "price": "人均180-250元", "tag": "老字号"}, {"name": "南锣鼓巷小吃", "desc": "逛完故宫顺路吃，炸酱面、卤煮火烧、爆肚", "price": "人均30-50元", "tag": "顺路"}], "tips": [{"type": "warning", "text": "故宫门票必须提前预约！现场无售票，旺季提前7-10天抢"}, {"type": "good", "text": "建议从午门进、神武门出，不走回头路"}, {"type": "warning", "text": "带身份证！没身份证绝对进不去"}, {"type": "good", "text": "租讲解器（20元）或下载玩转故宫App免费导览"}, {"type": "tip", "text": "珍宝馆和钟表馆需另外买票，各10元，非常值得看"}], "guides": {"3-7": {"title": "北京精华3日游", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫·天安门", "items": [{"time": "05:30", "title": "天安门升旗仪式", "desc": "提前查升旗时间，旺季需凌晨3点到广场排队占位"}, {"time": "08:30", "title": "故宫博物院", "desc": "提前预约！午门进，神武门出，珍宝馆+钟表馆选去"}, {"time": "13:00", "title": "景山公园", "desc": "从神武门出来过马路就是，爬山5分钟，俯瞰故宫全景最佳机位"}, {"time": "16:00", "title": "南锣鼓巷", "desc": "老北京胡同游，逛文艺小店，吃炸酱面"}, {"time": "19:00", "title": "簋街晚餐", "desc": "胡大饭店，小龙虾+麻小，北京夜生活"}]}, {"day": "Day 2", "theme": "长城·奥运", "items": [{"time": "07:00", "title": "早起出发八达岭", "desc": "S2线城铁（北京北站→八达岭，6:30发车，约80分钟）或919路公交"}, {"time": "09:00", "title": "登八达岭长城", "desc": "建议爬北八楼好汉坡，坐缆车或索道上山节省体力"}, {"time": "13:00", "title": "返回市区午餐", "desc": "高铁或919公交回市区"}, {"time": "16:00", "title": "鸟巢·水立方", "desc": "傍晚到，灯光亮起最美，外围免费参观"}]}, {"day": "Day 3", "theme": "皇家园林", "items": [{"time": "08:30", "title": "颐和园", "desc": "北宫门进，先游苏州街，再沿昆明湖到十七孔桥"}, {"time": "12:00", "title": "圆明园", "desc": "西洋楼遗址最震撼，强烈推荐请导游讲解历史"}, {"time": "16:00", "title": "清华/北大", "desc": "需提前在官方公众号预约入校，周末开放名额多"}]}]}, "7-15": {"title": "北京深度7日游", "days": 7, "schedule": [{"day": "Day 1-2", "theme": "故宫深度游（2天）", "items": [{"time": "全天", "title": "Day1 中轴线+珍宝馆", "desc": "从午门到神武门，中轴线三大殿+珍宝馆"}, {"time": "全天", "title": "Day2 西六宫+钟表馆", "desc": "军机处+西六宫+钟表馆，慢慢逛"}]}, {"day": "Day 3", "theme": "长城双日", "items": [{"time": "全天", "title": "八达岭长城", "desc": "登好汉坡，坐缆车上山"}]}, {"day": "Day 4", "theme": "胡同·文艺", "items": [{"time": "09:00", "title": "天坛公园", "desc": "祈年殿、回音壁，体验老北京晨练文化"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→恭王府→南锣鼓巷，骑自行车串胡同"}, {"time": "18:00", "title": "后海酒吧街", "desc": "晚餐+夜生活"}]}, {"day": "Day 5", "theme": "博物馆日", "items": [{"time": "09:00", "title": "国家博物馆", "desc": "提前在国家博物馆公众号预约，绝对震撼"}, {"time": "14:00", "title": "北京博物馆", "desc": "离国博很近，可选去自然博物馆或军事博物馆"}]}, {"day": "Day 6", "theme": "京郊游", "items": [{"time": "全天", "title": "京郊一日选一个", "desc": "香山（红叶季）/ 十三陵 / 周口店 / 永定河"}]}, {"day": "Day 7", "theme": "休闲收尾", "items": [{"time": "09:00", "title": "中山公园/劳动人民文化宫", "desc": "比故宫人少，景色也好"}, {"time": "13:00", "title": "王府井·APM", "desc": "最后采购，伴手礼"}]}]}, "30": {"title": "北京慢游30天深度攻略", "days": 30, "schedule": [{"day": "Week 1", "theme": "核心景区深度游", "items": [{"time": "每天", "title": "故宫分期解锁", "desc": "前三天分别：中轴线、西六宫、东六宫+珍宝馆+钟表馆，每天2-3小时"}, {"time": "每天", "title": "每天一座园林", "desc": "颐和园（两天）、圆明园、北海公园、恭王府、中山公园、劳动人民文化宫"}]}, {"day": "Week 2", "theme": "胡同文化深度", "items": [{"time": "每天", "title": "串胡同", "desc": "南锣鼓巷、什刹海、烟袋斜街、五道营胡同、方家胡同、雍和宫大街"}, {"time": "每天", "title": "老北京生活体验", "desc": "早起天坛晨练、北海公园遛弯、潘家园淘货（周六）、红桥市场"}]}, {"day": "Week 3", "theme": "博物馆与文化", "items": [{"time": "每天", "title": "国家博物馆、中国美术馆、首都博物馆、中国科技馆", "desc": "每天一座馆，慢慢看"}]}, {"day": "Week 4", "theme": "京郊与周边", "items": [{"time": "每天", "title": "周边游", "desc": "八达岭、慕田峪、司马台、十三陵、承德避暑山庄、天津（高铁30分钟）"}]}]}}}, "badaling": {"name": "八达岭长城", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1200&q=80", "desc": "不到长城非好汉！北京必打卡，世界七大奇迹之一", "address": "北京市延庆区八达岭镇", "phone": "010-69121383", "opening": {"peak": "06:30-19:00（夏季）", "offpeak": "07:30-17:00（冬季）", "closed": "无", "tip": "建议早7点前到达，避开9点后的大人流"}, "ticket": {"adult": "40元", "student": "20元", "senior": "免费", "bus": "单程100元，往返140元（选坐）", "booking": "无需预约，现场买票即可"}, "transport": {"recommended": "S2城铁", "reason": "S2线性价比最高，景色好（穿越花海），比大巴快且准时", "metro": {"lines": ["S2线（黄土店站→八达岭站）"], "walk": "黄土店站步行5分钟，S2约80分钟到八达岭"}, "driving": {"parking": "八达岭停车场，20元/次，旺季可能满", "tips": "京藏高速周末堵车严重，建议早起或坐S2", "restrictions": "旺季可能临时交通管制"}, "bus": [{"name": "919路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:00", "last": "18:00", "tips": "走高速约2小时，票价12元"}, {"name": "877路", "from": "德胜门", "to": "八达岭", "freq": "流水发车", "first": "06:30", "last": "12:30", "tips": "返程最晚17:00，注意时间！"}], "taxi": {"notRecommended": true, "reason": "价格贵（单程200+），且返程难打车，不推荐"}, "carRental": {"recommended": false, "reason": "旺季高速堵车严重，停车也紧张，S2城铁更优", "platforms": ["神州租车", "一嗨租车"], "priceRange": "紧凑型180-300元/天"}}, "food": [{"name": "长城脚下农家乐", "desc": "价格适中，味道家常", "price": "人均50-80元", "tag": "顺路"}, {"name": "自带干粮", "desc": "山上食品贵且选择少，建议自带", "price": "0元", "tag": "省钱"}], "tips": [{"type": "good", "text": "S2线春季穿越花海，景色绝美！注意班次时间"}, {"type": "warning", "text": "877路返程最晚17:00，错过只能打车或等下一班"}, {"type": "good", "text": "带足水！夏天长城上非常晒"}, {"type": "warning", "text": "带老人小孩建议坐缆车，老人孩子都轻松"}, {"type": "tip", "text": "好汉坡在北八楼，从北一楼爬到北八楼约2小时"}], "guides": {"3-7": {"title": "长城+北京精华3日", "days": 3, "schedule": [{"day": "Day 1", "theme": "故宫深度", "items": [{"time": "08:30", "title": "故宫", "desc": "提前预约，深度游览"}, {"time": "14:00", "title": "景山公园", "desc": "俯瞰故宫全景"}]}, {"day": "Day 2", "theme": "长城一日", "items": [{"time": "07:00", "title": "S2城铁出发", "desc": "6:30黄土店站"}, {"time": "09:00", "title": "八达岭长城", "desc": "登好汉坡"}, {"time": "15:00", "title": "返回+鸟巢夜景", "desc": "S2或919回程"}]}, {"day": "Day 3", "theme": "胡同游", "items": [{"time": "09:00", "title": "天坛", "desc": "晨练+祈年殿"}, {"time": "13:00", "title": "胡同骑行", "desc": "什刹海→南锣鼓巷"}]}]}, "7-15": {"title": "北京7日游（见故宫攻略）", "days": 7, "schedule": []}, "30": {"title": "北京30日游（见故宫攻略）", "days": 30, "schedule": []}}}, "yiheyuan": {"name": "颐和园", "level": "5A", "category": "历史人文", "image": "https://images.unsplash.com/photo-1599707367072-cd6ad66acc40?w=1200&q=80", "desc": "中国最大皇家园林，昆明湖万寿山，慈禧太后夏宫", "address": "北京市海淀区新建宫门路19号", "phone": "010-62881144", "opening": {"peak": "06:30-19:00（4月-10月）", "offpeak": "07:00-17:30（11月-3月）", "closed": "无", "tip": "建议早上去，光线好且人少"}, "ticket": {"adult": "30元", "student": "15元", "combo": "60元（含苏州街）", "booking": "无需预约，现场买票"}, "transport": {"recommended": "地铁", "reason": "地铁4号线直达西苑站，步行5分钟到北宫门", "metro": {"lines": ["4号线 西苑站A口", "西郊线 颐和园西门站"], "walk": "西苑站A口出，步行约5分钟到北宫门"}, "driving": {"parking": "北宫门/新建宫门停车场，10元/次", "tips": "周末车位紧张，建议早去或坐地铁"}, "bus": [{"name": "303路", "from": "西直门", "to": "颐和园北宫门", "freq": "10-15分钟", "first": "06:00", "last": "21:00", "tips": "经停多站，可从动物园过来"}], "taxi": {"fromCenter": "约30-40元"}, "carRental": {"recommended": false, "reason": "地铁直达，没必要租车"}}, "food": [{"name": "西苑美食街", "desc": "出地铁站就是，各种快餐和小吃", "price": "人均30-50元", "tag": "方便"}], "tips": [{"type": "good", "text": "建议从北宫门进，先爬万寿山，再沿昆明湖逛"}, {"type": "good", "text": "苏州街另买票，值得一看"}, {"type": "tip", "text": "租船游昆明湖是经典体验，脚踏船150-200元/小时"}], "guides": {"3-7": {"title": "颐和园半日游（纳入北京3日游）", "days": 0.5, "schedule": [{"day": "Day 3上午", "theme": "皇家园林", "items": [{"time": "09:00", "title": "北宫门进园", "desc": "苏州街→万寿山→长廊"}, {"time": "11:00", "title": "昆明湖游船", "desc": "脚踏船或电动船"}, {"time": "12:30", "title": "十七孔桥", "desc": "必打卡，秋季金光穿洞"}]}]}, "7-15": {"title": "见北京7日游攻略", "days": 0, "schedule": []}, "30": {"title": "见北京30日游攻略", "days": 0, "schedule": []}}}}}}, "comingSoon": false}, "tianjin": {"name": "天津市", "short": "天津", "region": "north", "desc": "津门故里", "cities": {}, "comingSoon": true}, "hebei": {"name": "河北省", "short": "河北", "region": "north", "desc": "燕赵大地", "cities": {}, "comingSoon": true}, "shanxi": {"name": "山西省", "short": "山西", "region": "north", "desc": "晋善晋美", "cities": {}, "comingSoon": true}, "innermongolia": {"name": "内蒙古", "short": "内蒙古", "region": "north", "desc": "草原风光", "cities": {}, "comingSoon": true}, "liaoning": {"name": "辽宁省", "short": "辽宁", "region": "northeast", "desc": "工业重镇", "cities": {}, "comingSoon": true}, "jilin": {"name": "吉林省", "short": "吉林", "region": "northeast", "desc": "雾凇冰雪", "cities": {}, "comingSoon": true}, "heilongjiang": {"name": "黑龙江省", "short": "黑龙江", "region": "northeast", "desc": "冰雪世界", "cities": {}, "comingSoon": true}, "shanghai": {"name": "上海市", "short": "上海", "region": "east", "desc": "魔都 · 东方巴黎", "cities": {}, "comingSoon": true}, "jiangsu": {"name": "江苏省", "short": "江苏", "region": "east", "desc": "江南水乡", "cities": {}, "comingSoon": true}, "zhejiang": {"name": "浙江省", "short": "浙江", "region": "east", "desc": "鱼米之乡", "cities": {}, "comingSoon": true}, "anhui": {"name": "安徽省", "short": "安徽", "region": "east", "desc": "徽风皖韵", "cities": {}, "comingSoon": true}, "fujian": {"name": "福建省", "short": "福建", "region": "east", "desc": "清新福建", "cities": {}, "comingSoon": true}, "jiangxi": {"name": "江西省", "short": "江西", "region": "east", "desc": "红色摇篮", "cities": {}, "comingSoon": true}, "shandong": {"name": "山东省", "short": "山东", "region": "east", "desc": "齐鲁大地", "cities": {}, "comingSoon": true}, "henan": {"name": "河南省", "short": "河南", "region": "central", "desc": "中原大地", "cities": {}, "comingSoon": true}, "hubei": {"name": "湖北省", "short": "湖北", "region": "central", "desc": "千湖之省", "cities": {}, "comingSoon": true}, "hunan": {"name": "湖南省", "short": "湖南", "region": "central", "desc": "湘楚文化", "cities": {}, "comingSoon": true}, "guangdong": {"name": "广东省", "short": "广东", "region": "south", "desc": "美食之都", "cities": {}, "comingSoon": true}, "guangxi": {"name": "广西", "short": "广西", "region": "south", "desc": "壮美广西", "cities": {}, "comingSoon": true}, "hainan": {"name": "海南省", "short": "海南", "region": "south", "desc": "热带海岛", "cities": {}, "comingSoon": true}, "hongkong": {"name": "香港", "short": "香港", "region": "south", "desc": "购物天堂", "cities": {}, "comingSoon": true}, "macau": {"name": "澳门", "short": "澳门", "region": "south", "desc": "葡韵风情", "cities": {}, "comingSoon": true}, "sichuan": {"name": "四川省", "short": "四川", "region": "southwest", "desc": "天府之国", "cities": {}, "comingSoon": true}, "chongqing": {"name": "重庆市", "short": "重庆", "region": "southwest", "desc": "山城魔幻", "cities": {}, "comingSoon": true}, "guizhou": {"name": "贵州省", "short": "贵州", "region": "southwest", "desc": "多彩贵州", "cities": {}, "comingSoon": true}, "yunnan": {"name": "云南省", "short": "云南", "region": "southwest", "desc": "彩云之南", "cities": {}, "comingSoon": true}, "tibet": {"name": "西藏", "short": "西藏", "region": "southwest", "desc": "世界屋脊", "cities": {}, "comingSoon": true}, "shaanxi": {"name": "陕西省", "short": "陕西", "region": "northwest", "desc": "三秦大地", "cities": {}, "comingSoon": true}, "gansu": {"name": "甘肃省", "short": "甘肃", "region": "northwest", "desc": "丝绸之路", "cities": {}, "comingSoon": true}, "qinghai": {"name": "青海省", "short": "青海", "region": "northwest", "desc": "中华水塔", "cities": {}, "comingSoon": true}, "ningxia": {"name": "宁夏", "short": "宁夏", "region": "northwest", "desc": "塞上江南", "cities": {}, "comingSoon": true}, "xinjiang": {"name": "新疆", "short": "新疆", "region": "northwest", "desc": "瓜果之乡", "cities": {}, "comingSoon": true}}};
 
-// ── State ──
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let currentView = 'home';
+let currentProvince = null;
 let currentCity = null;
-let currentStep = 1;
-let currentFilter = 'must';
+let currentSpot = null;
+let currentGuide = '3-7';
+let navStack = [];
 
-// ── Init ──
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
 function init() {
-  renderCityGrid();
+  renderProvinces();
 }
 
-function renderCityGrid() {
+// ═══════════════════════════════════════════════════════════
+// RENDER: PROVINCES
+// ═══════════════════════════════════════════════════════════
+function renderProvinces() {
+  const regions = ['north','northeast','east','central','south','southwest','northwest'];
+  regions.forEach(region => {
+    const container = document.getElementById(region + 'Provinces');
+    if (!container) return;
+    const provinces = Object.entries(DB.provinces)
+      .filter(([k,v]) => v.region === region)
+      .sort((a,b) => a[1].name.localeCompare(b[1].name));
+    
+    container.innerHTML = provinces.map(([k,v]) => {
+      if (v.comingSoon) {
+        return `<div class="province-card coming-soon">
+          <div class="province-card-name">${v.name}</div>
+          <div class="province-card-meta">${v.desc}</div>
+          <div class="province-card-soon">即将开放</div>
+        </div>`;
+      }
+      const cityCount = Object.keys(v.cities || {}).length;
+      return `<div class="province-card" onclick="goProvince('${k}')">
+        <div class="province-card-name">${v.name}</div>
+        <div class="province-card-meta">${v.desc}</div>
+        <div class="province-card-badge">${cityCount}城</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER: PROVINCES CITIES
+// ═══════════════════════════════════════════════════════════
+function goProvince(pid) {
+  const p = DB.provinces[pid];
+  if (p.comingSoon) return;
+  currentProvince = pid;
+  navStack = [{view:'province',pid}];
+  
+  document.getElementById('provinceTitle').textContent = p.name;
+  document.getElementById('provinceDesc').textContent = p.desc + ' · 点击城市开始探索';
+  
   const grid = document.getElementById('cityGrid');
-  grid.innerHTML = Object.keys(cities).map(key => {
-    const c = cities[key];
-    return `
-      <div class="city-card" data-city="${key}">
-        <div class="city-card-img">
-          <img src="${c.image}" alt="${c.name}" loading="lazy" />
-        </div>
-        <div class="city-card-body">
-          <h3 class="city-card-name">${c.name}</h3>
-          <div class="city-card-meta">
-            <span>${c.basic.days}</span>
-            <span>${c.basic.budget}</span>
-          </div>
-        </div>
+  grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
+    const spotCount = Object.keys(c.spots || {}).length;
+    const tags = Object.values(c.spots || {}).slice(0,3).map(s => 
+      `<span class="tag">${s.name}</span>`
+    ).join('');
+    const img = c.spots ? Object.values(c.spots)[0].image : '';
+    return `<div class="city-card" onclick="goCity('${pid}','${cid}')">
+      <div class="city-card-img"><img src="${img}" alt="${c.name}" loading="lazy"/></div>
+      <div class="city-card-body">
+        <div class="city-card-name">${c.name}</div>
+        <div class="city-card-desc">${c.desc}</div>
+        <div class="city-card-tags">${tags}</div>
       </div>
-    `;
+    </div>`;
   }).join('');
-}
-
-// ── Event Handlers ──
-document.getElementById('cityGrid').addEventListener('click', e => {
-  const card = e.target.closest('.city-card');
-  if (!card) return;
-  selectCity(card.dataset.city);
-});
-
-document.getElementById('stepsNav').addEventListener('click', e => {
-  const btn = e.target.closest('.step-btn');
-  if (!btn) return;
-  goToStep(parseInt(btn.dataset.step));
-});
-
-document.getElementById('filterTabs').addEventListener('click', e => {
-  const tab = e.target.closest('.filter-tab');
-  if (!tab) return;
-  filterSpots(tab.dataset.filter);
-});
-
-// ── Navigation ──
-function selectCity(key) {
-  currentCity = key;
-  currentStep = 1;
-  currentFilter = 'must';
   
-  const c = cities[key];
-  
-  // Hide home, show guide
-  document.getElementById('homeView').style.display = 'none';
-  document.getElementById('guideView').classList.add('visible');
-  
-  // Render hero
-  document.getElementById('guideHeroImg').style.backgroundImage = `url('${c.image}')`;
-  document.getElementById('guideHeroName').textContent = c.name;
-  document.getElementById('guideHeroSub').textContent = c.subtitle;
-  
-  // Render steps nav
-  renderStepsNav();
-  
-  // Render step content
-  renderStep1();
-  renderStep2();
-  renderStep3();
-  renderStep4();
-  renderStep5();
-  
-  goToStep(1);
   updateBreadcrumb();
+  switchView('provinceView');
 }
 
-function renderStepsNav() {
-  const nav = document.getElementById('stepsNav');
-  nav.innerHTML = [
-    { step: 1, title: '基础信息' },
-    { step: 2, title: '景点筛选' },
-    { step: 3, title: '每日行程' },
-    { step: 4, title: '吃住行清单' },
-    { step: 5, title: '备忘清单' }
-  ].map(s => `
-    <div class="step-btn${s.step === 1 ? ' active' : ''}" data-step="${s.step}">
-      <span class="step-num">${s.step}</span>
-      <span>${s.title}</span>
+// ═══════════════════════════════════════════════════════════
+// RENDER: CITY SPOTS
+// ═══════════════════════════════════════════════════════════
+function goCity(pid, cid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  currentCity = cid;
+  navStack.push({view:'city',cid});
+  
+  document.getElementById('cityTitle').textContent = c.name;
+  document.getElementById('cityDesc').textContent = c.desc + ' · 点击景区查看详情';
+  
+  const list = document.getElementById('spotList');
+  list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => `
+    <div class="spot-card" onclick="goSpot('${pid}','${cid}','${sid}')">
+      <img class="spot-card-img" src="${s.image}" alt="${s.name}" loading="lazy"/>
+      <div class="spot-card-info">
+        <div class="spot-card-top">
+          <div class="spot-card-name">${s.name}</div>
+          ${s.level ? `<span class="spot-card-level">${s.level}</span>` : ''}
+        </div>
+        <div class="spot-card-desc">${s.desc}</div>
+        <div class="spot-card-meta">
+          <span>🕐 ${s.opening?.peak || s.opening?.offpeak || '全天'}</span>
+          <span>📍 ${s.category || '景区'}</span>
+        </div>
+      </div>
+      <div class="spot-card-arrow">›</div>
     </div>
   `).join('');
-}
-
-function goToStep(step) {
-  currentStep = step;
   
-  // Update nav
-  document.querySelectorAll('.step-btn').forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.step) === step);
-  });
-  
-  // Update sections
-  document.querySelectorAll('.step-section').forEach((sec, i) => {
-    sec.classList.toggle('visible', i + 1 === step);
-  });
-  
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function goHome() {
-  currentCity = null;
-  document.getElementById('homeView').style.display = 'block';
-  document.getElementById('guideView').classList.remove('visible');
   updateBreadcrumb();
+  switchView('cityView');
 }
 
-function updateBreadcrumb() {
-  const bc = document.getElementById('breadcrumb');
-  if (!currentCity) {
-    bc.innerHTML = '';
+// ═══════════════════════════════════════════════════════════
+// RENDER: SPOT DETAIL
+// ═══════════════════════════════════════════════════════════
+function goSpot(pid, cid, sid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  const s = c.spots[sid];
+  currentSpot = sid;
+  navStack.push({view:'spot',sid});
+  
+  // Hero
+  document.getElementById('spotHero').style.backgroundImage = `url('${s.image}')`;
+  document.getElementById('spotHeroName').textContent = s.name + (s.level ? ' ' + s.level : '');
+  document.getElementById('spotHeroSub').textContent = s.desc;
+  
+  // Info cards
+  const infoCards = document.getElementById('infoCards');
+  infoCards.innerHTML = `
+    <div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-label">开放时间</div><div class="info-card-value">${s.opening?.peak || '全天'}</div></div>
+    <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket?.adult || '免费'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-label">地址</div><div class="info-card-value">${s.address || '—'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-label">电话</div><div class="info-card-value">${s.phone || '—'}</div></div>
+  `;
+  
+  // Guide
+  renderGuide(s);
+  
+  // Transport
+  renderTransport(s);
+  
+  // Food
+  renderFood(s);
+  
+  // Tips
+  renderTips(s);
+  
+  updateBreadcrumb();
+  switchView('spotView');
+  window.scrollTo(0,0);
+}
+
+function renderGuide(s) {
+  const g = s.guides?.[currentGuide] || s.guides?.['3-7'] || {};
+  document.getElementById('guideTitle').textContent = g.title || '行程攻略';
+  document.getElementById('guideSub').textContent = g.days ? `建议游玩 ${g.days} 天` : '';
+  
+  const list = document.getElementById('scheduleList');
+  if (!g.schedule || g.schedule.length === 0) {
+    list.innerHTML = '<div class="more-soon">该时长攻略正在完善中，请参考其他时长选项</div>';
     return;
   }
   
-  const c = cities[currentCity];
-  bc.innerHTML = `
-    <span onclick="goHome()">首页</span>
-    <span class="sep">›</span>
-    <span class="current">${c.name}</span>
-  `;
-}
-
-// ── Render Steps ──
-function renderStep1() {
-  const c = cities[currentCity];
-  
-  // Basic info cards
-  document.getElementById('basicInfo').innerHTML = `
-    <div class="info-card"><div class="info-card-icon">📅</div><div class="info-card-value">${c.basic.days}</div><div class="info-card-label">建议天数</div></div>
-    <div class="info-card"><div class="info-card-icon">💰</div><div class="info-card-value">${c.basic.budget}</div><div class="info-card-label">人均预算</div></div>
-    <div class="info-card"><div class="info-card-icon">🌡️</div><div class="info-card-value">${c.basic.temp}</div><div class="info-card-label">最佳温度</div></div>
-    <div class="info-card"><div class="info-card-icon">🌸</div><div class="info-card-value">${c.basic.season}</div><div class="info-card-label">推荐季节</div></div>
-    <div class="info-card"><div class="info-card-icon">🚄</div><div class="info-card-value">${c.basic.transport}</div><div class="info-card-label">交通方式</div></div>
-    <div class="info-card"><div class="info-card-icon">👥</div><div class="info-card-value">${c.basic.crowd}</div><div class="info-card-label">适合人群</div></div>
-  `;
-  
-  // Preference tags
-  document.getElementById('preferenceTags').innerHTML = c.preferences.map(p => `<span class="pref-tag">${p}</span>`).join('');
-}
-
-function renderStep2() {
-  filterSpots('must');
-}
-
-function filterSpots(filter) {
-  currentFilter = filter;
-  
-  // Update tabs
-  document.querySelectorAll('.filter-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.filter === filter);
-  });
-  
-  const c = cities[currentCity];
-  const spots = c.spots[filter] || [];
-  
-  const list = document.getElementById('spotsList');
-  if (spots.length === 0) {
-    list.innerHTML = '<p style="color: var(--ink-light); text-align: center; padding: 40px;">暂无内容</p>';
-    return;
-  }
-  
-  list.innerHTML = spots.map((spot, i) => `
-    <div class="spot-item ${filter}">
-      <div class="spot-rank">${i + 1}</div>
-      <div class="spot-content">
-        <div class="spot-header">
-          <span class="spot-name">${spot.name}</span>
-          <span class="spot-badge ${filter}">${filter === 'must' ? '必去' : filter === 'optional' ? '可选' : '避雷'}</span>
-        </div>
-        <p class="spot-desc">${spot.desc}</p>
-        <div class="spot-meta">
-          ${spot.time ? `<div class="spot-meta-item">⏱️ ${spot.time}</div>` : ''}
-          ${spot.cost ? `<div class="spot-meta-item">💵 ${spot.cost}</div>` : ''}
-        </div>
-        <div class="spot-tags">
-          ${spot.tags.map(t => `<span class="spot-tag">${t}</span>`).join('')}
-        </div>
+  list.innerHTML = g.schedule.map(d => `
+    <div class="schedule-day">
+      <div class="schedule-day-header">
+        <div class="schedule-day-title">${d.day}</div>
+        <div class="schedule-day-theme">${d.theme}</div>
       </div>
-    </div>
-  `).join('');
-}
-
-function renderStep3() {
-  const c = cities[currentCity];
-  
-  document.getElementById('dailySchedule').innerHTML = c.schedule.map(day => `
-    <div class="day-card">
-      <div class="day-header">
-        <span class="day-title">${day.day}</span>
-        <span class="day-theme">${day.theme}</span>
-      </div>
-      <div class="day-timeline">
-        ${day.items.map(item => `
-          <div class="timeline-item">
-            <div class="timeline-time">${item.time}</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-title">${item.title}</div>
-              <div class="timeline-desc">${item.desc}</div>
+      <div class="schedule-items">
+        ${d.items.map(i => `
+          <div class="schedule-item">
+            <div class="schedule-item-time">${i.time}</div>
+            <div class="schedule-item-info">
+              <div class="schedule-item-title">${i.title}</div>
+              <div class="schedule-item-desc">${i.desc}</div>
             </div>
           </div>
         `).join('')}
@@ -3035,88 +434,195 @@ function renderStep3() {
   `).join('');
 }
 
-function renderStep4() {
-  const c = cities[currentCity];
+function renderTransport(s) {
+  const t = s.transport || {};
+  const content = document.getElementById('transportContent');
   
-  // Food
-  const foodHtml = [
-    ...c.food.must.map(f => `
-      <div class="food-card">
-        <div class="food-name">${f.name}</div>
-        <div class="food-type">${f.type}</div>
-        <div class="food-desc">${f.desc}</div>
-        <div class="food-meta"><span>💰 ${f.price}</span></div>
-      </div>
-    `),
-    ...c.food.shops.map(f => `
-      <div class="food-card">
-        <div class="food-name">${f.name} <span class="food-badge">${f.badge}</span></div>
-        <div class="food-desc">${f.desc}</div>
-        <div class="food-meta"><span>💰 ${f.price}</span></div>
-      </div>
-    `),
-    ...c.food.avoid.map(f => `
-      <div class="food-card">
-        <div class="food-name">${f.name} <span class="food-badge warning">${f.badge}</span></div>
-        <div class="food-desc">${f.desc}</div>
-      </div>
-    `)
-  ].join('');
-  document.getElementById('foodList').innerHTML = foodHtml;
+  if (!t.recommended) {
+    content.innerHTML = '<div class="more-soon">交通信息正在完善中</div>';
+    return;
+  }
   
-  // Stay
-  document.getElementById('stayList').innerHTML = c.stay.map(s => `
-    <div class="stay-card">
-      <div class="stay-area">📍 ${s.area}</div>
-      <div class="stay-reason">${s.reason}</div>
-    </div>
-  `).join('');
+  let html = `<div class="transport-reason"><strong>推荐出行方式：${t.recommended}</strong><br>${t.reason || ''}</div><div class="transport-grid">`;
   
-  // Transport
-  document.getElementById('transportList').innerHTML = c.transport.map(t => `
-    <div class="transport-card">
-      <div class="transport-title">${t.title}</div>
-      <div class="transport-desc">${t.desc}</div>
+  if (t.metro) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚇 地铁</div>
+      ${t.metro.lines.map(l => `<div class="transport-row"><span class="val">${l}</span></div>`).join('')}
+      ${t.metro.walk ? `<div class="transport-row"><span class="key">步行</span><span>${t.metro.walk}</span></div>` : ''}
+    </div>`;
+  }
+  
+  if (t.driving && !t.driving.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾</div>
+      ${t.driving.parking ? `<div class="transport-row"><span class="key">停车</span><span>${t.driving.parking}</span></div>` : ''}
+      ${t.driving.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.driving.tips}</span></div>` : ''}
+      ${t.driving.restrictions ? `<div class="transport-row"><span class="key">限行</span><span>${t.driving.restrictions}</span></div>` : ''}
+    </div>`;
+  } else if (t.driving?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾 <span class="no-rec-badge">不推荐</span></div>
+      <div class="transport-row"><span>${t.driving.reason || '不推荐自驾'}</span></div>
+    </div>`;
+  }
+  
+  if (t.bus && t.bus.length > 0) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚌 公交</div>
+      ${t.bus.map(b => `
+        <div style="margin-bottom:8px">
+          <div class="transport-row"><span class="val">${b.name}</span><span>${b.from} → ${b.to}</span></div>
+          <div class="transport-row"><span class="key">班次</span><span>${b.freq} | 首 ${b.first} | 末 ${b.last}</span></div>
+          ${b.tips ? `<div class="transport-row"><span class="key">提示</span><span>${b.tips}</span></div>` : ''}
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  
+  if (t.taxi && !t.taxi.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车</div>
+      ${t.taxi.fromCenter ? `<div class="transport-row"><span class="key">从市中心</span><span>${t.taxi.fromCenter}</span></div>` : ''}
+      ${t.taxi.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.taxi.tips}</span></div>` : ''}
+    </div>`;
+  } else if (t.taxi?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车 <span class="no-rec-badge">不推荐</span></div>
+      <div class="transport-row"><span>${t.taxi.reason || '不推荐打车'}</span></div>
+    </div>`;
+  }
+  
+  if (t.carRental && !t.carRental.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="no-rec-badge">不推荐</span></div>
+      ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
+    </div>`;
+  } else if (t.carRental?.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="rec-badge">推荐</span></div>
+      ${t.carRental.platforms ? `<div class="transport-row"><span class="key">平台</span><span>${t.carRental.platforms.join(', ')}</span></div>` : ''}
+      ${t.carRental.priceRange ? `<div class="transport-row"><span class="key">价格</span><span>${t.carRental.priceRange}</span></div>` : ''}
+      ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
+    </div>`;
+  }
+  
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+function renderFood(s) {
+  const food = s.food || [];
+  const content = document.getElementById('foodContent');
+  if (food.length === 0) {
+    content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>';
+    return;
+  }
+  content.innerHTML = food.map(f => `
+    <div class="food-item">
+      <div>
+        <div class="food-item-name">${f.name} ${f.tag ? `<span class="tag">${f.tag}</span>` : ''}</div>
+        <div class="food-item-desc">${f.desc}</div>
+      </div>
+      <div class="food-item-price">${f.price}</div>
     </div>
   `).join('');
 }
 
-function renderStep5() {
-  const c = cities[currentCity];
-  
-  // Tips
-  document.getElementById('avoidTips').innerHTML = c.tips.map(t => `<li>${t}</li>`).join('');
-  
-  // Checklists
-  const renderChecklist = (items, containerId) => {
-    document.getElementById(containerId).innerHTML = items.map(item => `
-      <div class="checklist-item" onclick="toggleCheck(this)">
-        <div class="checklist-checkbox"></div>
-        <span>${item}</span>
-      </div>
-    `).join('');
-  };
-  
-  renderChecklist(c.checklist.docs, 'checkDocs');
-  renderChecklist(c.checklist.clothes, 'checkClothes');
-  renderChecklist(c.checklist.daily, 'checkDaily');
-  renderChecklist(c.checklist.meds, 'checkMeds');
-  renderChecklist(c.checklist.electronics, 'checkElectronics');
-  
-  // Budget
-  document.getElementById('budgetTable').innerHTML = c.budget.map((b, i) => `
-    <div class="budget-row${i === c.budget.length - 1 ? ' total' : ''}">
-      <div class="budget-label">${b.label}</div>
-      <div class="budget-value">${b.value}</div>
+function renderTips(s) {
+  const tips = s.tips || [];
+  const content = document.getElementById('tipsContent');
+  if (tips.length === 0) {
+    content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>';
+    return;
+  }
+  content.innerHTML = tips.map(t => `
+    <div class="tip-item ${t.type || ''}">
+      <div class="tip-icon">${t.type === 'warning' ? '!' : t.type === 'good' ? '✓' : 'i'}</div>
+      <div>${t.text}</div>
     </div>
   `).join('');
 }
 
-function toggleCheck(el) {
-  el.querySelector('.checklist-checkbox').classList.toggle('checked');
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function switchView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  currentView = viewId;
 }
 
-// ── Start ──
+function updateBreadcrumb() {
+  const bc = document.getElementById('spotBreadcrumb') || document.getElementById('cityBreadcrumb') || document.getElementById('provinceBreadcrumb');
+  if (!bc) return;
+  
+  let html = `<a onclick="goHome()">首页</a><span class="sep">›</span>`;
+  
+  if (currentProvince) {
+    const p = DB.provinces[currentProvince];
+    html += `<a onclick="goProvince('${currentProvince}')">${p.name}</a><span class="sep">›</span>`;
+  }
+  
+  if (currentCity) {
+    const p = DB.provinces[currentProvince];
+    const c = p.cities[currentCity];
+    html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
+  }
+  
+  if (currentSpot) {
+    const p = DB.provinces[currentProvince];
+    const c = p.cities[currentCity];
+    const s = c.spots[currentSpot];
+    html += `<span class="current">${s.name}</span>`;
+  }
+  
+  bc.innerHTML = html;
+}
+
+function goHome() {
+  currentProvince = null;
+  currentCity = null;
+  currentSpot = null;
+  navStack = [];
+  switchView('homeView');
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  if (navStack.length > 1) {
+    navStack.pop();
+    const prev = navStack[navStack.length - 1];
+    if (prev.view === 'province') {
+      currentCity = null;
+      currentSpot = null;
+      goProvince(prev.pid);
+    } else if (prev.view === 'city') {
+      currentSpot = null;
+      goCity(currentProvince, prev.cid);
+    }
+  } else {
+    goHome();
+  }
+}
+
+function switchGuide(duration) {
+  currentGuide = duration;
+  document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  renderGuide(s);
+}
+
+function showRegion(region) {
+  document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  document.querySelectorAll('.region-group').forEach(g => {
+    if (region === 'all') {
+      g.style.display = '';
+    } else {
+      g.style.display = g.dataset.region === region ? '' : 'none';
+    }
+  });
+}
+
+// Init
 init();
 </script>
 </body>
