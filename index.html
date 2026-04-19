@@ -350,8 +350,7 @@
   </div>
 </div>
 
-<script>
-const DB = {
+<script>const DB = {
   "meta": {
     "name": "漫游中国",
     "subtitle": "省市区景区三级旅游攻略",
@@ -9010,27 +9009,254 @@ const DB = {
     },
     "guangdong": {
       "name": "广东省",
-      "short": "广东",
       "region": "south",
-      "desc": "美食之都",
-      "cities": {},
-      "comingSoon": true
+      "comingSoon": false,
+      "cities": {
+        "guangzhou": {
+          "name": "广州市",
+          "spots": {
+            "canting": {
+              "name": "陈家祠",
+              "level": "4A",
+              "category": "历史",
+              "image": "canting",
+              "desc": "广东最著名的祠堂建筑",
+              "address": "荔湾区中山七路",
+              "opening": "8:30-17:30",
+              "ticket": "10元",
+              "transport": "地铁1号线陈家祠站",
+              "food": "肠粉",
+              "tips": "2小时"
+            },
+            "baiyun": {
+              "name": "白云山",
+              "level": "5A",
+              "category": "自然",
+              "image": "baiyun",
+              "desc": "南粤名山",
+              "address": "白云区",
+              "opening": "6:00-22:00",
+              "ticket": "5元",
+              "transport": "地铁2号线",
+              "food": "豆腐花",
+              "tips": "晨练"
+            },
+            "changling": {
+              "name": "长隆动物园",
+              "level": "5A",
+              "category": "主题公园",
+              "image": "changling",
+              "desc": "最大野生动物园",
+              "address": "番禺区",
+              "opening": "9:30-18:00",
+              "ticket": "300元",
+              "transport": "地铁3号线",
+              "food": "园区餐厅",
+              "tips": "看白虎"
+            }
+          }
+        },
+        "shenzhen": {
+          "name": "深圳市",
+          "spots": {
+            "window": {
+              "name": "世界之窗",
+              "level": "5A",
+              "category": "主题公园",
+              "image": "window",
+              "desc": "全球景观主题公园",
+              "address": "南山区",
+              "opening": "9:00-22:00",
+              "ticket": "200元",
+              "transport": "地铁1号线",
+              "food": "各国美食",
+              "tips": "晚间表演"
+            },
+            "sea": {
+              "name": "海上世界",
+              "level": "4A",
+              "category": "休闲",
+              "image": "seaworld",
+              "desc": "海滨休闲区",
+              "address": "蛇口",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "地铁2号线",
+              "food": "海鲜",
+              "tips": "夜景"
+            }
+          }
+        },
+        "zhuhai": {
+          "name": "珠海市",
+          "spots": {
+            "yinTan": {
+              "name": "银滩",
+              "level": "5A",
+              "category": "自然",
+              "image": "yintan",
+              "desc": "天下第一滩",
+              "address": "银海区",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "公交3路",
+              "food": "海鲜",
+              "tips": "日落"
+            },
+            "weizhou": {
+              "name": "涠洲岛",
+              "level": "5A",
+              "category": "海岛",
+              "image": "weizhou",
+              "desc": "中国最大火山岛",
+              "address": "北海市",
+              "opening": "8:00-18:00",
+              "ticket": "98元",
+              "transport": "船票",
+              "food": "香蕉猪",
+              "tips": "日出"
+            }
+          }
+        }
+      }
     },
     "guangxi": {
       "name": "广西",
-      "short": "广西",
       "region": "south",
-      "desc": "壮美广西",
-      "cities": {},
-      "comingSoon": true
+      "comingSoon": false,
+      "cities": {
+        "guilin": {
+          "name": "桂林市",
+          "spots": {
+            "lijiang": {
+              "name": "漓江",
+              "level": "5A",
+              "category": "自然",
+              "image": "lijiang",
+              "desc": "桂林山水甲天下",
+              "address": "桂林",
+              "opening": "8:00-17:00",
+              "ticket": "215元",
+              "transport": "游船",
+              "food": "桂林米粉",
+              "tips": "早起看晨雾"
+            },
+            "yangshuo": {
+              "name": "阳朔西街",
+              "level": "5A",
+              "category": "休闲",
+              "image": "yangshuo",
+              "desc": "地球村商业街",
+              "address": "阳朔",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "大巴",
+              "food": "啤酒鱼",
+              "tips": "夜生活"
+            },
+            "longji": {
+              "name": "龙脊梯田",
+              "level": "5A",
+              "category": "自然",
+              "image": "longji",
+              "desc": "世界梯田之冠",
+              "address": "龙胜",
+              "opening": "7:00-18:00",
+              "ticket": "80元",
+              "transport": "自驾",
+              "food": "竹筒鸡",
+              "tips": "金秋最美"
+            }
+          }
+        },
+        "nanning": {
+          "name": "南宁市",
+          "spots": {
+            "qingxiu": {
+              "name": "青秀山",
+              "level": "5A",
+              "category": "自然",
+              "image": "qingxiu",
+              "desc": "南宁代表风景区",
+              "address": "青秀区",
+              "opening": "6:00-23:00",
+              "ticket": "20元",
+              "transport": "地铁3号线",
+              "food": "老友粉",
+              "tips": "兰园"
+            }
+          }
+        }
+      }
     },
     "hainan": {
       "name": "海南省",
-      "short": "海南",
       "region": "south",
-      "desc": "热带海岛",
-      "cities": {},
-      "comingSoon": true
+      "comingSoon": false,
+      "cities": {
+        "sanya": {
+          "name": "三亚市",
+          "spots": {
+            "yalong": {
+              "name": "亚龙湾",
+              "level": "5A",
+              "category": "海岛",
+              "image": "yalong",
+              "desc": "天下第一湾",
+              "address": "吉阳区",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "公交15路",
+              "food": "海鲜",
+              "tips": "水上活动"
+            },
+            "tianya": {
+              "name": "天涯海角",
+              "level": "4A",
+              "category": "观光",
+              "image": "tianya",
+              "desc": "海南标志景观",
+              "address": "天涯区",
+              "opening": "7:30-18:20",
+              "ticket": "81元",
+              "transport": "公交16路",
+              "food": "椰子饭",
+              "tips": "打卡"
+            },
+            "nanshan": {
+              "name": "南山文化旅游区",
+              "level": "5A",
+              "category": "文化",
+              "image": "nanshan",
+              "desc": "108米海上观音",
+              "address": "崖州区",
+              "opening": "8:00-17:30",
+              "ticket": "121元",
+              "transport": "公交16路",
+              "food": "素斋",
+              "tips": "祈福"
+            }
+          }
+        },
+        "haikou": {
+          "name": "海口市",
+          "spots": {
+            "holiday": {
+              "name": "假日海滩",
+              "level": "4A",
+              "category": "休闲",
+              "image": "holiday",
+              "desc": "海口最出名的海滩",
+              "address": "秀英区",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "公交35路",
+              "food": "清补凉",
+              "tips": "日落"
+            }
+          }
+        }
+      }
     },
     "hongkong": {
       "name": "香港",
@@ -9127,13 +9353,112 @@ const DB = {
       "desc": "瓜果之乡",
       "cities": {},
       "comingSoon": true
+    },
+    "xianggang": {
+      "name": "香港",
+      "region": "south",
+      "comingSoon": false,
+      "cities": {
+        "hongkong": {
+          "name": "香港岛",
+          "spots": {
+            "victoria": {
+              "name": "维多利亚港",
+              "level": "5A",
+              "category": "观光",
+              "image": "victoria",
+              "desc": "世界三大夜景",
+              "address": "香港岛",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "地铁尖沙咀",
+              "food": "茶餐厅",
+              "tips": "幻彩咏香江"
+            },
+            "disney": {
+              "name": "迪士尼乐园",
+              "level": "5A",
+              "category": "主题公园",
+              "image": "disney",
+              "desc": "童话王国",
+              "address": "大屿山",
+              "opening": "10:30-19:30",
+              "ticket": "639港币",
+              "transport": "迪士尼专线",
+              "food": "乐园餐厅",
+              "tips": "星战极速穿梭"
+            },
+            "ocean": {
+              "name": "海洋公园",
+              "level": "5A",
+              "category": "主题公园",
+              "image": "oceanpark",
+              "desc": "世界级海洋主题公园",
+              "address": "黄竹坑",
+              "opening": "10:00-18:00",
+              "ticket": "498港币",
+              "transport": "地铁海洋公园",
+              "food": "熊猫餐厅",
+              "tips": "登山缆车"
+            }
+          }
+        }
+      }
+    },
+    "aomen": {
+      "name": "澳门",
+      "region": "south",
+      "comingSoon": false,
+      "cities": {
+        "macau": {
+          "name": "澳门半岛",
+          "spots": {
+            "ruins": {
+              "name": "大三巴",
+              "level": "5A",
+              "category": "历史",
+              "image": "ruins",
+              "desc": "澳门地标",
+              "address": "花王堂区",
+              "opening": "全天",
+              "ticket": "免费",
+              "transport": "公交10路",
+              "food": "葡挞",
+              "tips": "夜景"
+            },
+            "masu": {
+              "name": "妈阁庙",
+              "level": "4A",
+              "category": "文化",
+              "image": "mazu",
+              "desc": "澳门最古庙宇",
+              "address": "妈阁区",
+              "opening": "7:00-18:00",
+              "ticket": "免费",
+              "transport": "公交1路",
+              "food": "水蟹粥",
+              "tips": "祈福"
+            },
+            "venetian": {
+              "name": "威尼斯人",
+              "level": "5A",
+              "category": "休闲",
+              "image": "venetian",
+              "desc": "澳门最大赌场",
+              "address": "路氹城",
+              "opening": "24小时",
+              "ticket": "免费",
+              "transport": "巴士",
+              "food": "蛋挞",
+              "tips": "室内运河"
+            }
+          }
+        }
+      }
     }
   }
 };
 
-let currentProvince = null, currentCity = null, currentSpot = null, currentGuide = null, navStack = [];
-
-// ─── RENDER: PROVINCES CITIES ───
 function goProvince(pid) {
   const p = DB.provinces[pid];
   if (p.comingSoon) return;
