@@ -9477,6 +9477,8 @@
   }
 };
 
+let currentProvince = null, currentCity = null, currentSpot = null, currentGuide = null, navStack = [];
+
 function goProvince(pid) {
   const p = DB.provinces[pid];
   if (p.comingSoon) return;
@@ -9785,30 +9787,34 @@ function renderTransport(s) {
 }
 
 function renderFood(s) {
-  const food = s.food || [];
+  const rawFood = s.food || [];
+  const food = Array.isArray(rawFood) ? rawFood : (typeof rawFood === 'string' ? [{name:rawFood,desc:'',price:''}] : []);
   const content = document.getElementById('foodContent');
   if (food.length === 0) { content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>'; return; }
-  content.innerHTML = food.map(f => `
-    <div class="food-item">
+  content.innerHTML = food.map(f => {
+    const fi = typeof f === 'string' ? {name:f,desc:'',price:''} : f;
+    return `<div class="food-item">
       <div>
-        <div class="food-item-name">${f.name} ${f.tag ? `<span class="tag">${f.tag}</span>` : ''}</div>
-        <div class="food-item-desc">${f.desc}</div>
+        <div class="food-item-name">${fi.name} ${fi.tag ? `<span class="tag">${fi.tag}</span>` : ''}</div>
+        <div class="food-item-desc">${fi.desc || ''}</div>
       </div>
-      <div class="food-item-price">${f.price}</div>
-    </div>
-  `).join('');
+      <div class="food-item-price">${fi.price || ''}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderTips(s) {
-  const tips = s.tips || [];
+  const rawTips = s.tips || [];
+  const tips = Array.isArray(rawTips) ? rawTips : (typeof rawTips === 'string' ? [{type:'info',text:rawTips}] : []);
   const content = document.getElementById('tipsContent');
   if (tips.length === 0) { content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>'; return; }
-  content.innerHTML = tips.map(t => `
-    <div class="tip-item ${t.type || ''}">
-      <div class="tip-icon">${t.type === 'warning' ? '!' : t.type === 'good' ? '✓' : 'i'}</div>
-      <div>${t.text}</div>
-    </div>
-  `).join('');
+  content.innerHTML = tips.map(t => {
+    const tipObj = typeof t === 'string' ? {type:'info',text:t} : t;
+    return `<div class="tip-item ${tipObj.type || ''}">
+      <div class="tip-icon">${tipObj.type === 'warning' ? '!' : tipObj.type === 'good' ? '✓' : 'i'}</div>
+      <div>${tipObj.text}</div>
+    </div>`;
+  }).join('');
 }
 
 // ─── NAVIGATION ───
@@ -9829,14 +9835,18 @@ function updateBreadcrumb() {
   }
   if (currentCity) {
     const p = DB.provinces[currentProvince];
-    const c = p.cities[currentCity];
-    html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
+    const c = p?.cities?.[currentCity];
+    if (c) {
+      html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
+    }
   }
   if (currentSpot) {
     const p = DB.provinces[currentProvince];
-    const c = p.cities[currentCity];
-    const s = c.spots[currentSpot];
-    html += `<span class="current">${s.name}</span>`;
+    const c = p?.cities?.[currentCity];
+    const s = c?.spots?.[currentSpot];
+    if (s) {
+      html += `<span class="current">${s.name}</span>`;
+    }
   }
   bc.innerHTML = html;
 }
