@@ -1224,7 +1224,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "北方直辖市，中西合璧的滨海之城"
     },
     "hebei": {
       "name": "河北省",
@@ -1496,7 +1497,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "燕赵大地，环绕京津的历史文化名省"
     },
     "shanxi": {
       "name": "山西省",
@@ -1828,7 +1830,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "表里山河，华夏文明的发祥地之一"
     },
     "innermongolia": {
       "name": "内蒙古自治区",
@@ -2171,7 +2174,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "辽阔草原，骏马奔驰的北疆明珠"
     },
     "liaoning": {
       "name": "辽宁省",
@@ -9054,7 +9058,8 @@
               "food": "园区餐厅",
               "tips": "看白虎"
             }
-          }
+          },
+          "desc": "千年商都，岭南文化的核心城市"
         },
         "shenzhen": {
           "name": "深圳市",
@@ -9085,7 +9090,8 @@
               "food": "海鲜",
               "tips": "夜景"
             }
-          }
+          },
+          "desc": "创新之城，从小渔村到国际大都会"
         },
         "zhuhai": {
           "name": "珠海市",
@@ -9116,9 +9122,11 @@
               "food": "香蕉猪",
               "tips": "日出"
             }
-          }
+          },
+          "desc": "百岛之市，浪漫的海滨花园城市"
         }
-      }
+      },
+      "desc": "岭南热土，改革开放的前沿阵地"
     },
     "guangxi": {
       "name": "广西",
@@ -9167,7 +9175,8 @@
               "food": "竹筒鸡",
               "tips": "金秋最美"
             }
-          }
+          },
+          "desc": "山水甲天下，世界级旅游胜地"
         },
         "nanning": {
           "name": "南宁市",
@@ -9185,9 +9194,11 @@
               "food": "老友粉",
               "tips": "兰园"
             }
-          }
+          },
+          "desc": "绿城南宁，中国-东盟博览会永久举办地"
         }
-      }
+      },
+      "desc": "山水甲天下，壮乡风情浓郁"
     },
     "hainan": {
       "name": "海南省",
@@ -9236,7 +9247,8 @@
               "food": "素斋",
               "tips": "祈福"
             }
-          }
+          },
+          "desc": "东方夏威夷，热带滨海度假天堂"
         },
         "haikou": {
           "name": "海口市",
@@ -9254,9 +9266,11 @@
               "food": "清补凉",
               "tips": "日落"
             }
-          }
+          },
+          "desc": "椰城海口，海南省会与自贸港核心"
         }
-      }
+      },
+      "desc": "热带天堂，中国最南端的海岛省份"
     },
     "hongkong": {
       "name": "香港",
@@ -9401,9 +9415,11 @@
               "food": "熊猫餐厅",
               "tips": "登山缆车"
             }
-          }
+          },
+          "desc": "繁华都市核心，维港夜景世界闻名"
         }
-      }
+      },
+      "desc": "东方之珠，中西文化交融的国际都市"
     },
     "aomen": {
       "name": "澳门",
@@ -9452,9 +9468,11 @@
               "food": "蛋挞",
               "tips": "室内运河"
             }
-          }
+          },
+          "desc": "历史城区世界遗产，葡韵风情浓郁"
         }
-      }
+      },
+      "desc": "莲花宝地，世界遗产与美食之城"
     }
   }
 };
@@ -9465,7 +9483,7 @@ function goProvince(pid) {
   currentProvince = pid;
   navStack = [{view:'province',pid}];
   document.getElementById('provinceTitle').textContent = p.name;
-  document.getElementById('provinceDesc').textContent = p.desc + ' · 点击城市开始探索';
+  document.getElementById('provinceDesc').textContent = (p.desc || '') + ' · 点击城市开始探索';
   const grid = document.getElementById('cityGrid');
   grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
     const firstSpot = c.spots ? Object.values(c.spots)[0] : null;
@@ -9497,7 +9515,7 @@ function goCity(pid, cid) {
   currentCity = cid;
   navStack.push({view:'city',cid});
   document.getElementById('cityTitle').textContent = c.name;
-  document.getElementById('cityDesc').textContent = c.desc + ' · 点击景区查看详情';
+  document.getElementById('cityDesc').textContent = (c.desc || '') + ' · 点击景区查看详情';
   const list = document.getElementById('spotList');
   list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => {
     const effImg = getEffectiveImg(s);
@@ -9515,7 +9533,7 @@ function goCity(pid, cid) {
         </div>
         <div class="spot-card-desc">${s.desc}</div>
         <div class="spot-card-meta">
-          <span>🕐 ${s.opening?.peak || s.opening?.offpeak || '全天'}</span>
+          <span>🕐 ${s.opening || '全天'}</span>
           <span>📍 ${s.category || '景区'}</span>
           ${hasCustom ? '<span style="color:var(--accent)">📷 已自定义</span>' : ''}
         </div>
@@ -9550,7 +9568,7 @@ function goSpot(pid, cid, sid) {
   // Info cards
   document.getElementById('infoCards').innerHTML = `
     <div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-label">开放时间</div><div class="info-card-value">${s.opening?.peak || '全天'}</div></div>
-    <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket?.adult || '免费'}</div></div>
+    <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket || '免费'}</div></div>
     <div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-label">地址</div><div class="info-card-value">${s.address || '—'}</div></div>
     <div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-label">电话</div><div class="info-card-value">${s.phone || '—'}</div></div>
   `;
@@ -9854,16 +9872,37 @@ function switchGuide(duration) {
   renderGuide(s);
 }
 
-function getEffectiveImg(pid, cid, sid) {
-  const spot = DB.provinces[pid]?.cities[cid]?.spots[sid];
-  const key = `${pid}_${cid}_${sid}`;
-  return localStorage.getItem('customImg_' + key) || spot?.image || '';
+function getEffectiveImg(pidOrSpot, cid, sid) {
+  let spot, key;
+  if (typeof pidOrSpot === 'object' && pidOrSpot !== null) {
+    spot = pidOrSpot;
+    key = null;
+  } else {
+    spot = DB.provinces[pidOrSpot]?.cities[cid]?.spots[sid];
+    key = pidOrSpot + '_' + cid + '_' + sid;
+  }
+  if (key && localStorage.getItem('customImg_' + key)) {
+    return localStorage.getItem('customImg_' + key);
+  }
+  return spot?.image || '';
 }
 function getSpotImgKey() {
   return `${currentProvince}_${currentCity}_${currentSpot}`;
 }
 function getCustomImg(key) {
   return localStorage.getItem('customImg_' + key) || '';
+}
+
+
+function setCustomImg(key, data) {
+  try { localStorage.setItem('customImg_' + key, data); } catch(e) { console.warn('localStorage full'); }
+}
+
+function getImageHistory(spotKey) {
+  try {
+    const data = localStorage.getItem('imgHistory_' + spotKey);
+    return data ? JSON.parse(data) : [];
+  } catch(e) { return []; }
 }
 
 function init() {
