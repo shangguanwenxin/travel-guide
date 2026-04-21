@@ -358,6 +358,7 @@ async function loadDB() {
     const res = await fetch('db.json');
     if (!res.ok) throw new Error('Failed to load DB: ' + res.status);
     DB = await res.json();
+    console.log('DB loaded:', Object.keys(DB.provinces).length, 'provinces');
   } catch (e) {
     console.error('DB load error:', e);
     document.querySelector('.section-title').textContent = '数据加载失败，请刷新重试';
@@ -833,8 +834,6 @@ function showRegion(region) {
     g.style.display = (region === 'all' || g.dataset.region === region) ? '' : 'none';
   });
 }
-
-init();
 </script>
 </body>
 </html>
