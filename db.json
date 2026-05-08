@@ -41768,47 +41768,529 @@
         "延安": {
           "name": "延安市",
           "desc": "延安市旅游攻略",
-          "spots": {}
+          "spots": {
+            "yanan_revolution_memorial": {
+              "name": "延安革命纪念馆",
+              "level": "5A",
+              "category": "博物馆",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Yanan_Revolution_Memorial_Hall.jpg/1200px-Yanan_Revolution_Memorial_Hall.jpg",
+              "desc": "延安革命纪念馆是全国红色旅游经典景区，收藏了大量珍贵的革命文物和历史照片，再现了中国共产党在延安时期的革命斗争历程。",
+              "address": "陕西省延安市宝塔区",
+              "openHours": "08:00-18:00",
+              "ticket": "免费（凭身份证）",
+              "transport": "延安市区乘坐公交前往"
+            },
+            "pagoda_mountain": {
+              "name": "宝塔山",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Pagoda_Mountain_Yanan.jpg/1200px-Pagoda_Mountain_Yanan.jpg",
+              "desc": "宝塔山是延安的标志性景点，山上的宝塔建于唐代，高44米。登上宝塔山可俯瞰延安城和延河风光，是延安的象征。",
+              "address": "陕西省延安市宝塔区",
+              "openHours": "07:00-19:00",
+              "ticket": "免费",
+              "transport": "延安市区步行或乘公交"
+            },
+            "yangjialing": {
+              "name": "杨家岭",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Yangjialing.jpg/1200px-Yangjialing.jpg",
+              "desc": "杨家岭是中共中央1938年至1947年的所在地，毛泽东等老一辈革命家曾在这里居住和工作。现有毛泽东、朱德等领导人旧居和中央大礼堂等旧址。",
+              "address": "陕西省延安市宝塔区杨家岭",
+              "openHours": "08:00-18:00",
+              "ticket": "免费",
+              "transport": "延安市区乘坐1路或8路公交"
+            },
+            "zaoyuan": {
+              "name": "枣园",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Zaoyuan.jpg/1200px-Zaoyuan.jpg",
+              "desc": "枣园是1944年至1947年中共中央书记处的所在地，因园中多枣树而得名。这里保存有毛泽东、周恩来、刘少奇等领导人的旧居，是重要的革命旧址。",
+              "address": "陕西省延安市宝塔区枣园镇",
+              "openHours": "08:00-18:00",
+              "ticket": "免费",
+              "transport": "延安市区乘坐8路公交"
+            },
+            "flood_shelter": {
+              "name": "凤凰山麓",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Phoenix_Mountain.jpg/1200px-Phoenix_Mountain.jpg",
+              "desc": "凤凰山是延安市区最高的山峰，因山形如凤凰而得名。山上有古城墙遗址，登上山顶可俯瞰延安全城，是观赏延安夜景的好地方。",
+              "address": "陕西省延安市宝塔区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "延安市区步行前往"
+            }
+          }
         },
         "汉中": {
           "name": "汉中市",
           "desc": "汉中市旅游攻略",
-          "spots": {}
+          "spots": {
+            "wuhou_ci": {
+              "name": "武侯祠",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Wuhou_Ci.jpg/1200px-Wuhou_Ci.jpg",
+              "desc": "武侯祠是纪念三国时期蜀汉丞相诸葛亮的祠庙，始建于公元263年，是中国最早纪念诸葛亮的祠庙。祠内有古柏、银杏及众多碑刻，是研究三国文化的重要场所。",
+              "address": "陕西省汉中市勉县",
+              "openHours": "08:00-18:00",
+              "ticket": "50元",
+              "transport": "汉中市区有班车前往勉县"
+            },
+            "shimen_zipai": {
+              "name": "石门栈道",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Shimen_Zipai.jpg/1200px-Shimen_Zipai.jpg",
+              "desc": "石门栈道是古代穿越秦巴山脉的重要通道，沿褒斜古道修建。这里有世界上最早的人工隧道——石门，以及大量汉魏以来的石刻，是世界文化遗产。",
+              "address": "陕西省汉中市汉台区",
+              "openHours": "08:00-18:00",
+              "ticket": "70元",
+              "transport": "汉中市区乘坐21路公交"
+            },
+            "crested_ibis_pear_garden": {
+              "name": "朱鹮梨园",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Crested_Ibris_Pear_Garden.jpg/1200px-Crested_Ibris_Pear_Garden.jpg",
+              "desc": "朱鹮梨园是汉中市郊的生态景区，因世界珍稀鸟类朱鹮在此栖息而闻名。春季梨花盛开时，景色优美，是观赏朱鹮和梨花的好去处。",
+              "address": "陕西省汉中市洋县",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "汉中市区有班车前往洋县"
+            },
+            "huayang_ancient_town": {
+              "name": "华阳古镇",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Huayang_Ancient_Town.jpg/1200px-Huayang_Ancient_Town.jpg",
+              "desc": "华阳古镇是秦岭深处的千年古镇，位于傥骆古道上。古镇保存了明清时期的街巷格局和传统民居，有\"秦岭深处小江南\"之称。",
+              "address": "陕西省汉中市洋县华阳镇",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "lizhou_dam": {
+              "name": "汉中石门",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Hanzhong_Shimen.jpg/1200px-Hanzhong_Shimen.jpg",
+              "desc": "汉中石门是褒斜栈道上的著名景观，是古代人工开凿的通道。石门附近摩崖石刻众多，记录了栈道修建的历史，具有重要的历史和书法价值。",
+              "address": "陕西省汉中市汉台区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "汉中市区乘坐公交"
+            }
+          }
         },
         "咸阳": {
           "name": "咸阳市",
           "desc": "咸阳市旅游攻略",
-          "spots": {}
+          "spots": {
+            "qianling_museum": {
+              "name": "乾陵",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Qianling_Mausoleum.jpg/1200px-Qianling_Mausoleum.jpg",
+              "desc": "乾陵是唐高宗李治和女皇武则天的合葬墓，位于咸阳市乾县。乾陵依山而建，规模宏大，是中国历史上唯一的两位皇帝合葬墓，也是唐代帝王陵墓中保存最完好的一座。",
+              "address": "陕西省咸阳市乾县",
+              "openHours": "08:00-18:00",
+              "ticket": "70元（含懿德太子墓和章怀太子墓）",
+              "transport": "西安或咸阳有旅游专线"
+            },
+            "hanyangling_museum": {
+              "name": "汉阳陵",
+              "level": "4A",
+              "category": "博物馆",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Hanyangling_Museum.jpg/1200px-Hanyangling_Museum.jpg",
+              "desc": "汉阳陵是汉景帝刘启的陵墓，地下博物馆展示了出土的大量陶俑、陶器和金属器物。其中彩绘陶俑群形态各异，表情丰富，是了解西汉历史的重要窗口。",
+              "address": "陕西省咸阳市渭城区",
+              "openHours": "08:30-18:30",
+              "ticket": "65元",
+              "transport": "西安或咸阳有公交前往"
+            },
+            "yuanjia_village": {
+              "name": "袁家村",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Yuanjia_Village.jpg/1200px-Yuanjia_Village.jpg",
+              "desc": "袁家村是咸阳市礼泉县的著名乡村旅游示范村，保存了关中地区的传统村落格局。这里有丰富的民俗文化体验活动和特色美食，是体验关中农村风情的好去处。",
+              "address": "陕西省咸阳市礼泉县袁家村",
+              "openHours": "全天开放",
+              "ticket": "免费（部分项目另收费）",
+              "transport": "西安或咸阳有班车前往"
+            },
+            "chonghua_palace": {
+              "name": "崇文塔",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Chongwen_Tower.jpg/1200px-Chongwen_Tower.jpg",
+              "desc": "崇文塔是陕西最高的古塔，建于明代，高87米。塔内有楼梯可登顶，远眺渭河风光。",
+              "address": "陕西省咸阳市泾阳县",
+              "openHours": "09:00-17:00",
+              "ticket": "20元",
+              "transport": "建议包车前往"
+            }
+          }
         },
         "渭南": {
           "name": "渭南市",
           "desc": "渭南市旅游攻略",
-          "spots": {}
+          "spots": {
+            "huashan_mountain": {
+              "name": "华山",
+              "level": "5A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Mount_Hua.jpg/1200px-Mount_Hua.jpg",
+              "desc": "华山是中国五岳之一，以险峻著称，有\"奇险天下第一山\"之誉。华山的长空栈道、鹞子翻身等景点惊险刺激，是登山爱好者的必去之地。华山东峰是观赏日出的最佳地点。",
+              "address": "陕西省渭南市华阴市",
+              "openHours": "全天开放（索道运营时间07:00-19:00）",
+              "ticket": "160元（进山巴士40元，往返索道150元另收费）",
+              "transport": "西安有高铁至华山北站，渭南有班车前往"
+            },
+            "shaohua_mountain": {
+              "name": "少华山",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Shaohua_Mountain.jpg/1200px-Shaohua_Mountain.jpg",
+              "desc": "少华山是华山的姊妹山，海拔1994米，以秀丽的自然风光著称。山上森林茂密，瀑布众多，秋季红叶满山，是避暑和赏秋的好去处。",
+              "address": "陕西省渭南市华州区",
+              "openHours": "08:00-18:00",
+              "ticket": "60元",
+              "transport": "渭南市区有班车前往"
+            },
+            "simaqian_memorial": {
+              "name": "司马迁祠",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Simaqian_Memorial.jpg/1200px-Simaqian_Memorial.jpg",
+              "desc": "司马迁祠是纪念西汉史学家《史记》作者司马迁的祠庙。祠墓依山而建，司马迁墓前有清乾隆年间立的大石碑。祠内有众多历代碑刻，是研究司马迁和《史记》的重要场所。",
+              "address": "陕西省渭南市韩城市",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "韩城市区有公交前往"
+            },
+            "tongguan_ancient_pass": {
+              "name": "潼关古城",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Tongguan_Ancient_City.jpg/1200px-Tongguan_Ancient_City.jpg",
+              "desc": "潼关是古代关中的东大门，地势险要，历来是兵家必争之地。现有古城墙遗址和关城遗址，可远眺黄河与渭河交汇处的壮观景象。",
+              "address": "陕西省渭南市潼关县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "fuxian_lake": {
+              "name": "福湖",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Fuxian_Lake.jpg/1200px-Fuxian_Lake.jpg",
+              "desc": "福湖位于渭南市蒲城县，是一座人工湖，湖面开阔，风景优美。湖边有休闲设施，是当地市民休闲垂钓的好去处。",
+              "address": "陕西省渭南市蒲城县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "渭南市区有班车前往蒲城县"
+            }
+          }
         },
         "宝鸡": {
           "name": "宝鸡市",
           "desc": "宝鸡市旅游攻略",
-          "spots": {}
+          "spots": {
+            "famen_temple": {
+              "name": "法门寺",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Famen_Temple.jpg/1200px-Famen_Temple.jpg",
+              "desc": "法门寺是中国古代最著名的皇家寺庙之一，始建于东汉。法门寺地宫出土了大量唐代稀世珍宝，包括佛指舍利、唐代金银器、琉璃器等，是20世纪最重要的考古发现之一。",
+              "address": "陕西省宝鸡市扶风县",
+              "openHours": "08:00-19:00",
+              "ticket": "100元",
+              "transport": "西安或宝鸡有旅游专线前往"
+            },
+            "taibai_mountain": {
+              "name": "太白山",
+              "level": "5A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Taibai_Mountain.jpg/1200px-Taibai_Mountain.jpg",
+              "desc": "太白山是秦岭主峰，海拔3767米，是陕西省最高峰。山上有完整的垂直自然带，从温带到寒带气候特征分明，有\"太白积雪\"之称，是著名的登山和避暑胜地。",
+              "address": "陕西省宝鸡市眉县",
+              "openHours": "08:00-18:00",
+              "ticket": "90元（往返索道另收费）",
+              "transport": "西安或宝鸡有班车至景区"
+            },
+            "zhou_gong_po": {
+              "name": "周公庙",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Zhou_Gong_Temple.jpg/1200px-Zhou_Gong_Temple.jpg",
+              "desc": "周公庙是纪念西周初期政治家周公旦的祠庙。是中国现存最早的庙宇之一，建筑为唐代风格古建筑。",
+              "address": "陕西省宝鸡市岐山县",
+              "openHours": "08:00-18:00",
+              "ticket": "30元",
+              "transport": "从岐山县城有公交前往"
+            },
+            "meicheng_lake": {
+              "name": "渭河公园",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Weihe_Park.jpg/1200px-Weihe_Park.jpg",
+              "desc": "渭河公园是宝鸡市区的综合性公园，沿渭河两岸建设，有大面积的绿化和景观设施，是市民休闲健身的好去处。",
+              "address": "陕西省宝鸡市渭滨区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "宝鸡市区乘坐公交"
+            },
+            "long_ma_temple": {
+              "name": "钓鱼台",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Diaoyutai.jpg/1200px-Diaoyutai.jpg",
+              "desc": "钓鱼台位于宝鸡市磻溪河畔，相传是西周姜子牙钓鱼的地方。景区内有古建筑群和湖泊，风景秀丽，是宝鸡的历史文化景点。",
+              "address": "陕西省宝鸡市渭滨区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "宝鸡市区有公交前往"
+            }
+          }
         },
         "榆林": {
           "name": "榆林市",
           "desc": "榆林市旅游攻略",
-          "spots": {}
+          "spots": {
+            "hongshi_gorge": {
+              "name": "红石峡",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hongshi_Gorge.jpg/1200px-Hongshi_Gorge.jpg",
+              "desc": "红石峡位于榆林市北郊，因两侧岩壁呈红色而得名。峡谷内有红碱淖（最大的沙漠湖泊）、长城遗址和众多摩崖石刻，是榆林最著名的景区。",
+              "address": "陕西省榆林市榆阳区",
+              "openHours": "08:00-18:00",
+              "ticket": "30元",
+              "transport": "榆林市区有公交前往"
+            },
+            "zhenbeitai": {
+              "name": "镇北台",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Zhenbeitai.jpg/1200px-Zhenbeitai.jpg",
+              "desc": "镇北台是明代万里长城上最大的烽火台之一，位于榆林市北郊。建于1607年，台高30余米，气势雄伟，是研究明代长城防御体系的重要实物资料。",
+              "address": "陕西省榆林市榆阳区",
+              "openHours": "08:00-18:00",
+              "ticket": "30元",
+              "transport": "榆林市区乘坐公交前往"
+            },
+            "波浪谷": {
+              "name": "靖边波浪谷",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Wave_Valley.jpg/1200px-Wave_Valley.jpg",
+              "desc": "靖边波浪谷是陕西最新的丹霞地貌景区，因岩层呈波浪状而得名。红色砂岩在阳光照射下色彩艳丽，纹理清晰，与美国波浪谷相似，是摄影爱好者的新宠。",
+              "address": "陕西省榆林市靖边县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往，从靖边县城约40分钟"
+            },
+            "yulin_great_wall": {
+              "name": "榆林明长城",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Yulin_Great_Wall.jpg/1200px-Yulin_Great_Wall.jpg",
+              "desc": "榆林境内的明长城保存较为完整，多为黄土夯筑，有多个烽火台和关城遗址。长城沿线的生态环境独特，是体验沙漠边疆风情的好去处。",
+              "address": "陕西省榆林市境内",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "dongshan_square": {
+              "name": "榆林古城",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Yulin_Old_City.jpg/1200px-Yulin_Old_City.jpg",
+              "desc": "榆林古城始建于明代，城内街巷格局保持明清风格，有\"南塔北台中古城，六楼骑街天下名\"之誉。古城内有多处四合院和庙宇建筑，是陕北文化的代表。",
+              "address": "陕西省榆林市榆阳区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "榆林市区步行即可"
+            }
+          }
         },
         "安康": {
           "name": "安康市",
           "desc": "安康市旅游攻略",
-          "spots": {}
+          "spots": {
+            "yinghu_lake": {
+              "name": "瀛湖",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Yinghu_Lake.jpg/1200px-Yinghu_Lake.jpg",
+              "desc": "瀛湖是西北地区最大的人工湖，位于安康市西南部。湖面碧波荡漾，山岛耸立，水天一色。湖中有岛屿数十个，是水上娱乐和避暑的好去处。",
+              "address": "陕西省安康市汉滨区",
+              "openHours": "08:00-18:00",
+              "ticket": "70元（含船票）",
+              "transport": "安康市区有旅游专线"
+            },
+            "xiangxi_cave": {
+              "name": "香溪洞",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Xiangxi_Cave.jpg/1200px-Xiangxi_Cave.jpg",
+              "desc": "香溪洞位于安康市南郊，是道教名山。山上有古建筑群、溶洞和森林，空气清新，环境清幽，是安康市民休闲健身的热门地点。",
+              "address": "陕西省安康市汉滨区",
+              "openHours": "08:00-17:00",
+              "ticket": "40元",
+              "transport": "安康市区乘坐公交前往"
+            },
+            "nanbashan": {
+              "name": "南宫山",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Nanbashan.jpg/1200px-Nanbashan.jpg",
+              "desc": "南宫山是巴山深处著名的地质公园，以其独特的高山云海和古冰川地貌著称。主峰海拔2267米，终年云雾缭绕，有\"云中净土\"之称。",
+              "address": "陕西省安康市岚皋县",
+              "openHours": "08:00-18:00",
+              "ticket": "50元",
+              "transport": "建议包车前往，从岚皋县城约1小时"
+            },
+            "fengxi_defile": {
+              "name": "凤堰古梯田",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Fengyan_Terrace.jpg/1200px-Fengyan_Terrace.jpg",
+              "desc": "凤堰古梯田是陕西保存最完整的清代梯田，位于汉阴县漩涡镇。梯田层层叠叠，春季油菜花开时金黄一片，秋季稻谷成熟时满山金黄，是摄影的好去处。",
+              "address": "陕西省安康市汉阴县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "zhoohu_pass": {
+              "name": "旬阳坝",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Xunyangba.jpg/1200px-Xunyangba.jpg",
+              "desc": "旬阳坝是安康市旬阳县的一处自然景观，汉江在这里拐了一个大弯，形成独特的地理景观。站在观景台上可见汉江S形大转弯，景色壮观。",
+              "address": "陕西省安康市旬阳县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            }
+          }
         },
         "铜川": {
           "name": "铜川市",
           "desc": "铜川市旅游攻略",
-          "spots": {}
+          "spots": {
+            "zhaojin_xiangshan": {
+              "name": "照金香山",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Zhaojin_Xiangshan.jpg/1200px-Zhaojin_Xiangshan.jpg",
+              "desc": "照金香山是铜川市著名的风景名胜区，以丹霞地貌和佛教文化著称。山上有香山寺，每年农历三月初三有传统的香山庙会。",
+              "address": "陕西省铜川市耀州区",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "铜川市区有班车前往"
+            },
+            "yaowang_mountain": {
+              "name": "药王山",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Yaowang_Mountain.jpg/1200px-Yaowang_Mountain.jpg",
+              "desc": "药王山是唐代著名医学家孙思邈的归隐之地。山上有药王祠、碑刻和古柏，碑林中有四十余通孙思邈药方碑，是研究中医药文化的重要场所。",
+              "address": "陕西省铜川市耀州区",
+              "openHours": "08:00-18:00",
+              "ticket": "35元",
+              "transport": "铜川市区乘坐公交前往"
+            },
+            "yuhua_gong": {
+              "name": "玉华宫",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Yuhua_Palace.jpg/1200px-Yuhua_Palace.jpg",
+              "desc": "玉华宫是唐代帝王的行宫，也是玄奘法师翻译佛经的地方。宫址保存有唐代建筑基址和大量文物，景区内有千年古柏和瀑布，风景优美。",
+              "address": "陕西省铜川市宜君县",
+              "openHours": "08:00-18:00",
+              "ticket": "60元",
+              "transport": "建议包车前往，从铜川市区约1小时"
+            },
+            "chenlu_pottery_village": {
+              "name": "陈炉古镇",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Chenlu_Ancient_Town.jpg/1200px-Chenlu_Ancient_Town.jpg",
+              "desc": "陈炉古镇是陕西著名的陶瓷之乡，有1300多年的陶瓷烧制历史。古镇依山而建，窑炉遍布，有\"东方陶瓷古镇\"之称，是了解陕西陶瓷文化的好去处。",
+              "address": "陕西省铜川市印台区",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "铜川市区有班车前往"
+            }
+          }
         },
         "商洛": {
           "name": "商洛市",
           "desc": "商洛市旅游攻略",
-          "spots": {}
+          "spots": {
+            "zhashui_cave": {
+              "name": "柞水溶洞",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Zhashui_Cave.jpg/1200px-Zhashui_Cave.jpg",
+              "desc": "柞水溶洞是陕西最大的溶洞群，有\"西北第一洞\"之称。洞内钟乳石景观丰富，形态各异，在彩色灯光照耀下绚丽多彩。溶洞所在的秦岭风光也值得一看。",
+              "address": "陕西省商洛市柞水县",
+              "openHours": "08:00-17:00",
+              "ticket": "82元",
+              "transport": "西安城南客运站有班车前往柞水县"
+            },
+            "jinsi_gorge": {
+              "name": "金丝峡",
+              "level": "5A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Jinsi_Gorge.jpg/1200px-Jinsi_Gorge.jpg",
+              "desc": "金丝峡是国家5A级景区，以其秀丽的峡谷风光著称。峡谷幽深，流水潺潺，瀑布成群，森林茂密，有\"峡谷奇观\"之誉，是消夏避暑的绝佳去处。",
+              "address": "陕西省商洛市商南县",
+              "openHours": "08:00-18:00",
+              "ticket": "120元",
+              "transport": "西安或商洛有班车前往商南县"
+            },
+            "niubei_liang": {
+              "name": "牛背梁",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Niubei_Liang.jpg/1200px-Niubei_Liang.jpg",
+              "desc": "牛背梁是秦岭东部最高峰，海拔2802米。森林茂密，生态完好，是羚牛的主要栖息地。山顶草甸开阔，视野极佳，是登山观景的好去处。",
+              "address": "陕西省商洛市柞水县",
+              "openHours": "08:00-18:00",
+              "ticket": "90元",
+              "transport": "建议包车前往"
+            },
+            "dengfeng_bay": {
+              "name": "月亮洞",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Moon_Cave.jpg/1200px-Moon_Cave.jpg",
+              "desc": "月亮洞是西北地区最大的天坑溶洞景观，位于商洛市镇安县。洞内有多层空间，钟乳石、石笋、石柱等景观丰富，是地质探险的好去处。",
+              "address": "陕西省商洛市镇安县",
+              "openHours": "08:00-18:00",
+              "ticket": "50元",
+              "transport": "建议包车前往"
+            },
+            "shangluo_ancient_post": {
+              "name": "商於古道",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Shangyu_Ancient_Path.jpg/1200px-Shangyu_Ancient_Path.jpg",
+              "desc": "商於古道是古代连接长安与东南地区的战略通道，全长约600里。古道途经商洛境内，沿途有多处古驿站、古桥梁遗址，是研究古代交通史的重要资料。",
+              "address": "陕西省商洛市境内",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车游览"
+            }
+          }
         }
       },
       "comingSoon": false
@@ -43048,42 +43530,446 @@
         "兰州": {
           "name": "兰州市",
           "desc": "兰州市旅游攻略",
-          "spots": {}
+          "spots": {
+            "gansu_museum": {
+              "name": "甘肃省博物馆",
+              "level": "4A",
+              "category": "博物馆",
+              "image": "https://www.gansumuseum.com/images/logo.jpg",
+              "desc": "甘肃省博物馆是甘肃省最大的综合性博物馆，收藏有大量珍贵的历史文物，包括汉唐丝绸之路文物、彩陶、汉简等，是了解甘肃历史文化的重要场所。",
+              "address": "甘肃省兰州市七里河区西津西路3号",
+              "openHours": "09:00-17:00（周一闭馆）",
+              "ticket": "免费",
+              "transport": "乘坐1路、31路、50路公交车在省博物馆站下车"
+            },
+            "yellow_river_bridge": {
+              "name": "黄河铁桥",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Lanzhou_Yellow_River_Bridge.jpg/1200px-Lanzhou_Yellow_River_Bridge.jpg",
+              "desc": "黄河铁桥是兰州标志性建筑之一，建于清光绪年间，是黄河上游第一座铁桥，具有重要的历史价值。桥下黄河水滔滔，两岸风景秀丽。",
+              "address": "甘肃省兰州市城关区黄河铁桥",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "乘坐公交至中山桥站"
+            },
+            "white_tower_mountain": {
+              "name": "白塔山",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/White_Pagoda_Mountain_Lanzhou.jpg/1200px-White_Pagoda_Mountain_Lanzhou.jpg",
+              "desc": "白塔山位于兰州黄河北岸，因山顶有白塔而得名。登顶可俯瞰兰州全景和黄河风光，是兰州市民休闲的好去处。",
+              "address": "甘肃省兰州市城关区白塔山",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "乘坐公交至白塔山公园站"
+            },
+            "wuquan_mountain": {
+              "name": "五泉山",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Wuquan_Mountain_Lanzhou.jpg/1200px-Wuquan_Mountain_Lanzhou.jpg",
+              "desc": "五泉山因山上有五眼泉水而得名，山上有霍去病将军雕像，寺庙建筑群保存完好，是兰州著名的风景名胜区和宗教活动场所。",
+              "address": "甘肃省兰州市七里河区五泉山",
+              "openHours": "07:00-18:00",
+              "ticket": "免费",
+              "transport": "乘坐公交至五泉山站"
+            },
+            "yellow_river_wetland": {
+              "name": "黄河湿地公园",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Yellow_River_Wetland_Park_Lanzhou.jpg/1200px-Yellow_River_Wetland_Park_Lanzhou.jpg",
+              "desc": "黄河湿地公园是兰州新建的生态公园，沿黄河两岸分布，有大面积的湿地植被和景观设施，是市民休闲健身的好去处。",
+              "address": "甘肃省兰州市安宁区黄河湿地",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "乘坐公交至湿地公园站"
+            }
+          }
         },
         "嘉峪关": {
           "name": "嘉峪关市",
           "desc": "嘉峪关市旅游攻略",
-          "spots": {}
+          "spots": {
+            "jiayuguan_pass": {
+              "name": "嘉峪关关城",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Jiayuguan_Pass.jpg/1200px-Jiayuguan_Pass.jpg",
+              "desc": "嘉峪关是明代万里长城最西端的关口，被称为\"天下雄关\"。关城建筑雄伟，地势险要，是丝绸之路的重要关隘，也是长城沿线规模最大、保存最完整的关隘。",
+              "address": "甘肃省嘉峪关市西南6公里处",
+              "openHours": "08:00-18:00",
+              "ticket": "110元",
+              "transport": "嘉峪关市区有旅游专线车前往"
+            },
+            "great_wall_first_peak": {
+              "name": "长城第一墩",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/First_Peak_of_Great_Wall.jpg/1200px-First_Peak_of_Great_Wall.jpg",
+              "desc": "长城第一墩是嘉峪关长城最西端的墩台，建于明洪武五年（1372年），是长城防御体系的最前沿，电视剧《长城》曾在此取景。",
+              "address": "甘肃省嘉峪关市讨赖河北岸",
+              "openHours": "08:00-18:00",
+              "ticket": "包含在嘉峪关景区联票内",
+              "transport": "乘坐景区区间车"
+            },
+            "overhanging_great_wall": {
+              "name": "悬壁长城",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Overhanging_Great_Wall.jpg/1200px-Overhanging_Great_Wall.jpg",
+              "desc": "悬壁长城是嘉峪关长城的一部分，因建在悬崖峭壁上而得名。登上悬壁长城可远眺祁连雪山和隔壁风光，景色壮丽。",
+              "address": "甘肃省嘉峪关市西北8公里",
+              "openHours": "08:00-18:00",
+              "ticket": "包含在嘉峪关景区联票内",
+              "transport": "乘坐景区区间车"
+            },
+            "jiayuguan_film_base": {
+              "name": "嘉峪关文物景区",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Jiayuguan_Cultural_Scenic_Area.jpg/1200px-Jiayuguan_Cultural_Scenic_Area.jpg",
+              "desc": "嘉峪关文物景区包含关城、长城第一墩、悬壁长城等景点，是了解古代军事防御体系和丝绸之路文化的重要场所。",
+              "address": "甘肃省嘉峪关市",
+              "openHours": "08:00-18:00",
+              "ticket": "联票110元",
+              "transport": "市区乘坐旅游专线"
+            }
+          }
         },
         "酒泉": {
           "name": "酒泉市",
           "desc": "酒泉市旅游攻略",
-          "spots": {}
+          "spots": {
+            "mingsha_mountain_crescent_spring": {
+              "name": "鸣沙山月牙泉",
+              "level": "5A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mingsha_Mountain_and_Crescent_Spring.jpg/1200px-Mingsha_Mountain_and_Crescent_Spring.jpg",
+              "desc": "鸣沙山月牙泉位于敦煌市南郊，是敦煌最著名的景点之一。月牙泉被鸣沙山环抱，因地势关系风吹沙落，始终不被淹没，形成沙漠奇观。山风吹动沙粒会发出响声，故名鸣沙山。",
+              "address": "甘肃省敦煌市南郊鸣沙山",
+              "openHours": "07:00-19:00",
+              "ticket": "110元（含月牙泉）",
+              "transport": "敦煌市区乘坐3路公交或打车前往"
+            },
+            "jiuquan_satellite_center": {
+              "name": "酒泉卫星发射中心",
+              "level": "4A",
+              "category": "科技展馆",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Jiuquan_Satellite_Launch_Center.jpg/1200px-Jiuquan_Satellite_Launch_Center.jpg",
+              "desc": "酒泉卫星发射中心是中国创建最早、规模最大的卫星发射中心，位于内蒙古额济纳旗境内。这里成功发射了中国第一颗人造地球卫星东方红一号、神舟系列飞船等。",
+              "address": "甘肃省酒泉市金塔县（实际位于内蒙古额济纳旗）",
+              "openHours": "仅接待预约游客",
+              "ticket": "免费（需预约）",
+              "transport": "需从酒泉市区出发，需预约"
+            },
+            "yulin_grottoes": {
+              "name": "榆林窟",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Yulin_Grottoes.jpg/1200px-Yulin_Grottoes.jpg",
+              "desc": "榆林窟是敦煌石窟群的重要组成部分，位于安西县南70公里处的踏实河两岸。洞窟内的壁画和泥塑保存完好，艺术价值极高，是研究西夏文化的重要资料。",
+              "address": "甘肃省瓜州县南70公里处",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "从敦煌或瓜州出发，需包车"
+            },
+            "jiuquan_lake": {
+              "name": "酒泉金塔胡杨林",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jinta_Populus_Euphratica_Forest.jpg/1200px-Jinta_Populus_Euphratica_Forest.jpg",
+              "desc": "金塔胡杨林是甘肃省最大的胡杨林景区，每到秋季金黄色的胡杨树叶与蓝天白云相映，构成壮丽的塞外秋色。是摄影爱好者的天堂。",
+              "address": "甘肃省酒泉市金塔县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "从酒泉市区出发需包车"
+            }
+          }
         },
         "武威": {
           "name": "武威市",
           "desc": "武威市旅游攻略",
-          "spots": {}
+          "spots": {
+            "wuwei_wenmiao": {
+              "name": "武威文庙",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Wuwei_Confucian_Temple.jpg/1200px-Wuwei_Confucian_Temple.jpg",
+              "desc": "武威文庙是西北地区规模最大、保存最完整的孔庙之一。建筑布局严谨，雕刻精美，大殿悬挂清代匾额四十余块，极具历史和艺术价值。",
+              "address": "甘肃省武威市凉州区",
+              "openHours": "08:00-18:00",
+              "ticket": "30元",
+              "transport": "武威市区乘坐公交至文庙站"
+            },
+            "leitai_han_tomb": {
+              "name": "雷台汉墓",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Leitai_Han_Tomb.jpg/1200px-Leitai_Han_Tomb.jpg",
+              "desc": "雷台汉墓是东汉末年名将张绣的墓葬，1969年出土了著名的铜奔马（马踏飞燕）。铜奔马造型精美，1983年被国家旅游局定为中国旅游标志。",
+              "address": "甘肃省武威市凉州区北关中路",
+              "openHours": "08:00-18:00",
+              "ticket": "50元",
+              "transport": "武威市区乘坐1路公交"
+            },
+            "tiantai_mountain": {
+              "name": "天梯山石窟",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Tiantai_Grottoes.jpg/1200px-Tiantai_Grottoes.jpg",
+              "desc": "天梯山石窟又称大佛寺，始建于东晋十六国时期，是早期石窟艺术的代表。窟内有大佛坐像，高达26米，是甘肃境内最大的唐代石窟造像。",
+              "address": "甘肃省武威市凉州区南约50公里",
+              "openHours": "08:00-18:00",
+              "ticket": "50元",
+              "transport": "建议包车前往"
+            },
+            "wushao_mountain": {
+              "name": "乌鞘岭",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Wushao_Mountain.jpg/1200px-Wushao_Mountain.jpg",
+              "desc": "乌鞘岭是祁连山东段的一条支岭，海拔3000多米，是古代丝绸之路的重要通道。岭上有汉、明长城遗址，景色壮观。",
+              "address": "甘肃省武威市天祝藏族自治县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            }
+          }
         },
         "定西": {
           "name": "定西市",
           "desc": "定西市旅游攻略",
-          "spots": {}
+          "spots": {
+            "guiqing_mountain": {
+              "name": "贵清山",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Guiqing_Mountain.jpg/1200px-Guiqing_Mountain.jpg",
+              "desc": "贵清山位于定西市渭源县，是陇中黄土高原保存最完整的原始森林。山峰险峻，云雾缭绕，有\"陇中仙境\"之称，是登山探险和避暑的好去处。",
+              "address": "甘肃省定西市渭源县",
+              "openHours": "全天开放",
+              "ticket": "50元",
+              "transport": "建议包车前往"
+            },
+            "weihe_source": {
+              "name": "渭河源",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Weihe_Source.jpg/1200px-Weihe_Source.jpg",
+              "desc": "渭河源是黄河最大支流渭河的发源地，位于渭源县南部。这里群山环绕，林木葱郁，有渭河源头石碑和自然景观，是生态旅游的好去处。",
+              "address": "甘肃省定西市渭源县南部",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "建议包车前往"
+            },
+            "zheyang_mountain": {
+              "name": "遮阳山",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Zheyang_Mountain.jpg/1200px-Zheyang_Mountain.jpg",
+              "desc": "遮阳山因山高遮日而得名，是秦岭的北缘。山上有大面积的红叶林和喀斯特地貌，秋季景色尤美，是甘肃著名的红叶观赏地。",
+              "address": "甘肃省定西市漳县",
+              "openHours": "08:00-17:00",
+              "ticket": "40元",
+              "transport": "建议包车前往"
+            },
+            "tongwei_grassland": {
+              "name": "通渭温泉",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Tongwei_Hot_Spring.jpg/1200px-Tongwei_Hot_Spring.jpg",
+              "desc": "通渭温泉位于定西市通渭县，是天然的硫磺温泉，水温适宜，富含多种矿物质，有很好的康体保健作用。是周边居民休闲养生的好去处。",
+              "address": "甘肃省定西市通渭县",
+              "openHours": "09:00-20:00",
+              "ticket": "免费（泡池另收费）",
+              "transport": "从定西市区有班车前往"
+            }
+          }
         },
         "陇南": {
           "name": "陇南市",
           "desc": "陇南市旅游攻略",
-          "spots": {}
+          "spots": {
+            "guane_gou": {
+              "name": "官鹅沟",
+              "level": "5A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Guane_Gorge.jpg/1200px-Guane_Gorge.jpg",
+              "desc": "官鹅沟位于陇南市宕昌县，是甘肃著名的大峡谷景区。沟内有数十个色彩斑斓的高山湖泊，瀑布飞溅，原始森林茂密，被誉为\"陇上九寨沟\"。",
+              "address": "甘肃省陇南市宕昌县",
+              "openHours": "07:00-18:00",
+              "ticket": "90元",
+              "transport": "从宕昌县有班车前往"
+            },
+            "maiji_mountain": {
+              "name": "麦积山",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Maiji_Mountain.jpg/1200px-Maiji_Mountain.jpg",
+              "desc": "麦积山是秦岭的余脉，因形似农家麦垛而得名。山崖上保存有194个洞窟，1000多身泥塑石雕，以精美的泥塑艺术闻名中外，与莫高窟、龙门石窟、云冈石窟并称为中国四大石窟。",
+              "address": "甘肃省天水市麦积区",
+              "openHours": "08:00-17:00",
+              "ticket": "80元（含景区交通）",
+              "transport": "天水市区有公交直达"
+            },
+            "wanxiang_cave": {
+              "name": "万象洞",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Wanxiang_Cave.jpg/1200px-Wanxiang_Cave.jpg",
+              "desc": "万象洞是中国西北地区发现的最大溶洞，已有2.5亿年历史。洞内石笋、石柱、石花形态各异，灯光照耀下色彩斑斓，有\"地下艺术宫殿\"之称。",
+              "address": "甘肃省陇南市武都区",
+              "openHours": "08:00-17:00",
+              "ticket": "70元",
+              "transport": "陇南市区有公交前往"
+            },
+            "taihe_pea": {
+              "name": "文县天池",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wenxian_Tianchi.jpg/1200px-Wenxian_Tianchi.jpg",
+              "desc": "文县天池是一座火山口湖，海拔2400米，湖水清澈，周围被原始森林环绕，景色原始古朴，是甘陕川边界地区难得的避暑胜地。",
+              "address": "甘肃省陇南市文县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "liangdang_old_street": {
+              "name": "两当兵变纪念馆",
+              "level": "免费",
+              "category": "博物馆",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Liangdang_Mutiny_Memorial.jpg/1200px-Liangdang_Mutiny_Memorial.jpg",
+              "desc": "两当兵变纪念馆是为了纪念1932年习仲勋等老一辈革命家领导的两当兵变而建立的。纪念馆再现了兵变的历史过程，是红色旅游的重要景点。",
+              "address": "甘肃省陇南市两当县",
+              "openHours": "09:00-17:00",
+              "ticket": "免费",
+              "transport": "从陇南市有班车前往两当县"
+            }
+          }
         },
         "临夏": {
           "name": "临夏",
           "desc": "临夏旅游攻略",
-          "spots": {}
+          "spots": {
+            "bingsi_temple": {
+              "name": "炳灵寺石窟",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Bingsi_Temple.jpg/1200px-Bingsi_Temple.jpg",
+              "desc": "炳灵寺石窟开凿于西秦建弘元年（420年），是甘肃三大石窟之一。石窟分布在长200米的天然洞穴中，有各代壁画和泥塑，其中169窟的壁画保存最为完好。",
+              "address": "甘肃省临夏回族自治州永靖县刘家峡",
+              "openHours": "08:00-17:00",
+              "ticket": "50元（需乘船前往）",
+              "transport": "从兰州或临夏乘车至刘家峡，后乘船前往"
+            },
+            "liujiaxia": {
+              "name": "刘家峡",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Liujiaxia.jpg/1200px-Liujiaxia.jpg",
+              "desc": "刘家峡是黄河上游的大型水利枢纽，建于1969年。库区水面宽阔，两岸丹霞地貌壮观，可乘船游览，感受高峡平湖的壮美。",
+              "address": "甘肃省临夏回族自治州永靖县",
+              "openHours": "08:00-18:00",
+              "ticket": "免费（船票另购）",
+              "transport": "从兰州有班车前往"
+            },
+            "bafang_thirteen_lanes": {
+              "name": "八坊十三巷",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bafang_Thirteen_Lanes.jpg/1200px-Bafang_Thirteen_Lanes.jpg",
+              "desc": "八坊十三巷是临夏市的历史街区，是回族文化的集中展示地。这里保留了传统的回族民居、清真寺和老字号店铺，是了解临夏穆斯林文化的好去处。",
+              "address": "甘肃省临夏回族自治州临夏市",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "临夏市区步行即可"
+            },
+            "liuwan_burial": {
+              "name": "刘坪遗址",
+              "level": "免费",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Liuping_Site.jpg/1200px-Liuping_Site.jpg",
+              "desc": "刘坪遗址是新石器时代马家窑文化的重要遗址，出土了大量彩陶和灰陶器物，对于研究黄河上游地区史前文化具有重要价值。",
+              "address": "甘肃省临夏回族自治州康乐县",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            },
+            "salt_cavern": {
+              "name": "黄河三峡",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Yellow_River_Three_Gorges.jpg/1200px-Yellow_River_Three_Gorges.jpg",
+              "desc": "黄河三峡指刘家峡、盐锅峡、八盘峡三座水电站形成的水库区，两岸丹霞与绿洲交织，景色独特，是甘肃中部重要的生态旅游景区。",
+              "address": "甘肃省临夏回族自治州永靖县",
+              "openHours": "08:00-18:00",
+              "ticket": "免费（船票另购）",
+              "transport": "从兰州有班车前往刘家峡"
+            }
+          }
         },
         "甘南": {
           "name": "甘南",
           "desc": "甘南旅游攻略",
-          "spots": {}
+          "spots": {
+            "labrang_monastery": {
+              "name": "拉卜楞寺",
+              "level": "5A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Labrang_Monastery.jpg/1200px-Labrang_Monastery.jpg",
+              "desc": "拉卜楞寺是藏传佛教格鲁派（黄教）六大寺之一，创建于清康熙四十八年（1709年）。寺庙规模宏大，拥有世界上最大的藏传佛教教学建筑体系，是甘南地区最大的藏族宗教文化中心。",
+              "address": "甘肃省甘南藏族自治州夏河县",
+              "openHours": "08:00-18:00",
+              "ticket": "40元",
+              "transport": "从兰州有班车前往夏河县"
+            },
+            "langmusi_monastery": {
+              "name": "郎木寺",
+              "level": "4A",
+              "category": "历史人文",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Langmusi_Monastery.jpg/1200px-Langmusi_Monastery.jpg",
+              "desc": "郎木寺是一个镇上有两座寺庙的分界寺庙群，四川一侧的格尔底寺和甘肃一侧的赛赤寺隔江相望。寺庙周围是海拔4000米的高原牧场，风景绝美。",
+              "address": "甘肃省甘南藏族自治州碌曲县郎木寺镇",
+              "openHours": "全天开放",
+              "ticket": "30元（两寺通用）",
+              "transport": "建议包车前往"
+            },
+            "zhaguana": {
+              "name": "扎尕那",
+              "level": "4A",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Zhaguana.jpg/1200px-Zhaguana.jpg",
+              "desc": "扎尕那是一处隐藏在石山之间的藏族村寨，被誉为\"上帝的伊甸园\"。这里山势险峻，云雾缭绕，藏族村寨错落有致，是摄影和徒步的绝佳地点。",
+              "address": "甘肃省甘南藏族自治州迭部县",
+              "openHours": "全天开放",
+              "ticket": "80元",
+              "transport": "建议包车前往，从兰州约8小时车程"
+            },
+            "sangke_grassland": {
+              "name": "桑科草原",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Sangke_Grassland.jpg/1200px-Sangke_Grassland.jpg",
+              "desc": "桑科草原是甘南藏区最美的草原之一，面积达70平方公里。草原开阔平坦，牧草丰美，牦牛和羊群点缀其间，是体验藏族牧民生活的好去处。",
+              "address": "甘肃省甘南藏族自治州夏河县桑科乡",
+              "openHours": "全天开放",
+              "ticket": "免费（骑马等娱乐项目另收费）",
+              "transport": "从夏河县有班车前往"
+            },
+            "gannan_terrace": {
+              "name": "甘加草原",
+              "level": "免费",
+              "category": "自然景观",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ganjia_Grassland.jpg/1200px-Ganjia_Grassland.jpg",
+              "desc": "甘加草原是甘南地区保存较为完好的高原草原，以其独特的八角古城和白石崖而闻名。这里人少景美，是深度游的好选择。",
+              "address": "甘肃省甘南藏族自治州夏河县甘加镇",
+              "openHours": "全天开放",
+              "ticket": "免费",
+              "transport": "建议包车前往"
+            }
+          }
         }
       },
       "comingSoon": false
