@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>漫游中国 · 省市区景区三级旅游攻略</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#faf8f5;--ink:#1c1814;--ink-light:#7a7068;--accent:#c84b2f;--accent-soft:#f4a582;--accent-light:#fdf0ec;--paper:#fff;--border:#ede8e0;--border-light:#f5f1eb;--shadow:rgba(28,24,20,0.08);--shadow-deep:rgba(28,24,20,0.18);--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--radius:10px;--radius-lg:16px}
+    body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:'Noto Serif SC',serif}
+    .header{background:var(--paper);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .header-logo{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:none;letter-spacing:1px}
+    .header-logo span{font-weight:300;color:var(--ink-light);font-size:12px;display:block;letter-spacing:2px}
+    .hero{background:linear-gradient(135deg,#1c1814 0%,#3d2a1e 50%,#c84b2f 100%);color:#fff;padding:80px 24px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23fff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+    .hero h1{font-size:42px;font-weight:700;margin-bottom:12px;position:relative}
+    .hero p{font-size:16px;opacity:.85;max-width:500px;margin:0 auto;position:relative;font-weight:300}
+    .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:32px;position:relative;flex-wrap:wrap}
+    .hero-stat{text-align:center}
+    .hero-stat-num{font-size:28px;font-weight:700;font-family:'Noto Serif SC',serif}
+    .hero-stat-label{font-size:12px;opacity:.7;margin-top:2px}
+    .hero-tabs{display:flex;justify-content:center;gap:8px;margin-top:32px;position:relative;flex-wrap:wrap}
+    .hero-tab{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);padding:8px 20px;border-radius:24px;font-size:13px;cursor:pointer;transition:all .2s}
+    .hero-tab:hover,.hero-tab.active{background:#fff;color:var(--accent);border-color:#fff}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .section{padding:48px 0}
+    .section-title{font-size:24px;font-weight:600;margin-bottom:6px}
+    .section-sub{color:var(--ink-light);font-size:14px;margin-bottom:28px}
+    .breadcrumb{padding:12px 0;font-size:13px;color:var(--ink-light);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .breadcrumb a,.breadcrumb span{color:var(--ink-light);text-decoration:none;cursor:pointer;transition:color .2s}
+    .breadcrumb a:hover{color:var(--accent)}
+    .breadcrumb .sep{color:var(--border)}
+    .breadcrumb .current{color:var(--accent);font-weight:500}
+    .region-group{margin-bottom:48px}
+    .region-label{font-size:13px;color:var(--ink-light);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+    .region-label::after{content:'';flex:1;height:1px;background:var(--border)}
+    .province-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+    .province-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
+    .province-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--shadow);transform:translateY(-2px)}
+    .province-card.coming-soon{opacity:.55;cursor:default}
+    .province-card.coming-soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
+    .province-card-name{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:600;margin-bottom:4px}
+    .province-card-meta{font-size:12px;color:var(--ink-light)}
+    .province-card-badge{position:absolute;top:12px;right:12px;background:var(--accent-light);color:var(--accent);font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+    .province-card-soon{position:absolute;top:12px;right:12px;background:var(--border-light);color:var(--ink-light);font-size:10px;padding:2px 8px;border-radius:10px}
+    .city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .city-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .25s ease}
+    .city-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--shadow);transform:translateY(-2px)}
+    .city-card-img{height:160px;background-size:cover;background-position:center;position:relative}
+    .city-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .city-card-body{padding:16px}
+    .city-card-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;margin-bottom:4px}
+    .city-card-desc{font-size:13px;color:var(--ink-light);margin-bottom:12px;line-height:1.5}
+    .city-card-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;display:inline-block}
+    .tag-gray{background:var(--border-light);color:var(--ink-light)}
+    .tag-blue{background:#e8f4fd;color:#2980b9}
+    .spot-list{display:flex;flex-direction:column;gap:12px}
+    .spot-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .2s ease;display:flex;gap:16px;align-items:flex-start}
+    .spot-card:hover{border-color:var(--accent);box-shadow:0 4px 16px var(--shadow)}
+    .spot-card-img{width:120px;height:90px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#ede8e0}
+    .spot-card-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;display:block}
+    .spot-card-img .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-light);font-size:12px}
+    .spot-card-info{flex:1;min-width:0}
+    .spot-card-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .spot-card-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600}
+    .spot-card-level{background:#ffd700;color:#7a6000;font-size:10px;padding:1px 6px;border-radius:6px;font-weight:600}
+    .spot-card-desc{font-size:13px;color:var(--ink-light);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .spot-card-meta{display:flex;gap:16px;font-size:12px;color:var(--ink-light);flex-wrap:wrap}
+    .spot-card-arrow{color:var(--border);font-size:20px;align-self:center;flex-shrink:0}
+    .spot-detail{padding-bottom:80px}
+    .spot-hero{height:300px;background-size:cover;background-position:center;border-radius:var(--radius-lg);position:relative;margin-bottom:24px;overflow:hidden}
+    .spot-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,.7));border-radius:0 0 var(--radius-lg) var(--radius-lg);color:#fff}
+    .spot-hero-name{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;margin-bottom:6px}
+    .spot-hero-sub{font-size:14px;opacity:.85}
+    .spot-hero-back{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s}
+    .spot-hero-back:hover{background:#fff}
+    /* Image actions overlay */
+    .spot-hero-actions{position:absolute;top:16px;right:16px;display:flex;gap:8px}
+    .spot-hero-actions button{background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:none;border-radius:24px;padding:8px 16px;font-size:13px;cursor:pointer;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s}
+    .spot-hero-actions button:hover{background:#fff;box-shadow:0 2px 8px var(--shadow-deep)}
+    .spot-hero-actions button.primary{background:var(--accent);color:#fff}
+    .spot-hero-actions button.primary:hover{background:#b33f25}
+    /* Image preview in hero */
+    .spot-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:var(--radius-lg)}
+    .spot-hero.has-custom-img .spot-hero-overlay{background:linear-gradient(transparent 50%,rgba(0,0,0,.7))}
+    /* Image upload overlay */
+    .img-upload-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:24px}
+    .img-upload-overlay.show{display:flex}
+    .img-upload-modal{background:#fff;border-radius:var(--radius-lg);max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:28px}
+    .img-upload-modal h3{font-family:'Noto Serif SC',serif;font-size:20px;margin-bottom:4px}
+    .img-upload-modal p{color:var(--ink-light);font-size:13px;margin-bottom:20px}
+    .img-upload-tabs{display:flex;gap:4px;background:var(--border-light);padding:4px;border-radius:10px;margin-bottom:20px}
+    .img-upload-tab{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink-light);transition:all .2s;flex:1;text-align:center}
+    .img-upload-tab.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px var(--shadow)}
+    .img-upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+    .img-upload-area:hover{border-color:var(--accent);background:var(--accent-light)}
+    .img-upload-area input{display:none}
+    .img-upload-area-icon{font-size:32px;margin-bottom:8px}
+    .img-upload-area-text{font-size:14px;color:var(--ink-light)}
+    .img-upload-area-text strong{color:var(--accent)}
+    .img-preview{width:100%;max-height:200px;object-fit:cover;border-radius:var(--radius);margin-bottom:12px;display:none}
+    .img-preview.show{display:block}
+    .img-url-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;margin-bottom:12px;font-family:inherit}
+    .img-url-input:focus{outline:none;border-color:var(--accent)}
+    .img-url-btns{display:flex;gap:8px;margin-bottom:16px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:#b33f25}
+    .btn-secondary{background:var(--border-light);color:var(--ink)}
+    .btn-secondary:hover{background:var(--border)}
+    .btn-ghost{background:transparent;color:var(--ink-light);border:1px solid var(--border)}
+    .btn-ghost:hover{border-color:var(--ink-light)}
+    .btn-block{width:100%;justify-content:center}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-danger:hover:#a93226}
+    .img-unsplash-link{display:flex;align-items:center;gap:8px;padding:12px;background:var(--border-light);border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--ink-light);text-decoration:none;transition:background .2s}
+    .img-unsplash-link:hover{background:var(--border)}
+    .img-unsplash-link .icon{font-size:18px}
+    .img-saved-notice{background:var(--success);color:#fff;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px}
+    .img-saved-notice.show{display:flex}
+    .img-history{margin-top:16px}
+    .img-history-title{font-size:12px;color:var(--ink-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+    .img-history-list{display:flex;gap:8px;flex-wrap:wrap}
+    .img-history-item{width:56px;height:56px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:all .2s}
+    .img-history-item:hover{border-color:var(--accent)}
+    .img-history-item.current{border-color:var(--accent)}
+    .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+    .info-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+    .info-card-icon{font-size:24px;margin-bottom:8px}
+    .info-card-label{font-size:11px;color:var(--ink-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .info-card-value{font-size:15px;font-weight:600;line-height:1.4}
+    .guide-hero{padding:32px 0 16px}
+    .guide-hero h2{font-size:24px;margin-bottom:6px}
+    .guide-hero p{color:var(--ink-light);font-size:14px;margin-bottom:16px}
+    .guide-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--border-light);padding:4px;border-radius:10px;width:fit-content;flex-wrap:wrap}
+    .guide-tab{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink-light);transition:all .2s}
+    .guide-tab:hover{color:var(--accent)}
+    .guide-tab.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px var(--shadow)}
+    .schedule-day{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+    .schedule-day-header{background:linear-gradient(135deg,var(--accent),#e8602c);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+    .schedule-day-title{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600}
+    .schedule-day-theme{font-size:12px;opacity:.85}
+    .schedule-items{padding:16px 20px}
+    .schedule-item{display:flex;gap:14px;padding:8px 0;border-bottom:1px dashed var(--border-light)}
+    .schedule-item:last-child{border-bottom:none}
+    .schedule-item-time{font-size:12px;color:var(--accent);font-weight:600;min-width:48px;padding-top:2px}
+    .schedule-item-info{flex:1}
+    .schedule-item-title{font-weight:600;font-size:14px;margin-bottom:2px}
+    .schedule-item-desc{font-size:13px;color:var(--ink-light)}
+    .spot-section{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+    .spot-section-title{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--accent);display:flex;align-items:center;gap:8px}
+    .transport-reason{font-size:13px;color:var(--ink-light);margin-bottom:12px;padding:10px;background:var(--border-light);border-radius:8px;line-height:1.6}
+    .transport-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .transport-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:var(--bg)}
+    .transport-card-title{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .transport-row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px;border-bottom:1px dashed var(--border-light);color:var(--ink-light)}
+    .transport-row:last-child{border-bottom:none}
+    .transport-row strong{color:var(--ink);font-weight:600}
+    .transport-row .val{color:var(--accent);font-weight:600}
+    .food-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--border-light)}
+    .food-item:last-child{border-bottom:none}
+    .food-item-name{font-weight:600;font-size:14px}
+    .food-item-desc{font-size:12px;color:var(--ink-light)}
+    .food-item-price{color:var(--accent);font-weight:600;font-size:13px;white-space:nowrap;margin-left:12px}
+    .tip-item{display:flex;gap:10px;padding:8px 0;font-size:14px}
+    .tip-icon{flex-shrink:0;width:20px;height:20px;background:var(--warning);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:2px}
+    .tip-item.warning .tip-icon{background:var(--danger)}
+    .tip-item.good .tip-icon{background:var(--success)}
+    .rec-badge{background:var(--success);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    .no-rec-badge{background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;margin-left:8px}
+    .custom-img-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;display:none}
+    .spot-card.has-custom .custom-img-badge{display:block}
+    .view{display:none}
+    .view.active{display:block;animation:fadeIn .3s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .more-soon{text-align:center;padding:48px;color:var(--ink-light);font-size:14px}
+    @media(max-width:768px){
+      .hero h1{font-size:28px}
+      .hero-stats{gap:24px}
+      .hero-stat-num{font-size:22px}
+      .province-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+      .city-card-img{height:140px}
+      .spot-card{flex-direction:column}
+      .spot-card-img{width:100%;height:120px}
+      .spot-hero{height:220px}
+      .info-cards{grid-template-columns:repeat(2,1fr)}
+      .transport-grid{grid-template-columns:1fr}
+      .header-nav{display:none}
+      .spot-hero-name{font-size:22px}
+      .guide-tabs{width:100%}
+      .guide-tab{flex:1;text-align:center;padding:8px 10px;font-size:12px}
+      .spot-hero-actions{flex-direction:column;gap:4px}
+      .spot-hero-actions button{padding:6px 12px;font-size:12px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo" onclick="goHome()">漫游中国<span>省 · 市 · 景区 三级攻略</span></div>
+  <div class="header-nav"><a href="#">景点</a><a href="#">美食</a><a href="#">交通</a><a href="#">关于</a></div>
+</div>
+
+<!-- Home View -->
+<div id="homeView" class="view active">
+  <div class="hero">
+    <h1>漫游中国</h1>
+    <p>23省 · 景区攻略 · 交通指南 · 多日行程</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">23</div><div class="hero-stat-label">省份</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">200+</div><div class="hero-stat-label">城市</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">景区</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3-30</div><div class="hero-stat-label">天可选</div></div>
+    </div>
+    <div class="hero-tabs">
+      <div class="hero-tab active" onclick="showRegion('all')">全部</div>
+      <div class="hero-tab" onclick="showRegion('east')">华东</div>
+      <div class="hero-tab" onclick="showRegion('south')">华南</div>
+      <div class="hero-tab" onclick="showRegion('north')">华北</div>
+      <div class="hero-tab" onclick="showRegion('southwest')">西南</div>
+      <div class="hero-tab" onclick="showRegion('northwest')">西北</div>
+      <div class="hero-tab" onclick="showRegion('northeast')">东北</div>
+      <div class="hero-tab" onclick="showRegion('central')">华中</div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="section">
+      <div class="section-title">选择您的目的地</div>
+      <div class="section-sub">点击省份 → 城市 → 景区，深入了解每个景点的开放时间、交通攻略和多日行程</div>
+      <div class="region-group" data-region="north"><div class="region-label">华北地区</div><div class="province-grid" id="northProvinces"></div></div>
+      <div class="region-group" data-region="northeast"><div class="region-label">东北地区</div><div class="province-grid" id="northeastProvinces"></div></div>
+      <div class="region-group" data-region="east"><div class="region-label">华东地区</div><div class="province-grid" id="eastProvinces"></div></div>
+      <div class="region-group" data-region="central"><div class="region-label">华中地区</div><div class="province-grid" id="centralProvinces"></div></div>
+      <div class="region-group" data-region="south"><div class="region-label">华南地区</div><div class="province-grid" id="southProvinces"></div></div>
+      <div class="region-group" data-region="southwest"><div class="region-label">西南地区</div><div class="province-grid" id="southwestProvinces"></div></div>
+      <div class="region-group" data-region="northwest"><div class="region-label">西北地区</div><div class="province-grid" id="northwestProvinces"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Province View -->
+<div id="provinceView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="provinceBreadcrumb"></div>
+    <div class="section">
+      <div class="section-title" id="provinceTitle"></div>
+      <div class="section-sub" id="provinceDesc"></div>
+      <div class="city-grid" id="cityGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- City View -->
+<div id="cityView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="cityBreadcrumb"></div>
+    <div class="section">
+      <div class="section-title" id="cityTitle"></div>
+      <div class="section-sub" id="cityDesc"></div>
+      <div class="spot-list" id="spotList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Spot Detail View -->
+<div id="spotView" class="view">
+  <div class="container">
+    <div class="breadcrumb" id="spotBreadcrumb"></div>
+    <div class="spot-detail">
+      <div class="spot-hero" id="spotHero">
+        <button class="spot-hero-back" onclick="goBack()">←</button>
+        <div class="spot-hero-actions">
+          <button onclick="openImgUpload()">📷 更换图片</button>
+        </div>
+        <div class="spot-hero-overlay">
+          <div class="spot-hero-name" id="spotHeroName"></div>
+          <div class="spot-hero-sub" id="spotHeroSub"></div>
+        </div>
+      </div>
+      <div class="info-cards" id="infoCards"></div>
+      <div class="guide-hero">
+        <h2 id="guideTitle"></h2>
+        <p id="guideSub"></p>
+      </div>
+      <div class="guide-tabs" id="guideTabs">
+        <button class="guide-tab active" onclick="switchGuide('3-7')">🗓️ 3-7天攻略</button>
+        <button class="guide-tab" onclick="switchGuide('7-15')">🌍 7-15天攻略</button>
+        <button class="guide-tab" onclick="switchGuide('30')">✈️ 30天深度游</button>
+      </div>
+      <div id="scheduleList"></div>
+      <div class="spot-section"><div class="spot-section-title">🚌 交通攻略</div><div id="transportContent"></div></div>
+      <div class="spot-section"><div class="spot-section-title">🍜 周边美食</div><div id="foodContent"></div></div>
+      <div class="spot-section"><div class="spot-section-title">💡 实用贴士</div><div id="tipsContent"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Image Upload Modal -->
+<div class="img-upload-overlay" id="imgUploadOverlay" onclick="closeImgUpload(event)">
+  <div class="img-upload-modal" onclick="event.stopPropagation()">
+    <h3>📷 更换景区图片</h3>
+    <p id="imgUploadSpotName">为当前景区选择图片</p>
+    
+    <div class="img-upload-tabs">
+      <button class="img-upload-tab active" onclick="switchImgTab('upload',this)">📤 上传图片</button>
+      <button class="img-upload-tab" onclick="switchImgTab('url',this)">🔗 图片链接</button>
+    </div>
+
+    <!-- Upload tab -->
+    <div id="imgTabUpload">
+      <div class="img-upload-area" onclick="document.getElementById('imgFileInput').click()">
+        <input type="file" id="imgFileInput" accept="image/*" onchange="handleFileSelect(event)" />
+        <div class="img-upload-area-icon">🖼️</div>
+        <div class="img-upload-area-text">点击选择本地图片<br/><strong>支持 JPG/PNG/GIF/WebP</strong></div>
+      </div>
+      <img class="img-preview" id="imgPreview" alt="预览" />
+      <div class="img-saved-notice" id="imgSavedNotice">✅ 图片已保存</div>
+      <button class="btn btn-primary btn-block" id="imgSaveBtn" onclick="saveCustomImg()" style="display:none">保存为景区图片</button>
+    </div>
+
+    <!-- URL tab -->
+    <div id="imgTabUrl" style="display:none">
+      <input type="url" class="img-url-input" id="imgUrlInput" placeholder="粘贴图片链接，如 https://..." />
+      <img class="img-preview" id="imgUrlPreview" alt="预览" style="display:none" />
+      <div class="img-url-btns">
+        <button class="btn btn-primary" onclick="applyImgUrl()">应用图片</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('imgUrlPreview').style.display='none'">清除</button>
+      </div>
+      <a class="img-unsplash-link" href="#" id="unsplashSearchLink" target="_blank" rel="noopener">
+        <span class="icon">🔍</span>
+        <span>在 Unsplash 免费图库搜索「<strong id="unsplashQuery"></strong>」</span>
+      </a>
+    </div>
+
+    <!-- History -->
+    <div class="img-history" id="imgHistory">
+      <div class="img-history-title">最近使用</div>
+      <div class="img-history-list" id="imgHistoryList"></div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-secondary" onclick="resetToDefault()" style="flex:1">恢复默认图片</button>
+      <button class="btn btn-ghost" onclick="closeImgUpload()" style="flex:1">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let DB = null;
+
+async function loadDB() {
+  try {
+    const res = await fetch('db.json');
+    if (!res.ok) throw new Error('Failed to load DB: ' + res.status);
+    DB = await res.json();
+    console.log('DB loaded:', Object.keys(DB.provinces).length, 'provinces');
+  } catch (e) {
+    console.error('DB load error:', e);
+    document.querySelector('.section-title').textContent = '数据加载失败，请刷新重试';
+    return;
+  }
+  init();
+}
+
+loadDB();
+
+let currentProvince = null, currentCity = null, currentSpot = null, currentGuide = null, navStack = [];
+
+function goProvince(pid) {
+  const p = DB.provinces[pid];
+  if (p.comingSoon) return;
+  currentProvince = pid;
+  navStack = [{view:'province',pid}];
+  document.getElementById('provinceTitle').textContent = p.name;
+  document.getElementById('provinceDesc').textContent = (p.desc || '') + ' · 点击城市开始探索';
+  const grid = document.getElementById('cityGrid');
+  grid.innerHTML = Object.entries(p.cities || {}).map(([cid,c]) => {
+    const firstSpot = c.spots ? Object.values(c.spots)[0] : null;
+    const img = firstSpot ? getEffectiveImg(firstSpot) : '';
+    const hasCustom = firstSpot ? !!getCustomImg(`${pid}_${cid}_${Object.keys(c.spots)[0]}`) : false;
+    const tags = firstSpot ? Object.values(c.spots || {}).slice(0,3).map(s => 
+      `<span class="tag">${s.name}</span>`
+    ).join('') : '';
+    return `<div class="city-card" onclick="goCity('${pid}','${cid}')">
+      <div class="city-card-img" style="position:relative">
+        ${img ? `<img src="${img}" alt="${c.name}" loading="lazy"/>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-light);font-size:32px">🏙️</div>`}
+        ${hasCustom ? '<span style="position:absolute;bottom:8px;left:8px;background:var(--accent);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px">📷 我的</span>' : ''}
+      </div>
+      <div class="city-card-body">
+        <div class="city-card-name">${c.name}</div>
+        <div class="city-card-desc">${c.desc}</div>
+        <div class="city-card-tags">${tags}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateBreadcrumb();
+  switchView('provinceView');
+}
+
+// ─── RENDER: CITY SPOTS ───
+function goCity(pid, cid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  currentCity = cid;
+  navStack.push({view:'city',cid});
+  document.getElementById('cityTitle').textContent = c.name;
+  document.getElementById('cityDesc').textContent = (c.desc || '') + ' · 点击景区查看详情';
+  const list = document.getElementById('spotList');
+  list.innerHTML = Object.entries(c.spots || {}).map(([sid,s]) => {
+    const effImg = getEffectiveImg(s);
+    const spotKey = `${pid}_${cid}_${sid}`;
+    const hasCustom = !!getCustomImg(spotKey);
+    return `<div class="spot-card ${hasCustom ? 'has-custom' : ''}" onclick="goSpot('${pid}','${cid}','${sid}')">
+      <div class="spot-card-img" style="position:relative">
+        ${effImg ? `<img src="${effImg}" alt="${s.name}" loading="lazy"/>` : `<div class="img-placeholder">🏞️</div>`}
+        ${hasCustom ? '<span class="custom-img-badge">📷</span>' : ''}
+      </div>
+      <div class="spot-card-info">
+        <div class="spot-card-top">
+          <div class="spot-card-name">${s.name}</div>
+          ${s.level ? `<span class="spot-card-level">${s.level}</span>` : ''}
+        </div>
+        <div class="spot-card-desc">${s.desc}</div>
+        <div class="spot-card-meta">
+          <span>🕐 ${s.opening || '全天'}</span>
+          <span>📍 ${s.category || '景区'}</span>
+          ${hasCustom ? '<span style="color:var(--accent)">📷 已自定义</span>' : ''}
+        </div>
+      </div>
+      <div class="spot-card-arrow">›</div>
+    </div>`;
+  }).join('');
+  updateBreadcrumb();
+  switchView('cityView');
+}
+
+// ─── RENDER: SPOT DETAIL ───
+function goSpot(pid, cid, sid) {
+  const p = DB.provinces[pid];
+  const c = p.cities[cid];
+  const s = c.spots[sid];
+  currentSpot = sid;
+  navStack.push({view:'spot',sid});
+  
+  const effImg = getEffectiveImg(s);
+  const spotKey = getSpotImgKey();
+  const hasCustom = !!getCustomImg(spotKey);
+  
+  // Hero with custom image support
+  const hero = document.getElementById('spotHero');
+  hero.className = 'spot-hero' + (hasCustom ? ' has-custom-img' : '');
+  hero.style.backgroundImage = effImg ? `url('${effImg}')` : '';
+  
+  document.getElementById('spotHeroName').textContent = s.name + (s.level ? ' ' + s.level : '');
+  document.getElementById('spotHeroSub').textContent = s.desc;
+  
+  // Info cards
+  document.getElementById('infoCards').innerHTML = `
+    <div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-label">开放时间</div><div class="info-card-value">${s.opening?.peak || '全天'}</div></div>
+    <div class="info-card"><div class="info-card-icon">🎫</div><div class="info-card-label">门票</div><div class="info-card-value">${s.ticket || '免费'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-label">地址</div><div class="info-card-value">${s.address || '—'}</div></div>
+    <div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-label">电话</div><div class="info-card-value">${s.phone || '—'}</div></div>
+  `;
+  
+  renderGuide(s);
+  renderTransport(s);
+  renderFood(s);
+  renderTips(s);
+  updateBreadcrumb();
+  switchView('spotView');
+  window.scrollTo(0,0);
+}
+
+// ─── IMAGE UPLOAD ───
+function openImgUpload() {
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  document.getElementById('imgUploadSpotName').textContent = '当前景区：' + s.name;
+  document.getElementById('unsplashQuery').textContent = s.name;
+  document.getElementById('unsplashSearchLink').href = 
+    'https://unsplash.com/s/photos/' + encodeURIComponent(s.name + ' China');
+  
+  // Load history
+  const spotKey = getSpotImgKey();
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  // Reset state
+  pendingImgData = null;
+  document.getElementById('imgPreview').classList.remove('show');
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgSaveBtn').style.display = 'none';
+  document.getElementById('imgSavedNotice').classList.remove('show');
+  document.getElementById('imgUrlInput').value = '';
+  document.getElementById('imgUrlPreview').style.display = 'none';
+  
+  // Switch to upload tab
+  switchImgTab('upload', document.querySelector('.img-upload-tab'));
+  
+  document.getElementById('imgUploadOverlay').classList.add('show');
+}
+
+function closeImgUpload(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('imgUploadOverlay').classList.remove('show');
+}
+
+function switchImgTab(tab, btn) {
+  document.querySelectorAll('.img-upload-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('imgTabUpload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('imgTabUrl').style.display = tab === 'url' ? '' : 'none';
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10*1024*1024) {
+    alert('图片不能超过10MB，请选择更小的图片');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    pendingImgData = { url: ev.target.result, savedAt: new Date().toISOString() };
+    const preview = document.getElementById('imgPreview');
+    preview.src = ev.target.result;
+    preview.classList.add('show');
+    document.getElementById('imgSaveBtn').style.display = '';
+    document.getElementById('imgSavedNotice').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyImgUrl() {
+  const url = document.getElementById('imgUrlInput').value.trim();
+  if (!url) return;
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgUrlPreview');
+  preview.src = url;
+  preview.style.display = '';
+  preview.onerror = function() {
+    preview.style.display = 'none';
+    alert('图片链接无效，请检查后重试');
+  };
+  document.getElementById('imgSavedNotice').classList.remove('show');
+}
+
+function saveCustomImg() {
+  if (!pendingImgData) return;
+  const spotKey = getSpotImgKey();
+  setCustomImg(spotKey, pendingImgData);
+  
+  // Refresh current spot view
+  goSpot(currentProvince, currentCity, currentSpot);
+  
+  // Update history
+  const history = getImageHistory(spotKey);
+  const histList = document.getElementById('imgHistoryList');
+  histList.innerHTML = history.map((item, i) => 
+    `<img class="img-history-item ${i===0?'current':''}" src="${item.url}" onclick="applyHistoryImg(this,'${item.url}')" title="点击使用" />`
+  ).join('');
+  document.getElementById('imgHistory').style.display = history.length > 0 ? '' : 'none';
+  
+  document.getElementById('imgSavedNotice').classList.add('show');
+  setTimeout(() => document.getElementById('imgSavedNotice').classList.remove('show'), 2000);
+}
+
+function applyHistoryImg(el, url) {
+  document.querySelectorAll('.img-history-item').forEach(i => i.classList.remove('current'));
+  el.classList.add('current');
+  pendingImgData = { url, savedAt: new Date().toISOString() };
+  const preview = document.getElementById('imgPreview');
+  preview.src = url;
+  preview.classList.add('show');
+  document.getElementById('imgSaveBtn').style.display = '';
+}
+
+function resetToDefault() {
+  const spotKey = getSpotImgKey();
+  try {
+    const imgs = JSON.parse(localStorage.getItem(IMG_KEY) || '{}');
+    delete imgs[spotKey];
+    localStorage.setItem(IMG_KEY, JSON.stringify(imgs));
+  } catch(e) {}
+  goSpot(currentProvince, currentCity, currentSpot);
+  closeImgUpload();
+}
+
+// ─── GUIDE / TRANSPORT / FOOD / TIPS ───
+function renderGuide(s) {
+  const g = s.guides?.[currentGuide] || s.guides?.['3-7'] || {};
+  document.getElementById('guideTitle').textContent = g.title || '行程攻略';
+  document.getElementById('guideSub').textContent = g.days ? `建议游玩 ${g.days} 天` : '';
+  const list = document.getElementById('scheduleList');
+  if (!g.schedule || g.schedule.length === 0) {
+    list.innerHTML = '<div class="more-soon">该时长攻略正在完善中，请参考其他时长选项</div>';
+    return;
+  }
+  list.innerHTML = g.schedule.map(d => `
+    <div class="schedule-day">
+      <div class="schedule-day-header">
+        <div class="schedule-day-title">${d.day}</div>
+        <div class="schedule-day-theme">${d.theme}</div>
+      </div>
+      <div class="schedule-items">
+        ${d.items.map(i => `
+          <div class="schedule-item">
+            <div class="schedule-item-time">${i.time}</div>
+            <div class="schedule-item-info">
+              <div class="schedule-item-title">${i.title}</div>
+              <div class="schedule-item-desc">${i.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTransport(s) {
+  const t = s.transport || {};
+  const content = document.getElementById('transportContent');
+  if (!t.recommended) { content.innerHTML = '<div class="more-soon">交通信息正在完善中</div>'; return; }
+  let html = `<div class="transport-reason"><strong>推荐出行方式：${t.recommended}</strong><br>${t.reason || ''}</div><div class="transport-grid">`;
+  if (t.metro) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚇 地铁</div>
+      ${t.metro.lines.map(l => `<div class="transport-row"><span class="val">${l}</span></div>`).join('')}
+      ${t.metro.walk ? `<div class="transport-row"><span class="key">步行</span><span>${t.metro.walk}</span></div>` : ''}
+    </div>`;
+  }
+  if (t.driving && !t.driving.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾</div>
+      ${t.driving.parking ? `<div class="transport-row"><span class="key">停车</span><span>${t.driving.parking}</span></div>` : ''}
+      ${t.driving.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.driving.tips}</span></div>` : ''}
+      ${t.driving.restrictions ? `<div class="transport-row"><span class="key">限行</span><span>${t.driving.restrictions}</span></div>` : ''}
+    </div>`;
+  } else if (t.driving?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 自驾 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.driving.reason || '不推荐自驾'}</span></div></div>`;
+  }
+  if (t.bus && t.bus.length > 0) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚌 公交</div>
+      ${t.bus.map(b => `<div style="margin-bottom:8px">
+        <div class="transport-row"><span class="val">${b.name}</span><span>${b.from} → ${b.to}</span></div>
+        <div class="transport-row"><span class="key">班次</span><span>${b.freq} | 首 ${b.first} | 末 ${b.last}</span></div>
+        ${b.tips ? `<div class="transport-row"><span class="key">提示</span><span>${b.tips}</span></div>` : ''}
+      </div>`).join('')}
+    </div>`;
+  }
+  if (t.taxi && !t.taxi.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车</div>
+      ${t.taxi.fromCenter ? `<div class="transport-row"><span class="key">从市中心</span><span>${t.taxi.fromCenter}</span></div>` : ''}
+      ${t.taxi.tips ? `<div class="transport-row"><span class="key">提示</span><span>${t.taxi.tips}</span></div>` : ''}
+    </div>`;
+  } else if (t.taxi?.notRecommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚕 打车 <span class="no-rec-badge">不推荐</span></div><div class="transport-row"><span>${t.taxi.reason || '不推荐打车'}</span></div></div>`;
+  }
+  if (t.carRental && !t.carRental.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="no-rec-badge">不推荐</span></div>
+      ${t.carRental.reason ? `<div class="transport-row"><span>${t.carRental.reason}</span></div>` : ''}
+    </div>`;
+  } else if (t.carRental?.recommended) {
+    html += `<div class="transport-card"><div class="transport-card-title">🚗 租车 <span class="rec-badge">推荐</span></div>
+      ${t.carRental.platforms ? `<div class="transport-row"><span class="key">平台</span><span>${t.carRental.platforms.join(', ')}</span></div>` : ''}
+      ${t.carRental.priceRange ? `<div class="transport-row"><span class="key">价格</span><span>${t.carRental.priceRange}</span></div>` : ''}
+    </div>`;
+  }
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+function renderFood(s) {
+  const rawFood = s.food || [];
+  const food = Array.isArray(rawFood) ? rawFood : (typeof rawFood === 'string' ? [{name:rawFood,desc:'',price:''}] : []);
+  const content = document.getElementById('foodContent');
+  if (food.length === 0) { content.innerHTML = '<div class="more-soon">美食信息正在完善中</div>'; return; }
+  content.innerHTML = food.map(f => {
+    const fi = typeof f === 'string' ? {name:f,desc:'',price:''} : f;
+    return `<div class="food-item">
+      <div>
+        <div class="food-item-name">${fi.name} ${fi.tag ? `<span class="tag">${fi.tag}</span>` : ''}</div>
+        <div class="food-item-desc">${fi.desc || ''}</div>
+      </div>
+      <div class="food-item-price">${fi.price || ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTips(s) {
+  const rawTips = s.tips || [];
+  const tips = Array.isArray(rawTips) ? rawTips : (typeof rawTips === 'string' ? [{type:'info',text:rawTips}] : []);
+  const content = document.getElementById('tipsContent');
+  if (tips.length === 0) { content.innerHTML = '<div class="more-soon">贴士信息正在完善中</div>'; return; }
+  content.innerHTML = tips.map(t => {
+    const tipObj = typeof t === 'string' ? {type:'info',text:t} : t;
+    return `<div class="tip-item ${tipObj.type || ''}">
+      <div class="tip-icon">${tipObj.type === 'warning' ? '!' : tipObj.type === 'good' ? '✓' : 'i'}</div>
+      <div>${tipObj.text}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── NAVIGATION ───
+function switchView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  currentView = viewId;
+}
+
+function updateBreadcrumb() {
+  const bcId = ['spotBreadcrumb','cityBreadcrumb','provinceBreadcrumb'].find(id => document.getElementById(id)?.closest('.view.active'));
+  if (!bcId) return;
+  const bc = document.getElementById(bcId);
+  let html = `<a onclick="goHome()">首页</a><span class="sep">›</span>`;
+  if (currentProvince) {
+    const p = DB.provinces[currentProvince];
+    html += `<a onclick="goProvince('${currentProvince}')">${p.name}</a><span class="sep">›</span>`;
+  }
+  if (currentCity) {
+    const p = DB.provinces[currentProvince];
+    const c = p?.cities?.[currentCity];
+    if (c) {
+      html += `<a onclick="goCity('${currentProvince}','${currentCity}')">${c.name}</a><span class="sep">›</span>`;
+    }
+  }
+  if (currentSpot) {
+    const p = DB.provinces[currentProvince];
+    const c = p?.cities?.[currentCity];
+    const s = c?.spots?.[currentSpot];
+    if (s) {
+      html += `<span class="current">${s.name}</span>`;
+    }
+  }
+  bc.innerHTML = html;
+}
+
+function goHome() {
+  currentProvince = currentCity = currentSpot = null;
+  navStack = [];
+  switchView('homeView');
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  if (navStack.length > 1) {
+    navStack.pop();
+    const prev = navStack[navStack.length - 1];
+    if (prev.view === 'province') {
+      currentCity = currentSpot = null;
+      goProvince(prev.pid);
+    } else if (prev.view === 'city') {
+      currentSpot = null;
+      goCity(currentProvince, prev.cid);
+    }
+  } else { goHome(); }
+}
+
+function switchGuide(duration) {
+  currentGuide = duration;
+  document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  const p = DB.provinces[currentProvince];
+  const c = p.cities[currentCity];
+  const s = c.spots[currentSpot];
+  renderGuide(s);
+}
+
+function getEffectiveImg(pidOrSpot, cid, sid) {
+  let spot, key;
+  if (typeof pidOrSpot === 'object' && pidOrSpot !== null) {
+    spot = pidOrSpot;
+    key = null;
+  } else {
+    spot = DB.provinces[pidOrSpot]?.cities[cid]?.spots[sid];
+    key = pidOrSpot + '_' + cid + '_' + sid;
+  }
+  if (key && localStorage.getItem('customImg_' + key)) {
+    return localStorage.getItem('customImg_' + key);
+  }
+  return spot?.image || '';
+}
+function getSpotImgKey() {
+  return `${currentProvince}_${currentCity}_${currentSpot}`;
+}
+function getCustomImg(key) {
+  return localStorage.getItem('customImg_' + key) || '';
+}
+
+
+function setCustomImg(key, data) {
+  try { localStorage.setItem('customImg_' + key, data); } catch(e) { console.warn('localStorage full'); }
+}
+
+function getImageHistory(spotKey) {
+  try {
+    const data = localStorage.getItem('imgHistory_' + spotKey);
+    return data ? JSON.parse(data) : [];
+  } catch(e) { return []; }
+}
+
+function init() {
+  // 填充各省卡片到对应区域
+  Object.entries(DB.provinces).forEach(([k, v]) => {
+    const el = document.getElementById(v.region + 'Provinces');
+    if (!el) return;
+    const div = document.createElement('div');
+    if (v.comingSoon) {
+      div.className = 'province-card coming-soon';
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-soon">即将开放</div>';
+    } else {
+      const cityCount = Object.keys(v.cities || {}).length;
+      div.className = 'province-card';
+      div.onclick = () => goProvince(k);
+      div.innerHTML = '<div class="province-card-name">' + v.name + '</div><div class="province-card-meta">' + v.desc + '</div><div class="province-card-badge">' + cityCount + '城</div>';
+    }
+    el.appendChild(div);
+  });
+}
+
+function showRegion(region) {
+  document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
+  (this === window ? event.currentTarget : this).classList.add('active');
+  document.querySelectorAll('.region-group').forEach(g => {
+    g.style.display = (region === 'all' || g.dataset.region === region) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
